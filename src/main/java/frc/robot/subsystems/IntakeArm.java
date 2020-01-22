@@ -17,6 +17,10 @@ public class IntakeArm extends SubsystemBase {
    * Creates a new IntakeArm.
    */
   private TalonSRX intakeArm;
+  /**
+   * This will be used in the future to reference
+   */
+  private boolean up;
 
   public final double kP = 1;
   public final double kI = 0;
@@ -32,8 +36,13 @@ public class IntakeArm extends SubsystemBase {
     intakeArm.configFactoryDefault();
 
     configTalonPID(intakeArm, kP, kI, kD, kF);
+
+    up = false;
   }
   
+  public boolean isUp(){
+    return up;
+  }
 
   private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){
     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
