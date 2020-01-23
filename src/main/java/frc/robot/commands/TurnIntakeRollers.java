@@ -35,6 +35,7 @@ public class TurnIntakeRollers extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // makes sure that the rollers are off if the arm is up
     if(intakeArm.isUp()){
       if(intakeRollers.getSpeedValue() == 1.0){
         intakeRollers.toggleRollers();

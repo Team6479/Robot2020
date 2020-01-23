@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 
@@ -35,6 +34,7 @@ public class MoveIntakeArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // toggles the rollers off when moving the arm up
     if(intakeRollers.getSpeedValue() == 1.0){
       intakeRollers.toggleRollers();
     }

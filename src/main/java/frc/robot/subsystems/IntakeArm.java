@@ -20,8 +20,9 @@ public class IntakeArm extends SubsystemBase {
   /**
    * This will be used in the future to reference
    */
-  private boolean up;
+  private boolean up; //used to check if the arm is up in the command
 
+  // pid tuning constants
   public final double kP = 1;
   public final double kI = 0;
   public final double kD = 0;
@@ -31,6 +32,7 @@ public class IntakeArm extends SubsystemBase {
   public final int pidID = 0;
 
   public IntakeArm() {
+    // configure motor controller, encoder, and pids
     intakeArm = new TalonSRX(Constants.INTAKE_ARM);
     
     intakeArm.configFactoryDefault();
@@ -39,11 +41,12 @@ public class IntakeArm extends SubsystemBase {
 
     configTalonPID(intakeArm, kP, kI, kD, kF);
 
-    up = false;
+    up = false; //set up to false, may change later
   }
   
   public void toggleArm(){
-    // Add code here when mechanical is definite
+    // Add code here when mechanical is definite, it will be used to change the arm from down to up or vice versa
+    // every time it is executed. May change functionality later once mechanical is definite.
   }
 
   public boolean isUp(){
@@ -51,8 +54,9 @@ public class IntakeArm extends SubsystemBase {
   }
 
   private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){
+    // configure mag encoder
     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
-
+    
     talon.configNominalOutputForward(0, timeoutMs);
     talon.configNominalOutputReverse(0, timeoutMs);
     talon.configPeakOutputForward(1, timeoutMs);
