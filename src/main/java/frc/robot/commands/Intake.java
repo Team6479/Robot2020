@@ -40,8 +40,20 @@ public class TurnIntakeRollers extends CommandBase {
   @Override
   public void execute() {
     if(intakeArm.isUp()){
-      if(intakeRollers.getSpeedValue() == 0.0)  // THIS IS NOT DONE DON'T THINK IT's DONE
-      return;
+      if(intakeRollers.getSpeedValue() == 1.0){
+        intakeRollers.toggleRollers();
+      }
+    }
+    else{
+      if(toggleRollers.get()){
+        intakeRollers.toggleRollers();
+      }
+    }
+    if(toggleArm.get()){
+      intakeArm.toggleArm();
+      if(intakeRollers.getSpeedValue() == 1.0){
+        intakeRollers.toggleRollers();
+      }
     }
   }
 

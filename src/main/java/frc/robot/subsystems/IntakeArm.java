@@ -42,6 +42,10 @@ public class IntakeArm extends SubsystemBase {
     up = false;
   }
   
+  public void toggleArm(){
+    // Add code here when mechanical is definite
+  }
+
   public boolean isUp(){
     return up;
   }
