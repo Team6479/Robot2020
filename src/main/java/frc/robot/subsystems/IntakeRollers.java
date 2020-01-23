@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 
 public class IntakeRollers extends SubsystemBase {
   /**
@@ -19,14 +19,21 @@ public class IntakeRollers extends SubsystemBase {
   private TalonSRX intakeRoller1;
   private TalonSRX intakeRoller2;
 
-  private static boolean on; // Used for the toggle method for the rollers
+  private boolean on; // Used for the toggle method for the rollers
+  private double currentPercentValue;
   public IntakeRollers() {
-    intakeRoller1 = new TalonSRX(RobotMap.INTAKE_ROLLER_1);
-    intakeRoller2 = new TalonSRX(RobotMap.INTAKE_ROLLER_2);
+    intakeRoller1 = new TalonSRX(Constants.INTAKE_ROLLER_1);
+    intakeRoller2 = new TalonSRX(Constants.INTAKE_ROLLER_2);
 
     intakeRoller1.configFactoryDefault();
     intakeRoller2.configFactoryDefault();
 
+    intakeRoller1.setInverted(false);
+    intakeRoller2.setInverted(true);
+
+    intakeRoller2.follow(intakeRoller1);
+
+    currentPercentValue = 0.0;
     on = false;
 
   }
@@ -34,13 +41,17 @@ public class IntakeRollers extends SubsystemBase {
   // Set the roller motor to on
   private void rollersOn(){
     intakeRoller1.set(ControlMode.PercentOutput, 1.0);
-    intakeRoller2.set(ControlMode.PercentOutput, -1.0); // One motor moves backwards, change later if needed
+    currentPercentValue = 1.0;
+
     on = true;
+  }
+  public double getSpeedValue(){
+    return currentPercentValue;
   }
   // Set the roller motor to off
   private void rollersOff(){
     intakeRoller1.set(ControlMode.PercentOutput, 0.0);
-    intakeRoller2.set(ControlMode.PercentOutput, 0.0);
+    currentPercentValue = 0.0;
     on = false;
   }
   // Toggles the rollers off or on when called

@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 
 public class IntakeArm extends SubsystemBase {
   /**
@@ -31,9 +31,11 @@ public class IntakeArm extends SubsystemBase {
   public final int pidID = 0;
 
   public IntakeArm() {
-    intakeArm = new TalonSRX(RobotMap.INTAKE_ARM);
-
+    intakeArm = new TalonSRX(Constants.INTAKE_ARM);
+    
     intakeArm.configFactoryDefault();
+
+    intakeArm.setInverted(false);
 
     configTalonPID(intakeArm, kP, kI, kD, kF);
 
