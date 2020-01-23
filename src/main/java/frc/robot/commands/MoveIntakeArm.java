@@ -7,28 +7,24 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 
-public class TurnIntakeRollers extends CommandBase {
+public class MoveIntakeArm extends CommandBase {
   /**
-   * Creates a new TurnIntakeRollers.
+   * Creates a new MoveIntakeArm.
    */
   private final IntakeRollers intakeRollers;
   private final IntakeArm intakeArm;
-  private final Button toggleRollers;
-  private final Button toggleArm;
 
-  public TurnIntakeRollers(IntakeRollers intakeRollers, IntakeArm intakeArm, Button toggleRollers, Button toggleArm) {
+  public MoveIntakeArm(IntakeRollers intakeRollers, IntakeArm intakeArm) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intakeRollers = intakeRollers;
     this.intakeArm = intakeArm;
-    this.toggleRollers = toggleRollers;
-    this.toggleArm = toggleArm;
-    addRequirements(this.intakeRollers);
     addRequirements(this.intakeArm);
+    addRequirements(this.intakeRollers);
   }
 
   // Called when the command is initially scheduled.
@@ -39,22 +35,10 @@ public class TurnIntakeRollers extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(intakeArm.isUp()){
-      if(intakeRollers.getSpeedValue() == 1.0){
-        intakeRollers.toggleRollers();
-      }
+    if(intakeRollers.getSpeedValue() == 1.0){
+      intakeRollers.toggleRollers();
     }
-    else{
-      if(toggleRollers.get()){
-        intakeRollers.toggleRollers();
-      }
-    }
-    if(toggleArm.get()){
-      intakeArm.toggleArm();
-      if(intakeRollers.getSpeedValue() == 1.0){
-        intakeRollers.toggleRollers();
-      }
-    }
+    intakeArm.toggleArm();
   }
 
   // Called once the command ends or is interrupted.
