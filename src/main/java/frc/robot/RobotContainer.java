@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved. */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
+/* the project. */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
@@ -14,6 +14,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.TurnIntakeRollers;
+import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeRollers;
+import com.team6479.lib.controllers.CBXboxController;;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -24,14 +29,21 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private final IntakeRollers intakeRollers = new IntakeRollers();
+  private final IntakeArm intakeArm = new IntakeArm();
+  
   private Drivetrain drivetrain = new Drivetrain();
 
+  private final CBXboxController xbox = new CBXboxController(0);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    
   }
 
   /**
@@ -41,7 +53,11 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    CBXboxController xbox = new CBXboxController(0);
+    // The button bindings for TurnIntakeRollers and MoveIntakeArm are just random button assignments and can be changed later
+    xbox.getButton(XboxController.Button.kY)
+      .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
+    xbox.getButton(XboxController.Button.kX)
+      .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
       () -> xbox.getX(Hand.kRight),
