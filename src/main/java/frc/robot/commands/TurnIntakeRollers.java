@@ -36,12 +36,9 @@ public class TurnIntakeRollers extends CommandBase {
   @Override
   public void execute() {
     // makes sure that the rollers are off if the arm is up
-    if(intakeArm.isUp()){
-      if(intakeRollers.getSpeedValue() == 1.0){
-        intakeRollers.toggleRollers();
-      }
-    }
-    else{
+    if(intakeArm.isUp()) {
+      intakeRollers.rollersOff();
+    } else {
       intakeRollers.toggleRollers();
     }
   }

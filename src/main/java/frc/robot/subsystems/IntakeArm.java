@@ -44,19 +44,19 @@ public class IntakeArm extends SubsystemBase {
     up = false; //set up to false, may change later
   }
   
-  public void toggleArm(){
+  public void toggleArm() {
     // Add code here when mechanical is definite, it will be used to change the arm from down to up or vice versa
     // every time it is executed. May change functionality later once mechanical is definite.
   }
 
-  public boolean isUp(){
+  public boolean isUp() {
     return up;
   }
 
   private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){
     // configure mag encoder
     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
-    
+
     talon.configNominalOutputForward(0, timeoutMs);
     talon.configNominalOutputReverse(0, timeoutMs);
     talon.configPeakOutputForward(1, timeoutMs);

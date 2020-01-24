@@ -20,7 +20,6 @@ public class IntakeRollers extends SubsystemBase {
   private TalonSRX intakeRoller2;
 
   private boolean on; // Used for the toggle method for the rollers
-  private double currentPercentValue;
   public IntakeRollers() {
     intakeRoller1 = new TalonSRX(Constants.INTAKE_ROLLER_1);
     intakeRoller2 = new TalonSRX(Constants.INTAKE_ROLLER_2);
@@ -33,33 +32,32 @@ public class IntakeRollers extends SubsystemBase {
 
     intakeRoller2.follow(intakeRoller1);
 
-    currentPercentValue = 0.0;
     on = false;
 
   }
 
-  // Set the roller motor to on
-  private void rollersOn(){
+  // Set the roller motors to on
+  public void rollersOn() {
     intakeRoller1.set(ControlMode.PercentOutput, 1.0);
-    currentPercentValue = 1.0;
-
+    intakeRoller2.set(ControlMode.PercentOutput, 1.0);
     on = true;
   }
-  public double getSpeedValue(){
-    return currentPercentValue;
+  public boolean isOn() {
+    return on;
   }
   // Set the roller motor to off
-  private void rollersOff(){
+  public void rollersOff() {
     intakeRoller1.set(ControlMode.PercentOutput, 0.0);
-    currentPercentValue = 0.0;
+    intakeRoller2.set(ControlMode.PercentOutput, 0.0);
     on = false;
   }
   // Toggles the rollers off or on when called
-  public void toggleRollers(){
-    if(on)
+  public void toggleRollers() {
+    if(on) {
       rollersOff();
-    else
+    } else {
       rollersOn();
+    }
   }
 
 
