@@ -22,7 +22,7 @@ public class IntakeArm extends SubsystemBase {
    */
   private boolean out; //used to check if the arm is out in the command
 
-  // pid tuning constants
+  // pid tuning constants (May not be used in the future)
   public final double kP = 1;
   public final double kI = 0;
   public final double kD = 0;
@@ -32,7 +32,7 @@ public class IntakeArm extends SubsystemBase {
   public final int pidID = 0;
 
   public IntakeArm() {
-    // configure motor controller, encoder, and pids
+    // configure motor controller, encoder, and pids (tentative)
     intakeArm = new TalonSRX(Constants.INTAKE_ARM);
     
     intakeArm.configFactoryDefault();
@@ -52,7 +52,7 @@ public class IntakeArm extends SubsystemBase {
   public boolean isOut() {
     return out;
   }
-
+  // Stil unsure if pids will be used on the arm, if not, need to implement mechanical stops
   private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){
     // configure mag encoder
     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);

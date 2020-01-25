@@ -30,8 +30,8 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final IntakeRollers intakeRollers = new IntakeRollers();
-  private final IntakeArm intakeArm = new IntakeArm();
+  private final IntakeRollers INTAKE_ROLLERS = new IntakeRollers();
+  private final IntakeArm INTAKE_ARM = new IntakeArm();
   
   private Drivetrain drivetrain = new Drivetrain();
 
@@ -55,7 +55,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Arbitrary button set for now, can be changed later
     xbox.getButton(Button.kY)
-      .whenPressed(new Intake(intakeArm, intakeRollers));
+      .whenPressed(new Intake(INTAKE_ARM, INTAKE_ROLLERS));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
       () -> xbox.getX(Hand.kRight),
