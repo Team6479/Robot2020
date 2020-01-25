@@ -17,8 +17,7 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static final int INTAKE_ROLLER_1 = 0; // Change later
-    public static final int INTAKE_ROLLER_2 = 0; // Change later
+    public static final int INTAKE_ROLLER = 0; // Change later
     public static final int INTAKE_ARM = 0; // Change later
     
   public static final class DrivetrainConstants {

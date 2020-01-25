@@ -20,7 +20,7 @@ public class IntakeArm extends SubsystemBase {
   /**
    * This will be used in the future to reference
    */
-  private boolean up; //used to check if the arm is up in the command
+  private boolean out; //used to check if the arm is out in the command
 
   // pid tuning constants
   public final double kP = 1;
@@ -41,7 +41,7 @@ public class IntakeArm extends SubsystemBase {
 
     configTalonPID(intakeArm, kP, kI, kD, kF);
 
-    up = false; //set up to false, may change later
+    out = false; //set up to false, may change later
   }
   
   public void toggleArm() {
@@ -49,8 +49,8 @@ public class IntakeArm extends SubsystemBase {
     // every time it is executed. May change functionality later once mechanical is definite.
   }
 
-  public boolean isUp() {
-    return up;
+  public boolean isOut() {
+    return out;
   }
 
   private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){

@@ -1,30 +1,29 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* Copyright (c) 2019 FIRST. All Rights Reserved. */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
+/* the project. */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 
-public class TurnIntakeRollers extends CommandBase {
+public class Intake extends CommandBase {
   /**
-   * Creates a new TurnIntakeRollers.
+   * Creates a new Intake.
    */
   private final IntakeRollers intakeRollers;
   private final IntakeArm intakeArm;
 
-  public TurnIntakeRollers(IntakeRollers intakeRollers, IntakeArm intakeArm) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public Intake(IntakeArm intakeArm, IntakeRollers intakeRollers) {
     this.intakeRollers = intakeRollers;
     this.intakeArm = intakeArm;
-    addRequirements(this.intakeRollers);
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.intakeArm);
+    addRequirements(this.intakeRollers);
   }
 
   // Called when the command is initially scheduled.
@@ -33,13 +32,17 @@ public class TurnIntakeRollers extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  /**
+   * Controls the entire intake subsystem with one button/command. Toggles the intake's arm with {@link IntakeArm}
+   * which will automatically toggle the {@link IntakeRollers} depending on the position of the arm after toggling.
+   */
   @Override
   public void execute() {
-    // makes sure that the rollers are off if the arm is up
-    if(intakeArm.isUp()) {
-      intakeRollers.rollersOff();
+    intakeArm.toggleArm();
+    if(intakeArm.isOut()) {
+      intakeRollers.rollersOn();
     } else {
-      intakeRollers.toggleRollers();
+      intakeRollers.rollersOff();
     }
   }
 

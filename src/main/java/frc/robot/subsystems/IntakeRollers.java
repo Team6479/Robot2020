@@ -16,21 +16,15 @@ public class IntakeRollers extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private TalonSRX intakeRoller1;
-  private TalonSRX intakeRoller2;
+  private TalonSRX intakeRoller;
 
   private boolean on; // Used for the toggle method for the rollers
   public IntakeRollers() {
-    intakeRoller1 = new TalonSRX(Constants.INTAKE_ROLLER_1);
-    intakeRoller2 = new TalonSRX(Constants.INTAKE_ROLLER_2);
+    intakeRoller = new TalonSRX(Constants.INTAKE_ROLLER);
 
-    intakeRoller1.configFactoryDefault();
-    intakeRoller2.configFactoryDefault();
+    intakeRoller.configFactoryDefault();
 
-    intakeRoller1.setInverted(false);
-    intakeRoller2.setInverted(true);
-
-    intakeRoller2.follow(intakeRoller1);
+    intakeRoller.setInverted(false);
 
     on = false;
 
@@ -38,8 +32,7 @@ public class IntakeRollers extends SubsystemBase {
 
   // Set the roller motors to on
   public void rollersOn() {
-    intakeRoller1.set(ControlMode.PercentOutput, 1.0);
-    intakeRoller2.set(ControlMode.PercentOutput, 1.0);
+    intakeRoller.set(ControlMode.PercentOutput, 1.0);
     on = true;
   }
   public boolean isOn() {
@@ -47,17 +40,8 @@ public class IntakeRollers extends SubsystemBase {
   }
   // Set the roller motor to off
   public void rollersOff() {
-    intakeRoller1.set(ControlMode.PercentOutput, 0.0);
-    intakeRoller2.set(ControlMode.PercentOutput, 0.0);
+    intakeRoller.set(ControlMode.PercentOutput, 0.0);
     on = false;
-  }
-  // Toggles the rollers off or on when called
-  public void toggleRollers() {
-    if(on) {
-      rollersOff();
-    } else {
-      rollersOn();
-    }
   }
 
 

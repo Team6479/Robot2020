@@ -12,13 +12,13 @@ import com.team6479.lib.controllers.CBXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.TurnIntakeRollers;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
-import com.team6479.lib.controllers.CBXboxController;;
+import com.team6479.lib.controllers.CBXboxController;
+import frc.robot.commands.Intake;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -53,11 +53,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // The button bindings for TurnIntakeRollers and MoveIntakeArm are just random button assignments and can be changed later
-    xbox.getButton(XboxController.Button.kY)
-      .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
-    xbox.getButton(XboxController.Button.kX)
-      .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
+    // Arbitrary button set for now, can be changed later
+    xbox.getButton(Button.kY)
+      .whenPressed(new Intake(intakeArm, intakeRollers));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
       () -> xbox.getX(Hand.kRight),
