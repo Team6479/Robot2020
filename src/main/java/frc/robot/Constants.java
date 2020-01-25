@@ -20,11 +20,16 @@ public final class Constants {
     public static final int INTAKE_ROLLER_1 = 0; // Change later
     public static final int INTAKE_ROLLER_2 = 0; // Change later
     public static final int INTAKE_ARM = 0; // Change later
-    
+
   public static final class DrivetrainConstants {
     public static final int motorLeftFront = 0;
     public static final int motorLeftBack = 1;
     public static final int motorRightFront = 2;
     public static final int motorRightBack = 3;
+  }
+
+  public static final class ClimberConstants{
+    public static final int motor = 0;
+
   }
 }
