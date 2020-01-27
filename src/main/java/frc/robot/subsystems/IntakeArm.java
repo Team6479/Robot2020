@@ -23,13 +23,13 @@ public class IntakeArm extends SubsystemBase {
   private boolean out; //used to check if the arm is out in the command
 
   // pid tuning constants (May not be used in the future)
-  public final double kP = 1;
+  /*public final double kP = 1;
   public final double kI = 0;
   public final double kD = 0;
   public final double kF = 0;
   public final double kPeakOutput = 1;
   public final int timeoutMs = 0;
-  public final int pidID = 0;
+  public final int pidID = 0;*/
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -39,9 +39,9 @@ public class IntakeArm extends SubsystemBase {
 
     intakeArm.setInverted(false);
 
-    configTalonPID(intakeArm, kP, kI, kD, kF);
+    //configTalonPID(intakeArm, kP, kI, kD, kF);
 
-    out = false; //set up to false, may change later
+    out = false; //set out to false, may change later
   }
   
   public void toggleArm() {
@@ -53,7 +53,7 @@ public class IntakeArm extends SubsystemBase {
     return out;
   }
   // Stil unsure if pids will be used on the arm, if not, need to implement mechanical stops
-  private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){
+  /*private void configTalonPID(TalonSRX talon, double p, double i, double d, double f){
     // configure mag encoder
     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, pidID, timeoutMs);
 
@@ -66,7 +66,7 @@ public class IntakeArm extends SubsystemBase {
     talon.config_kI(pidID, i, timeoutMs);
     talon.config_kD(pidID, d, timeoutMs);
     talon.config_kF(pidID, f, timeoutMs);
-  }
+  }*/
 
   @Override
   public void periodic() {

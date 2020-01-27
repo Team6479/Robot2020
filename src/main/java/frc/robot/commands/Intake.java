@@ -34,7 +34,7 @@ public class Intake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   /**
    * Controls the entire intake subsystem with one button/command. Toggles the intake's arm with {@link IntakeArm}
-   * which will automatically toggle the {@link IntakeRollers} depending on the position of the arm after toggling.
+   * which will automatically toggle the {@link IntakeRollers} depending on the position of the arm after 
    */
   @Override
   public void execute() {
