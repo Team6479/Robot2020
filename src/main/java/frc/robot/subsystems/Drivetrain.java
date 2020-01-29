@@ -38,7 +38,6 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorRightBack.follow(motorRightFront);
 
     // Setup encoders
-    motorLeftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     motorRightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
     // Invert Right Motors
