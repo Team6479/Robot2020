@@ -16,7 +16,7 @@ import java.util.function.DoubleSupplier;
  * @author Leo Wilson
  */
 public class ShooterTrajectory implements DoubleSupplier {
-    private final double G = -9.807; // MUST be negative, m/s^2
+    private final double G = -386.10236; // MUST be negative, in/s^2
 
     private DoubleSupplier xf; // relative horizontal distance
     private double theta; // shooter angle (rad)
