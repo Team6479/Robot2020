@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeRollers extends SubsystemBase {
   /**
@@ -20,7 +20,7 @@ public class IntakeRollers extends SubsystemBase {
 
   private boolean on; // Used for the toggle method for the rollers
   public IntakeRollers() {
-    intakeRoller = new TalonSRX(Constants.INTAKE_ROLLER);
+    intakeRoller = new TalonSRX(IntakeConstants.INTAKE_ROLLER);
 
     intakeRoller.configFactoryDefault();
 
