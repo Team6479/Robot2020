@@ -13,11 +13,15 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team6479.lib.subsystems.TankDrive;
-
+import com.team6479.lib.subsystems.RamseteDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
 
-public class Drivetrain extends SubsystemBase implements TankDrive {
+public class Drivetrain extends SubsystemBase implements TankDrive, RamseteDrive {
   private TalonSRX motorLeftFront = new TalonSRX(DrivetrainConstants.motorLeftFront);
   private TalonSRX motorLeftBack = new TalonSRX(DrivetrainConstants.motorLeftBack);
   private TalonSRX motorRightFront = new TalonSRX(DrivetrainConstants.motorRightFront);
@@ -76,5 +80,65 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
   public void tankDrive(double leftSpeed, double rightSpeed) {
     motorLeftFront.set(ControlMode.PercentOutput, leftSpeed);
     motorRightFront.set(ControlMode.PercentOutput, rightSpeed);
+  }
+
+  @Override
+  public Pose2d getPose() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void resetEncoders() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public double getLeftEncoderPos() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public double getRightEncoderPos() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public double getLeftEncoderVel() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public double getRightEncoderVel() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public double getHeading() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public RamseteCommand getRamseteCommand(Trajectory trajectory) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }
