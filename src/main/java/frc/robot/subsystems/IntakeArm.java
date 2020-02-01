@@ -64,11 +64,18 @@ public class IntakeArm extends SubsystemBase {
     }
     return false;
   }
+  
+  // As of now, positive value means out, negative means in, may change later
+  public void armOut() {
+    intakeArm.set(ControlMode.PercentOutput, 0.5);
+  }
 
-  public void toggleArm() {
-    // ALL OF THIS NEEDS TO BE REWORKED OR SOMETHING
-    intakeArm.set(ControlMode.PercentOutput, 1.0);
-    
+  public void armIn() {
+    intakeArm.set(ControlMode.PercentOutput, -0.5);
+  }
+
+  public void armStop() {
+    intakeArm.set(ControlMode.PercentOutput, 0.0);
   }
 
   public boolean isOut() {
