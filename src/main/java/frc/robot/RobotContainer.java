@@ -56,8 +56,8 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
-      () -> xbox.getX(Hand.kRight),
-      () -> -xbox.getY(Hand.kLeft)));
+      () -> -xbox.getY(Hand.kLeft),
+      () -> xbox.getX(Hand.kRight)));
   }
 
 
