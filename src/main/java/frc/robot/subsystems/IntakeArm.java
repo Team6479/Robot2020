@@ -32,7 +32,6 @@ public class IntakeArm extends SubsystemBase {
   /**
    * This will be used in the future to reference
    */
-  private boolean out; //used to check if the arm is out in the command
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -47,7 +46,6 @@ public class IntakeArm extends SubsystemBase {
     counterOut = new Counter(limitSwitchOut);
     counterIn = new Counter(limitSwitchIn);
 
-    out = false; //set out to false, may change later
   }
 
   public void initLimitCounters() {
@@ -77,11 +75,6 @@ public class IntakeArm extends SubsystemBase {
   public void armStop() {
     intakeArm.set(ControlMode.PercentOutput, 0.0);
   }
-
-  public boolean isOut() {
-    return out;
-  }
-
 
   @Override
   public void periodic() {

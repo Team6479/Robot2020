@@ -18,7 +18,6 @@ public class IntakeRollers extends SubsystemBase {
    */
   private TalonSRX intakeRoller;
 
-  private boolean on; // Used for the toggle method for the rollers
   public IntakeRollers() {
     intakeRoller = new TalonSRX(IntakeConstants.INTAKE_ROLLER);
 
@@ -26,22 +25,17 @@ public class IntakeRollers extends SubsystemBase {
 
     intakeRoller.setInverted(false);
 
-    on = false;
 
   }
 
   // Set the roller motors to on
   public void rollersOn() {
     intakeRoller.set(ControlMode.PercentOutput, 1.0);
-    on = true;
   }
-  public boolean isOn() {
-    return on;
-  }
+
   // Set the roller motor to off
   public void rollersOff() {
     intakeRoller.set(ControlMode.PercentOutput, 0.0);
-    on = false;
   }
 
 
