@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Team6479:ChinampaLibrary:master-SNAPSHOT'
+    implementation('com.github.Team6479:ChinampaLibrary:master-SNAPSHOT') {changing = true}
 
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
