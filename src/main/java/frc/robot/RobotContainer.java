@@ -9,9 +9,13 @@ package frc.robot;
 
 import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBXboxController;
+import com.team6479.lib.pathing.TrajectoryFileHandler;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.TurnIntakeRollers;
@@ -20,10 +24,10 @@ import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -34,30 +38,37 @@ public class RobotContainer {
 
   private final CBXboxController xbox = new CBXboxController(0);
 
+  private SendableChooser<Trajectory> tChooser;
+
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    // Get the trajectories in a sendable chooser
+    tChooser = TrajectoryFileHandler.getTrajectories();
+
+    SmartDashboard.putData("Paths", tChooser);
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // The button bindings for TurnIntakeRollers and MoveIntakeArm are just random button assignments and can be changed later
+    // The button bindings for TurnIntakeRollers and MoveIntakeArm are just random button
+    // assignments and can be changed later
     xbox.getButton(XboxController.Button.kY)
-      .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
+        .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
     xbox.getButton(XboxController.Button.kX)
-      .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
+        .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
 
-    drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
-      () -> xbox.getX(Hand.kRight),
-      () -> -xbox.getY(Hand.kLeft)));
+    drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain, () -> xbox.getX(Hand.kRight),
+        () -> -xbox.getY(Hand.kLeft)));
   }
 
 
@@ -68,7 +79,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // TODO: Add autonomous command
-    return null;
+    return drivetrain.getRamseteCommand(tChooser.getSelected())
+        .andThen(() -> drivetrain.tankDriveVolts(0, 0));
   }
 }
