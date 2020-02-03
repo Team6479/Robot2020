@@ -32,6 +32,7 @@ public class IntakeArm extends SubsystemBase {
   /**
    * This will be used in the future to reference
    */
+  private boolean isOut;
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -45,6 +46,8 @@ public class IntakeArm extends SubsystemBase {
     limitSwitchOut = new DigitalInput(IntakeConstants.INTAKE_LIMIT_SWITCH_OUT);
     counterOut = new Counter(limitSwitchOut);
     counterIn = new Counter(limitSwitchIn);
+
+    isOut = false;
 
   }
 
@@ -65,15 +68,36 @@ public class IntakeArm extends SubsystemBase {
   
   // As of now, positive value means out, negative means in, may change later
   public void armOut() {
-    intakeArm.set(ControlMode.PercentOutput, 0.5);
+    if(!isOut) {
+      while(!this.isSet(LimitSwitch.SWITCHOUT)) {
+        intakeArm.set(ControlMode.PercentOutput, 0.5);
+      }
+      this.armStop();
+      isOut = true;
+    }
   }
 
   public void armIn() {
-    intakeArm.set(ControlMode.PercentOutput, -0.5);
+    if(isOut) {
+      while(!this.isSet(LimitSwitch.SWITCHIN)) {
+        intakeArm.set(ControlMode.PercentOutput, -0.5);
+      }
+      this.armStop();
+      isOut = false;
+    }
   }
-
   public void armStop() {
     intakeArm.set(ControlMode.PercentOutput, 0.0);
+  }
+  public void toggleArm() {
+    if(isOut) {
+      this.armIn();
+    } else {
+      this.armOut();
+    }
+  }
+  public boolean isOut() {
+    return isOut;
   }
 
   @Override

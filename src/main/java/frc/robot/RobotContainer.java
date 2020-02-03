@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 import com.team6479.lib.controllers.CBXboxController;
@@ -62,7 +63,12 @@ public class RobotContainer {
       () -> -xbox.getY(Hand.kLeft)));
   }
 
-
+  public void climberInit() {
+    intakeArm.initLimitCounters();
+    if(!intakeArm.isOut()) {
+      intakeArm.armIn();
+    }
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
