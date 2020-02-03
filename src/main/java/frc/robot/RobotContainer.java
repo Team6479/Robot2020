@@ -56,15 +56,24 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Arbitrary button set for now, can be changed later
     xbox.getButton(Button.kY)
-      .whenPressed(new Intake(intakeArm, intakeRollers));
+      .whenPressed(new InstantCommand(() -> {
+        if(intakeArm.isOut()) {
+          intakeArm.armIn();
+          intakeRollers.rollersOff();
+        } else {
+          intakeArm.armOut();
+          intakeRollers.rollersOff();
+        }
+      }, intakeArm, intakeRollers));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
       () -> xbox.getX(Hand.kRight),
       () -> -xbox.getY(Hand.kLeft)));
   }
 
-  public void climberInit() {
+  public void robotInit() {
     intakeArm.initLimitCounters();
+    intakeRollers.rollersOff();
     if(!intakeArm.isOut()) {
       intakeArm.armIn();
     }
