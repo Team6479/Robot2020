@@ -33,6 +33,7 @@ public class IntakeArm extends SubsystemBase {
    * This will be used in the future to reference
    */
   private boolean isOut;
+  private boolean hasMoved;
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -48,6 +49,7 @@ public class IntakeArm extends SubsystemBase {
     counterIn = new Counter(limitSwitchIn);
 
     isOut = false;
+    hasMoved = false;
 
   }
 
@@ -74,6 +76,7 @@ public class IntakeArm extends SubsystemBase {
       }
       this.armStop();
       isOut = true;
+      hasMoved = true;
     }
   }
 
@@ -84,6 +87,7 @@ public class IntakeArm extends SubsystemBase {
       }
       this.armStop();
       isOut = false;
+      hasMoved = true;
     }
   }
   public void armStop() {
@@ -91,13 +95,17 @@ public class IntakeArm extends SubsystemBase {
   }
   public void toggleArm() {
     if(isOut) {
-      this.armIn();
+      this.armIn(); 
     } else {
       this.armOut();
     }
   }
   public boolean isOut() {
     return isOut;
+  }
+
+  public boolean hasMoved() {
+    return hasMoved;
   }
 
   @Override

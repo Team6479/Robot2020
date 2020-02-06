@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.IntakeArm.LimitSwitch;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -55,7 +56,13 @@ public class RobotContainer {
     // Arbitrary button set for now, can be changed later
     xbox.getButton(Button.kY)
       .whenPressed(new InstantCommand(() -> {
-        if(intakeArm.isOut()) {
+        if(!intakeArm.hasMoved()) {
+          if(!intakeArm.isSet(LimitSwitch.SWITCHIN)) {
+            intakeArm.armIn();
+          } else {
+            intakeArm.armOut();
+          }
+        } else if(intakeArm.isOut()) {
           intakeArm.armIn();
           intakeRollers.rollersOff();
         } else {
@@ -69,13 +76,7 @@ public class RobotContainer {
       () -> -xbox.getY(Hand.kLeft)));
   }
 
-  public void robotInit() {
-    intakeArm.initLimitCounters();
-    intakeRollers.rollersOff();
-    if(!intakeArm.isOut()) {
-      intakeArm.armIn();
-    }
-  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
