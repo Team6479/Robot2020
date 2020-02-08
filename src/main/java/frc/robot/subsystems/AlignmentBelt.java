@@ -21,7 +21,7 @@ public class AlignmentBelt extends SubsystemBase {
    * Creates a new AllignmentBelt.
    */
   public AlignmentBelt() {
-    alignmentBeltMotor = new TalonSRX(AlignmentBeltConstants.ALIGNMENT_BELT);
+    alignmentBeltMotor = new TalonSRX(AlignmentBeltConstants.MOTOR);
 
     alignmentBeltMotor.configFactoryDefault();
 

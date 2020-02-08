@@ -21,7 +21,7 @@ public class Indexer extends SubsystemBase {
    * Creates a new Indexer.
    */
   public Indexer() {
-    indexerMotor = new TalonSRX(IndexerConstants.INDEXER);
+    indexerMotor = new TalonSRX(IndexerConstants.MOTOR);
 
     indexerMotor.configFactoryDefault();
 
