@@ -29,10 +29,10 @@ public final class Constants {
   }
 
   public static final class IndexerConstants{
-    public static final int INDEXER = 4;
+    public static final int MOTOR = 4;
   }
 
   public static final class AlignmentBeltConstants{
-    public static final int ALIGNMENT_BELT = 5;
+    public static final int MOTOR = 5;
   }
 }

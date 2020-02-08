@@ -16,7 +16,6 @@ import frc.robot.Constants.AlignmentBeltConstants;
 public class AlignmentBelt extends SubsystemBase {
 
   private TalonSRX alignmentBeltMotor;
-  private boolean running;
 
   /**
    * Creates a new AllignmentBelt.
@@ -28,29 +27,22 @@ public class AlignmentBelt extends SubsystemBase {
 
     //set neutral mode
     alignmentBeltMotor.setNeutralMode(NeutralMode.Brake);
-
-    running = false;
-
   }
 
   public void run(){
     alignmentBeltMotor.set(ControlMode.PercentOutput, 1.0);
-    running = true;
   }
 
   public void stop(){
     alignmentBeltMotor.set(ControlMode.PercentOutput, 0.0);
-    running = false;
   }
 
   public void toggle(){
-    if(running){
-      alignmentBeltMotor.set(ControlMode.PercentOutput, 0.0);
-      running = false;
+    if(alignmentBeltMotor.getMotorOutputPercent() > 0){
+      stop();
     }
     else{
-      alignmentBeltMotor.set(ControlMode.PercentOutput, 1.0);
-      running = true;
+      run();
     }
   }
 

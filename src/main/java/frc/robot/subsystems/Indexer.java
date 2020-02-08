@@ -16,7 +16,6 @@ import frc.robot.Constants.IndexerConstants;
 public class Indexer extends SubsystemBase {
 
   private TalonSRX indexerMotor;
-  private boolean running;
 
   /**
    * Creates a new Indexer.
@@ -28,30 +27,23 @@ public class Indexer extends SubsystemBase {
 
     //set neutral mode
     indexerMotor.setNeutralMode(NeutralMode.Brake);
-
-    running = false;
-
   }
 
   public void run(){
     indexerMotor.set(ControlMode.PercentOutput, 1.0);
-    running = true;
   }
 
   public void toggle(){
-    if(running){
-      indexerMotor.set(ControlMode.PercentOutput, 0.0);
-      running = false;
+    if(indexerMotor.getMotorOutputPercent() > 0){
+      stop();
     }
     else{
-      indexerMotor.set(ControlMode.PercentOutput, 1.0);
-      running = true;
+      run();
     }
   }
 
   public void stop(){
     indexerMotor.set(ControlMode.PercentOutput, 0.0);
-    running = false;
   }
 
   @Override
