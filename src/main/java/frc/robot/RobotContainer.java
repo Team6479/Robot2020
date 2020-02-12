@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBJoystick;
 import com.team6479.lib.controllers.CBXboxController;
@@ -33,6 +34,7 @@ import frc.robot.subsystems.Turret;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  public static final AHRS navX = new AHRS();
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();

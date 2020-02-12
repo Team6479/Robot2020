@@ -22,10 +22,10 @@ public final class Constants {
     public static final int INTAKE_ARM = 0; // Change later
 
   public static final class DrivetrainConstants {
-    public static final int motorLeftFront = 0;
-    public static final int motorLeftBack = 1;
-    public static final int motorRightFront = 2;
-    public static final int motorRightBack = 3;
+    public static final int MOTOR_LEFT_FRONT = 0;
+    public static final int MOTOR_LEFT_BACK = 1;
+    public static final int MOTOR_RIGHT_FRONT = 2;
+    public static final int MOTOR_RIGHT_BACK = 3;
   }
 
   public static final class IndexerConstants{
