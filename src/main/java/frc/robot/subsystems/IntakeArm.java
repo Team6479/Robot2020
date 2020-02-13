@@ -51,12 +51,11 @@ public class IntakeArm extends SubsystemBase {
     isOut = false;
     hasMoved = false;
 
-  }
-
-  public void initLimitCounters() {
     counterOut.reset();
     counterIn.reset();
+
   }
+
 
   public boolean isSet(LimitSwitch limitSwitch) {
     switch(limitSwitch) {
