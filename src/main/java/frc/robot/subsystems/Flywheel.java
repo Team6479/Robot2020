@@ -14,13 +14,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlywheelConstants;
 
 public class Flywheel extends SubsystemBase {
-  /**
-   * Creates a new Flywheel.
-   */
+  private final int CPR = 4096;
+  private final double VELOCITY_INTERVAL_PER_MIN = 0.1 * 60;
 
   private TalonSRX rightMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_RIGHT);
   private TalonSRX leftMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_LEFT);
 
+  /**
+   * Creates a new Flywheel.
+   */
   public Flywheel() {
     // Reset to defaults
     rightMotor.configFactoryDefault();
@@ -46,7 +48,7 @@ public class Flywheel extends SubsystemBase {
    * Sets the desired speed of the flywheel
    */
   public void set(double speed) {
-    rightMotor.set(ControlMode.PercentOutput, speed);
+    rightMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
   }
 
   @Override
