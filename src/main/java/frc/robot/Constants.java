@@ -47,4 +47,9 @@ public final class Constants {
     public static final int I = 0;
     public static final int D = 0;
   }
+
+  public static final class AutoConstants {
+    public static final double lineDistance = 0;
+    public static final double lineSpeed = 0;
+  }
 }
