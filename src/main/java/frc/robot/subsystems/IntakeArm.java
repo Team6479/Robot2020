@@ -9,8 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -19,21 +17,15 @@ public class IntakeArm extends SubsystemBase {
    * Creates a new IntakeArm.
    */
 
-  public enum LimitSwitch {
-    SWITCHOUT, SWITCHIN
-  }
-
   private TalonSRX intakeArm;
 
-  private DigitalInput limitSwitchOut;
-  private DigitalInput limitSwitchIn;
-  private Counter counterOut;
-  private Counter counterIn;
   /**
    * This will be used in the future to reference
    */
   private boolean isOut;
   private boolean hasMoved;
+
+  private final double amperageDropThreshold = 2.0;
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -43,52 +35,39 @@ public class IntakeArm extends SubsystemBase {
 
     intakeArm.setInverted(false);
 
-    limitSwitchIn = new DigitalInput(IntakeConstants.INTAKE_LIMIT_SWITCH_IN);
-    limitSwitchOut = new DigitalInput(IntakeConstants.INTAKE_LIMIT_SWITCH_OUT);
-    counterOut = new Counter(limitSwitchOut);
-    counterIn = new Counter(limitSwitchIn);
-
     isOut = false;
     hasMoved = false;
-
-    counterOut.reset();
-    counterIn.reset();
-
   }
 
-
-  public boolean isSet(LimitSwitch limitSwitch) {
-    switch(limitSwitch) {
-    case SWITCHOUT:
-      return counterOut.get() > 0;
-    case SWITCHIN:
-      return counterIn.get() > 0;
-    }
-    return false;
-  }
-  
   // As of now, positive value means out, negative means in, may change later
   public void armOut() {
-    if(!isOut) {
-      while(!this.isSet(LimitSwitch.SWITCHOUT)) {
-        intakeArm.set(ControlMode.PercentOutput, 0.5);
-      }
-      this.armStop();
-      isOut = true;
-      hasMoved = true;
+    this.armStop();
+    intakeArm.set(ControlMode.PercentOutput, 0.5);
+    double initialAmperage = intakeArm.getSupplyCurrent();
+    while(initialAmperage - this.amperageDropThreshold < intakeArm.getSupplyCurrent()) {
+      intakeArm.set(ControlMode.PercentOutput, 0.5);
     }
+    this.armStop();
+    isOut = true;
+    hasMoved = true;
   }
 
   public void armIn() {
-    if(isOut) {
-      while(!this.isSet(LimitSwitch.SWITCHIN)) {
-        intakeArm.set(ControlMode.PercentOutput, -0.5);
-      }
-      this.armStop();
-      isOut = false;
-      hasMoved = true;
+    this.armStop();
+    intakeArm.set(ControlMode.PercentOutput, -0.5);
+    double initialAmperage = intakeArm.getSupplyCurrent();
+    while(initialAmperage - this.amperageDropThreshold < intakeArm.getSupplyCurrent()) {
+      intakeArm.set(ControlMode.PercentOutput, -0.5);
     }
+    this.armStop();
+    isOut = false;
+    hasMoved = true;
   }
+
+  public boolean hasMoved() {
+    return hasMoved;
+  }
+
   public void armStop() {
     intakeArm.set(ControlMode.PercentOutput, 0.0);
   }
@@ -101,10 +80,6 @@ public class IntakeArm extends SubsystemBase {
   }
   public boolean isOut() {
     return isOut;
-  }
-
-  public boolean hasMoved() {
-    return hasMoved;
   }
 
   @Override
