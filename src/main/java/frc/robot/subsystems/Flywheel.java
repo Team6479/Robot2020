@@ -44,6 +44,10 @@ public class Flywheel extends SubsystemBase {
     rightMotor.config_kP(0, FlywheelConstants.D);
   }
 
+  public double getError() {
+    return rightMotor.getClosedLoopError() / CPR;
+  }
+
   /**
    * Sets the desired speed of the flywheel
    */

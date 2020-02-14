@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
 
 public class SpinUpFlywheel extends CommandBase {
-  
+
+  private final double THRESHOLD_RPM = 3;
+
   private Flywheel flywheel;
 
   /**
@@ -40,6 +42,6 @@ public class SpinUpFlywheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Math.abs(flywheel.getError()) < THRESHOLD_RPM;
   }
 }
