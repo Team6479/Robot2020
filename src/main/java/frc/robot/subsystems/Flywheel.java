@@ -51,6 +51,10 @@ public class Flywheel extends SubsystemBase {
     rightMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
   }
 
+  public void off() {
+    rightMotor.set(ControlMode.Velocity, 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
