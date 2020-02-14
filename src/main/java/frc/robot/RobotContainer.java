@@ -9,17 +9,17 @@ package frc.robot;
 
 import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBXboxController;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.TurnIntakeRollers;
+import frc.robot.subsystems.AlignmentBelt;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
-import com.team6479.lib.controllers.CBXboxController;
-import frc.robot.subsystems.Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,18 +32,18 @@ public class RobotContainer {
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
-  
-  private Drivetrain drivetrain = new Drivetrain();
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Indexer indexer = new Indexer();
+  private final AlignmentBelt alignmentBelt = new AlignmentBelt();
 
   private final CBXboxController xbox = new CBXboxController(0);
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
-    
   }
 
   /**
@@ -60,8 +60,8 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
-      () -> xbox.getX(Hand.kRight),
-      () -> -xbox.getY(Hand.kLeft)));
+      () -> -xbox.getY(Hand.kLeft),
+      () -> xbox.getX(Hand.kRight)));
   }
 
 

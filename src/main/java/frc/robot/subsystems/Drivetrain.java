@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team6479.lib.subsystems.TankDrive;
 
@@ -37,13 +38,21 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorLeftBack.follow(motorLeftFront);
     motorRightBack.follow(motorRightFront);
 
+    // Set the neutral mode
+    motorLeftFront.setNeutralMode(NeutralMode.Brake);
+    motorLeftBack.setNeutralMode(NeutralMode.Brake);
+    motorRightFront.setNeutralMode(NeutralMode.Brake);
+    motorRightBack.setNeutralMode(NeutralMode.Brake);
+
     // Setup encoders
     motorRightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     motorLeftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
     // Invert Right Motors
-    motorRightFront.setInverted(true);
     motorLeftFront.setInverted(false);
+    motorLeftBack.setInverted(false);
+    motorRightFront.setInverted(true);
+    motorRightBack.setInverted(true);
   }
 
   @Override
