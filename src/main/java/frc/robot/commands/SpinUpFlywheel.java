@@ -7,26 +7,42 @@
 
 package frc.robot.commands;
 
+import com.team6479.lib.util.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.util.DistanceCalculator;
 
 public class SpinUpFlywheel extends CommandBase {
 
   private final double THRESHOLD_RPM = 3;
 
   private Flywheel flywheel;
+  private DistanceCalculator distanceCalculator;
 
   /**
    * Creates a new SpinUpFlywheel.
    */
   public SpinUpFlywheel(Flywheel flywheel) {
     this.flywheel = flywheel;
+    distanceCalculator = new DistanceCalculator(0, 0, 0);
     addRequirements(this.flywheel);
+  }
+
+  /**
+   * @param distance The distance to the target in inches
+   */
+  private double calculate(double distance) {
+    return 0;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (Limelight.hasTarget()) {
+      flywheel.set(calculate(distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset()))));
+    } else {
+      // TODO: handle
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
