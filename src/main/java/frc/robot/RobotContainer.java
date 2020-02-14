@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.TurnIntakeRollers;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
@@ -35,6 +36,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
   private final Indexer indexer = new Indexer();
   private final AlignmentBelt alignmentBelt = new AlignmentBelt();
+  private final Flywheel flywheel = new Flywheel();
 
   private final CBXboxController xbox = new CBXboxController(0);
 
