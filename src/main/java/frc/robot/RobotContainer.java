@@ -65,8 +65,14 @@ public class RobotContainer {
     xbox.getButton(XboxController.Button.kX)
       .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
     xbox.getButton(XboxController.Button.kBumperLeft)
-      .whenPressed(new ToggleFlywheel(flywheel));
-    xbox.getButton(XboxController.Button.kBumperRight)
+      .whenPressed(new SequentialCommandGroup( // if shooting, stops shooting
+        // TODO: test for problems with stopping shooter
+        new ToggleFlywheel(flywheel),
+        new InstantCommand(alignmentBelt::stop, alignmentBelt),
+        new InstantCommand(indexer::stop, indexer),
+        new InstantCommand(flywheel::off, flywheel)
+      ));
+    xbox.getButton(XboxController.Button.kBumperRight) // TODO: toggle shooter
       .whenPressed(new SequentialCommandGroup(
         new ShooterDump(flywheel, indexer, alignmentBelt),
         new InstantCommand(alignmentBelt::stop, alignmentBelt),
