@@ -9,11 +9,15 @@ package frc.robot;
 
 import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBXboxController;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.ShooterDump;
+import frc.robot.commands.ToggleFlywheel;
 import frc.robot.commands.TurnIntakeRollers;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
@@ -60,6 +64,15 @@ public class RobotContainer {
       .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
     xbox.getButton(XboxController.Button.kX)
       .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
+    xbox.getButton(XboxController.Button.kBumperLeft)
+      .whenPressed(new ToggleFlywheel(flywheel));
+    xbox.getButton(XboxController.Button.kBumperRight)
+      .whenPressed(new SequentialCommandGroup(
+        new ShooterDump(flywheel, indexer, alignmentBelt),
+        new InstantCommand(alignmentBelt::stop, alignmentBelt),
+        new InstantCommand(indexer::stop, indexer),
+        new InstantCommand(flywheel::off, flywheel)
+      ));
 
     drivetrain.setDefaultCommand(new TeleopTankDrive(drivetrain,
       () -> -xbox.getY(Hand.kLeft),

@@ -20,6 +20,8 @@ public class Flywheel extends SubsystemBase {
   private TalonSRX rightMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_RIGHT);
   private TalonSRX leftMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_LEFT);
 
+  private boolean isOn;
+
   /**
    * Creates a new Flywheel.
    */
@@ -42,6 +44,8 @@ public class Flywheel extends SubsystemBase {
     rightMotor.config_kP(0, FlywheelConstants.P);
     rightMotor.config_kI(0, FlywheelConstants.I);
     rightMotor.config_kP(0, FlywheelConstants.D);
+
+    isOn = false;
   }
 
   public double getError() {
@@ -52,11 +56,16 @@ public class Flywheel extends SubsystemBase {
    * Sets the desired speed of the flywheel
    */
   public void set(double speed) {
+    isOn = speed == 0;
     rightMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
   }
 
   public void off() {
-    rightMotor.set(ControlMode.Velocity, 0);
+    set(0);
+  }
+
+  public boolean getIsOn() {
+    return isOn;
   }
 
   @Override
