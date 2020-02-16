@@ -56,7 +56,7 @@ public class Flywheel extends SubsystemBase {
    * Sets the desired speed of the flywheel
    */
   public void set(double speed) {
-    isOn = speed == 0;
+    isOn = speed != 0;
     rightMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
   }
 
