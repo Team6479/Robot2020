@@ -53,7 +53,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Arbitrary button set for now, can be changed later
-    xbox.getButton(Button.kY)
+    xbox.getButton(Button.kA)
       .whenPressed(new InstantCommand(() -> {
         if(intakeArm.isOut()) {
           intakeArm.armIn();
