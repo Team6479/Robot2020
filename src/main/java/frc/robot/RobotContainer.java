@@ -52,7 +52,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Arbitrary button set for now, can be changed later
     xbox.getButton(Button.kA)
       .whenPressed(new InstantCommand(() -> {
         if(intakeArm.isOut()) {
