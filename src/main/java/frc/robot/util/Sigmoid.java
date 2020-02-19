@@ -31,8 +31,10 @@ public class Sigmoid {
      * If a logistic function cannot be constructed w/o exceeding the specified bounds, this class should be ammended accordingly
      * @param center The value at zero (0.5, >=0)
      * @param damping The damping constant; higher = more gradual and thus wider (1, >=0)
-     * @param stretch The amount by which to stretch the function vertically; higher = more vertical stretching (1, >=0)
-     * @param inversion Whether or not to invert the function
+     * @param limit Stretches the limits of the function; higher = more vertical stretching (1, >=0)
+     * @param invert Whether or not to invert the function
+     * @param hshift Horizontal translation
+     * @param vshift Vertical translation
      */
     public Sigmoid(double center, double damping, double limit, boolean invert, double hshift, double vshift) {
         c = center * 2; // (0, c/2)
