@@ -9,19 +9,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
 
-  private TalonSRX indexerMotor;
+  private VictorSPX indexerMotor;
 
   /**
    * Creates a new Indexer.
    */
   public Indexer() {
-    indexerMotor = new TalonSRX(IndexerConstants.MOTOR);
+    indexerMotor = new VictorSPX(IndexerConstants.MOTOR);
 
     indexerMotor.configFactoryDefault();
 

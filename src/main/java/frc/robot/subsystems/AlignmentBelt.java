@@ -9,19 +9,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlignmentBeltConstants;
 
 public class AlignmentBelt extends SubsystemBase {
 
-  private TalonSRX alignmentBeltMotor;
+  private VictorSPX alignmentBeltMotor;
 
   /**
    * Creates a new AllignmentBelt.
    */
   public AlignmentBelt() {
-    alignmentBeltMotor = new TalonSRX(AlignmentBeltConstants.MOTOR);
+    alignmentBeltMotor = new VictorSPX(AlignmentBeltConstants.MOTOR);
 
     alignmentBeltMotor.configFactoryDefault();
 
