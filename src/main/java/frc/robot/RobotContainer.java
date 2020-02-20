@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.TurnIntakeRollers;
+import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.Turret;
@@ -36,6 +38,8 @@ public class RobotContainer {
   private final IntakeArm intakeArm = new IntakeArm();
   private final Turret turret = new Turret(-180, 180);
   private final Drivetrain drivetrain = new Drivetrain();
+  private final Indexer indexer = new Indexer();
+  private final AlignmentBelt alignmentBelt = new AlignmentBelt();
 
   private final CBXboxController xbox = new CBXboxController(0);
   private final CBJoystick joystick = new CBJoystick(1);
