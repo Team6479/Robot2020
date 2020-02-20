@@ -65,11 +65,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // The button bindings for TurnIntakeRollers and MoveIntakeArm are just random button assignments and can be changed later
-    xbox.getButton(XboxController.Button.kY)
-      .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
-    xbox.getButton(XboxController.Button.kX)
-      .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
     xbox.getButton(XboxController.Button.kBumperLeft)
       .whenPressed(new SequentialCommandGroup( // if shooting, stops shooting
         // TODO: test for problems with stopping shooter
