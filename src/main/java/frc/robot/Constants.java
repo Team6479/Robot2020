@@ -30,6 +30,10 @@ public final class Constants {
     public static final int MOTOR_RIGHT_BACK = 3;
   }
 
+  public static final class TurretConstants {
+    public static final int motor = 4;
+  }
+  
   public static final class IndexerConstants{
     public static final int MOTOR = 4;
   }
