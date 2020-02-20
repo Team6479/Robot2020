@@ -30,6 +30,14 @@ public final class Constants {
     public static final int MOTOR_RIGHT_BACK = 3;
   }
 
+  public static final class FlywheelConstants {
+    public static final int FLYWHEEL_RIGHT = 7;
+    public static final int FLYWHEEL_LEFT = 8;
+    public static final int P = 0;
+    public static final int I = 0;
+    public static final int D = 0;
+  }
+  
   public static final class TurretConstants {
     public static final int MOTOR = 4;
   }
