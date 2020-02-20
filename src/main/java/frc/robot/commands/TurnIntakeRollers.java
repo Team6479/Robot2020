@@ -36,7 +36,7 @@ public class TurnIntakeRollers extends CommandBase {
   @Override
   public void execute() {
     // makes sure that the rollers are off if the arm is up
-    if(intakeArm.isUp()) {
+    if(!intakeArm.isOut()) {
       intakeRollers.rollersOff();
     } else {
       intakeRollers.toggleRollers();

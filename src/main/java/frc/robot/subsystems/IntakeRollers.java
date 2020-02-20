@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeRollers extends SubsystemBase {
+
+  private boolean isOn;
+
   /**
    * Creates a new Intake.
    */
@@ -25,17 +28,28 @@ public class IntakeRollers extends SubsystemBase {
 
     intakeRoller.setInverted(false);
 
-
+    isOn = false;
   }
 
   // Set the roller motors to on
   public void rollersOn() {
     intakeRoller.set(ControlMode.PercentOutput, 1.0);
+    isOn = true;
   }
 
   // Set the roller motor to off
   public void rollersOff() {
     intakeRoller.set(ControlMode.PercentOutput, 0.0);
+    isOn = false;
+  }
+
+  // toggle the rollers
+  public void toggleRollers() {
+    if (isOn) {
+      rollersOff();
+    } else {
+      rollersOn();
+    }
   }
 
 
