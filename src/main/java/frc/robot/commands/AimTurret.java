@@ -7,24 +7,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.button.Button;
+import com.team6479.lib.util.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.Turret;
 
-public class TurnIntakeRollers extends CommandBase {
+public class AimTurret extends CommandBase {
+  private final Turret turret;
+
   /**
-   * Creates a new TurnIntakeRollers.
+   * Creates a new AimTurret.
    */
-  private final IntakeRollers intakeRollers;
-  private final IntakeArm intakeArm;
-
-  public TurnIntakeRollers(IntakeRollers intakeRollers, IntakeArm intakeArm) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.intakeRollers = intakeRollers;
-    this.intakeArm = intakeArm;
-    addRequirements(this.intakeRollers);
-    addRequirements(this.intakeArm);
+  public AimTurret(Turret turret) {
+    this.turret = turret;
+    addRequirements(this.turret);
   }
 
   // Called when the command is initially scheduled.
@@ -35,22 +30,27 @@ public class TurnIntakeRollers extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // makes sure that the rollers are off if the arm is up
-    if(intakeArm.isUp()) {
-      intakeRollers.rollersOff();
-    } else {
-      intakeRollers.toggleRollers();
+    boolean isCorrected = turret.isCorrected();
+    boolean hasTarget = Limelight.hasTarget();
+
+    if (!isCorrected && !hasTarget) {
+      turret.clearCorrection();
+    }
+
+    if (hasTarget && isCorrected) {
+      turret.setPosition(turret.getCurrentAngle() + Limelight.getXOffset());
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    turret.clearCorrection();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Math.abs(Limelight.getXOffset()) <= 0.5;
   }
 }

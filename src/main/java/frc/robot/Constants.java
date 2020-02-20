@@ -16,16 +16,18 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-    public static final int INTAKE_ROLLER_1 = 0; // Change later
-    public static final int INTAKE_ROLLER_2 = 0; // Change later
+  public static final class IntakeConstants {
+    public static final int INTAKE_ROLLER = 0; // Change later
     public static final int INTAKE_ARM = 0; // Change later
+    public static final int INTAKE_LIMIT_SWITCH_IN = 0; // Change later
+    public static final int INTAKE_LIMIT_SWITCH_OUT = 0; // Change later
+  }
 
   public static final class DrivetrainConstants {
-    public static final int motorLeftFront = 0;
-    public static final int motorLeftBack = 1;
-    public static final int motorRightFront = 2;
-    public static final int motorRightBack = 3;
+    public static final int MOTOR_LEFT_FRONT = 0;
+    public static final int MOTOR_LEFT_BACK = 1;
+    public static final int MOTOR_RIGHT_FRONT = 2;
+    public static final int MOTOR_RIGHT_BACK = 3;
   }
 
   public static final class FlywheelConstants {
@@ -35,6 +37,11 @@ public final class Constants {
     public static final int I = 0;
     public static final int D = 0;
   }
+  
+  public static final class TurretConstants {
+    public static final int MOTOR = 4;
+  }
+  
   public static final class IndexerConstants{
     public static final int MOTOR = 4;
   }
