@@ -22,12 +22,19 @@ public final class Constants {
     public static final int INTAKE_LIMIT_SWITCH_IN = 0; // Change later
     public static final int INTAKE_LIMIT_SWITCH_OUT = 0; // Change later
   }
-  
-    
+
   public static final class DrivetrainConstants {
     public static final int MOTOR_LEFT_FRONT = 0;
     public static final int MOTOR_LEFT_BACK = 1;
     public static final int MOTOR_RIGHT_FRONT = 2;
     public static final int MOTOR_RIGHT_BACK = 3;
+  }
+
+  public static final class IndexerConstants{
+    public static final int MOTOR = 4;
+  }
+
+  public static final class AlignmentBeltConstants{
+    public static final int MOTOR = 5;
   }
 }
