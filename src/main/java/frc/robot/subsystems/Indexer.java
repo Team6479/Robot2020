@@ -17,38 +17,19 @@ public class Indexer extends SubsystemBase {
 
   private final VictorSPX indexerMotor;
 
-  private boolean isOn;
-
   public Indexer() {
     indexerMotor = new VictorSPX(IndexerConstants.MOTOR);
 
     indexerMotor.configFactoryDefault();
 
     indexerMotor.setNeutralMode(NeutralMode.Brake);
-
-    isOn = false;
   }
 
   public void run(){
     indexerMotor.set(ControlMode.PercentOutput, 1.0);
-    isOn = true;
   }
 
   public void stop(){
     indexerMotor.set(ControlMode.PercentOutput, 0.0);
-    isOn = false;
-  }
-
-  public void toggle(){
-    if (isOn) {
-      stop();
-    } else {
-      run();
-    }
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }
