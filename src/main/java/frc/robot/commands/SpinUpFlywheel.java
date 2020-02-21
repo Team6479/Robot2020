@@ -56,7 +56,11 @@ public class SpinUpFlywheel extends CommandBase {
   @Override
   public void initialize() {
     if (Limelight.hasTarget()) {
-      flywheel.set(calculate(distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), Limelight.getXOffset()));
+      flywheel.set(calculate(
+          distanceCalculator.calculate(
+            Math.toRadians(Limelight.getYOffset())
+          ), Limelight.getXOffset()
+        ));
     } else {
       // TODO: handle
     }

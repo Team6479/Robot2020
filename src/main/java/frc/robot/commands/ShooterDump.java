@@ -20,7 +20,9 @@ public class ShooterDump extends SequentialCommandGroup {
    * Creates a new ShooterDump.
    */
   public ShooterDump(Flywheel flywheel, Indexer indexer, AlignmentBelt alignmentBelt) {
-    super(new SpinUpFlywheel(flywheel), new InstantCommand(indexer::run, indexer), new InstantCommand(alignmentBelt::run, alignmentBelt));
+    super(new SpinUpFlywheel(flywheel),
+      new InstantCommand(indexer::run, indexer),
+      new InstantCommand(alignmentBelt::run, alignmentBelt));
     withTimeout(DURATION);
   }
 }
