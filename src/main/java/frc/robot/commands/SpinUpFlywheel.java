@@ -19,9 +19,6 @@ public class SpinUpFlywheel extends CommandBase {
   private final Flywheel flywheel;
   private DistanceCalculator distanceCalculator;
 
-  /**
-   * Creates a new SpinUpFlywheel.
-   */
   public SpinUpFlywheel(Flywheel flywheel) {
     this.flywheel = flywheel;
     distanceCalculator = new DistanceCalculator(0, 0, 0);

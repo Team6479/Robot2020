@@ -13,9 +13,7 @@ import frc.robot.subsystems.Flywheel;
 
 public class ManualSpeedFlywheel extends CommandBase {
   private final Flywheel flywheel;
-  /**
-   * Creates a new ManualSpeedFlywheel.
-   */
+
   public ManualSpeedFlywheel(Flywheel flywheel) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.flywheel = flywheel;

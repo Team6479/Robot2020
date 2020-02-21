@@ -16,9 +16,6 @@ import frc.robot.subsystems.Indexer;
 public class ShooterDump extends SequentialCommandGroup {
   private final double DURATION = 5; // number of seconds for the shooter to dump all five balls, based on testing
 
-  /**
-   * Creates a new ShooterDump.
-   */
   public ShooterDump(Flywheel flywheel, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(new SpinUpFlywheel(flywheel),
       new InstantCommand(indexer::run, indexer),
