@@ -64,9 +64,4 @@ public class Flywheel extends SubsystemBase {
   public boolean getIsOn() {
     return isOn;
   }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
 }
