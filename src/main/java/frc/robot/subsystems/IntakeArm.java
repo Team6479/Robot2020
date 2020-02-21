@@ -25,7 +25,9 @@ public class IntakeArm extends SubsystemBase {
   private boolean isOut;
   private boolean hasMoved;
 
-  private final double amperageDropThreshold = 2.0;
+  // Based on stall current draw for a BAG motor
+  // https://www.vexrobotics.com/217-3351.html#Other_Info
+  private final double amperageSpikeThreshold = 40.0;
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -56,7 +58,7 @@ public class IntakeArm extends SubsystemBase {
     this.armStop();
     intakeArm.set(ControlMode.PercentOutput, 0.5);
     double initialAmperage = intakeArm.getSupplyCurrent();
-    while(initialAmperage - this.amperageDropThreshold < intakeArm.getSupplyCurrent()) {
+    while(initialAmperage - this.amperageSpikeThreshold < intakeArm.getSupplyCurrent()) {
       intakeArm.set(ControlMode.PercentOutput, 0.5);
     }
     this.armStop();
@@ -68,7 +70,7 @@ public class IntakeArm extends SubsystemBase {
     this.armStop();
     intakeArm.set(ControlMode.PercentOutput, -0.5);
     double initialAmperage = intakeArm.getSupplyCurrent();
-    while(initialAmperage - this.amperageDropThreshold < intakeArm.getSupplyCurrent()) {
+    while(initialAmperage - this.amperageSpikeThreshold < intakeArm.getSupplyCurrent()) {
       intakeArm.set(ControlMode.PercentOutput, -0.5);
     }
     this.armStop();
