@@ -42,7 +42,7 @@ public class RobotContainer {
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
-  
+
   private final Indexer indexer = new Indexer();
   private final AlignmentBelt alignmentBelt = new AlignmentBelt();
   private final Flywheel flywheel = new Flywheel();
@@ -73,10 +73,10 @@ public class RobotContainer {
         new InstantCommand(indexer::stop, indexer),
         new InstantCommand(flywheel::off, flywheel)
       ));
-      
+
     xbox.getButton(XboxController.Button.kBumperRight) // TODO: toggle shooter
       .whenPressed(new SequentialCommandGroup(
-        new ShooterDump(flywheel, indexer, alignmentBelt),
+        new ShooterDump(flywheel, indexer, alignmentBelt).withTimeout(5),
         new InstantCommand(alignmentBelt::stop, alignmentBelt),
         new InstantCommand(indexer::stop, indexer),
         new InstantCommand(flywheel::off, flywheel)
@@ -108,7 +108,7 @@ public class RobotContainer {
       () -> xbox.getX(Hand.kRight)));
   }
 
-  
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
