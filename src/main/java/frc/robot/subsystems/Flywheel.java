@@ -17,36 +17,36 @@ public class Flywheel extends SubsystemBase {
   private final int CPR = 4096;
   private final double VELOCITY_INTERVAL_PER_MIN = 0.1 * 60;
 
-  private final TalonSRX rightMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_RIGHT);
-  private final TalonSRX leftMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_LEFT);
+  private final TalonSRX topMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_TOP);
+  private final TalonSRX bottomMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_BOTTOM);
 
   private boolean isOn;
 
   public Flywheel() {
     // Reset to defaults
-    rightMotor.configFactoryDefault();
-    leftMotor.configFactoryDefault();
+    topMotor.configFactoryDefault();
+    bottomMotor.configFactoryDefault();
 
     // Configure encoders
-    rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    topMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
     // Set motor directions
-    rightMotor.setInverted(false);
-    leftMotor.setInverted(true);
+    topMotor.setInverted(false);
+    bottomMotor.setInverted(true);
 
     // Set slave
-    leftMotor.follow(rightMotor);
+    bottomMotor.follow(topMotor);
 
     //PID
-    // rightMotor.config_kP(0, 0);
-    // rightMotor.config_kI(0, 0);
-    // rightMotor.config_kP(0, 0);
+    // topMotor.config_kP(0, 0);
+    // topMotor.config_kI(0, 0);
+    // topMotor.config_kP(0, 0);
 
     isOn = false;
   }
 
   public double getError() {
-    return rightMotor.getClosedLoopError() / CPR;
+    return topMotor.getClosedLoopError() / CPR;
   }
 
   /**
@@ -54,7 +54,7 @@ public class Flywheel extends SubsystemBase {
    */
   public void set(double speed) {
     isOn = (speed != 0);
-    rightMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
+    topMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
   }
 
   public void off() {

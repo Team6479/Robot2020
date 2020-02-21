@@ -17,8 +17,8 @@ package frc.robot;
  */
 public final class Constants {
   public static final class IntakeConstants {
-    public static final int INTAKE_ROLLER = 0; // Change later
-    public static final int INTAKE_ARM = 0; // Change later
+    public static final int INTAKE_ROLLER = 9; // Change later
+    public static final int INTAKE_ARM = 8; // Change later
     public static final int INTAKE_LIMIT_SWITCH_IN = 0; // Change later
     public static final int INTAKE_LIMIT_SWITCH_OUT = 0; // Change later
   }
@@ -31,16 +31,16 @@ public final class Constants {
   }
 
   public static final class FlywheelConstants {
-    public static final int FLYWHEEL_RIGHT = 7;
-    public static final int FLYWHEEL_LEFT = 8;
+    public static final int FLYWHEEL_TOP = 5;
+    public static final int FLYWHEEL_BOTTOM = 6;
   }
-  
+
   public static final class TurretConstants {
     public static final int MOTOR = 4;
   }
-  
+
   public static final class IndexerConstants{
-    public static final int MOTOR = 4;
+    public static final int MOTOR = 7;
   }
 
   public static final class AlignmentBeltConstants{
