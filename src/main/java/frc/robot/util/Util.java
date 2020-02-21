@@ -1,6 +1,9 @@
 package frc.robot.util;
 
 public final class Util {
+    /**
+     * Don't let anyone instantiate this class.
+     */
     private Util() {}
 
     public static double getRange(double x, double y) {
