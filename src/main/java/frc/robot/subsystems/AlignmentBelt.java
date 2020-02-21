@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlignmentBeltConstants;
 
 public class AlignmentBelt extends SubsystemBase {
-
   private final VictorSPX alignmentBeltMotor;
 
   public AlignmentBelt() {

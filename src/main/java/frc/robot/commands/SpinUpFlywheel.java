@@ -13,7 +13,6 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.util.DistanceCalculator;
 
 public class SpinUpFlywheel extends CommandBase {
-
   private final double THRESHOLD_RPM = 3;
 
   private final Flywheel flywheel;

@@ -13,14 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeRollers extends SubsystemBase {
-
   private final TalonSRX intakeRoller;
 
   public IntakeRollers() {
     intakeRoller = new TalonSRX(IntakeConstants.INTAKE_ROLLER);
 
     intakeRoller.configFactoryDefault();
-
+    
     intakeRoller.setInverted(false);
   }
 
