@@ -23,10 +23,6 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
   private final TalonSRX motorRightFront = new TalonSRX(DrivetrainConstants.MOTOR_RIGHT_FRONT);
   private final TalonSRX motorRightBack = new TalonSRX(DrivetrainConstants.MOTOR_RIGHT_BACK);
 
-
-  /**
-   * Creates a new Drivetrain.
-   */
   public Drivetrain() {
     // Reset to factory defaults to ensure no config carryover
     motorLeftFront.configFactoryDefault();

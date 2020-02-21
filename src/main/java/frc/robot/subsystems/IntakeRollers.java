@@ -16,9 +16,6 @@ public class IntakeRollers extends SubsystemBase {
 
   private boolean isOn;
 
-  /**
-   * Creates a new Intake.
-   */
   private final TalonSRX intakeRoller;
 
   public IntakeRollers() {

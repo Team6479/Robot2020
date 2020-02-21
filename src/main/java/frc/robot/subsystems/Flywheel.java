@@ -22,9 +22,6 @@ public class Flywheel extends SubsystemBase {
 
   private boolean isOn;
 
-  /**
-   * Creates a new Flywheel.
-   */
   public Flywheel() {
     // Reset to defaults
     rightMotor.configFactoryDefault();

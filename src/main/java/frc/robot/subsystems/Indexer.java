@@ -17,9 +17,6 @@ public class Indexer extends SubsystemBase {
 
   private final VictorSPX indexerMotor;
 
-  /**
-   * Creates a new Indexer.
-   */
   public Indexer() {
     indexerMotor = new VictorSPX(IndexerConstants.MOTOR);
 

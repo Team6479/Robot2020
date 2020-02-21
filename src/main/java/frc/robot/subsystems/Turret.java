@@ -39,9 +39,6 @@ public class Turret extends SubsystemBase {
   private double goal = 0;
   private ArrayList<BooleanSupplier> correctionResetConditions = new ArrayList<>();
 
-  /**
-   * Creates a new Turret.
-   */
   public Turret(double lowerLimit, double upperLimit) {
     this.lowerLimit = lowerLimit;
     this.upperLimit = upperLimit;

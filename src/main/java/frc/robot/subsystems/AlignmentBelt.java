@@ -17,9 +17,6 @@ public class AlignmentBelt extends SubsystemBase {
 
   private final VictorSPX alignmentBeltMotor;
 
-  /**
-   * Creates a new AllignmentBelt.
-   */
   public AlignmentBelt() {
     alignmentBeltMotor = new VictorSPX(AlignmentBeltConstants.MOTOR);
 
