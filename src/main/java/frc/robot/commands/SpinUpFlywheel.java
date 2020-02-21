@@ -16,7 +16,7 @@ public class SpinUpFlywheel extends CommandBase {
 
   private final double THRESHOLD_RPM = 3;
 
-  private Flywheel flywheel;
+  private final Flywheel flywheel;
   private DistanceCalculator distanceCalculator;
 
   /**

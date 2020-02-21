@@ -16,7 +16,7 @@ import frc.robot.subsystems.Flywheel;
 public class ToggleFlywheel extends InstantCommand {
   private final double GENERIC_RPM = 7;
 
-  private Flywheel flywheel;
+  private final Flywheel flywheel;
 
   public ToggleFlywheel(Flywheel flywheel) {
     this.flywheel = flywheel;

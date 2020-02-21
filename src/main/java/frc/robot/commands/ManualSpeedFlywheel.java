@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
 
 public class ManualSpeedFlywheel extends CommandBase {
-  private Flywheel flywheel;
+  private final Flywheel flywheel;
   /**
    * Creates a new ManualSpeedFlywheel.
    */
