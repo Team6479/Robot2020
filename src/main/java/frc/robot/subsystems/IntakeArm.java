@@ -39,6 +39,18 @@ public class IntakeArm extends SubsystemBase {
     hasMoved = false;
   }
 
+  public boolean isOut() {
+    return isOut;
+  }
+  
+  public boolean hasMoved() {
+    return hasMoved;
+  }
+
+  public void armStop() {
+    intakeArm.set(ControlMode.PercentOutput, 0.0);
+  }
+
   // As of now, positive value means out, negative means in, may change later
   public void armOut() {
     this.armStop();
@@ -64,22 +76,12 @@ public class IntakeArm extends SubsystemBase {
     hasMoved = true;
   }
 
-  public boolean hasMoved() {
-    return hasMoved;
-  }
-
-  public void armStop() {
-    intakeArm.set(ControlMode.PercentOutput, 0.0);
-  }
   public void toggleArm() {
     if(isOut) {
       this.armIn(); 
     } else {
       this.armOut();
     }
-  }
-  public boolean isOut() {
-    return isOut;
   }
 
   @Override
