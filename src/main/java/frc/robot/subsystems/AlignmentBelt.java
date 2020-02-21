@@ -25,7 +25,6 @@ public class AlignmentBelt extends SubsystemBase {
 
     alignmentBeltMotor.configFactoryDefault();
 
-    //set neutral mode
     alignmentBeltMotor.setNeutralMode(NeutralMode.Brake);
   }
 

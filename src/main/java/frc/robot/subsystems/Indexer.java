@@ -25,7 +25,6 @@ public class Indexer extends SubsystemBase {
 
     indexerMotor.configFactoryDefault();
 
-    //set neutral mode
     indexerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
