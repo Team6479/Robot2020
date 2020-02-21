@@ -14,8 +14,6 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeRollers extends SubsystemBase {
 
-  private boolean isOn;
-
   private final TalonSRX intakeRoller;
 
   public IntakeRollers() {
@@ -24,34 +22,15 @@ public class IntakeRollers extends SubsystemBase {
     intakeRoller.configFactoryDefault();
 
     intakeRoller.setInverted(false);
-
-    isOn = false;
   }
 
   // Set the roller motors to on
   public void rollersOn() {
     intakeRoller.set(ControlMode.PercentOutput, 1.0);
-    isOn = true;
   }
 
   // Set the roller motor to off
   public void rollersOff() {
     intakeRoller.set(ControlMode.PercentOutput, 0.0);
-    isOn = false;
-  }
-
-  // toggle the rollers
-  public void toggleRollers() {
-    if (isOn) {
-      rollersOff();
-    } else {
-      rollersOn();
-    }
-  }
-
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

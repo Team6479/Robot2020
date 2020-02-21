@@ -20,11 +20,10 @@ public class IntakeArm extends SubsystemBase {
    * This will be used in the future to reference
    */
   private boolean isOut;
-  private boolean hasMoved;
 
   // Based on stall current draw for a BAG motor
   // https://www.vexrobotics.com/217-3351.html#Other_Info
-  private final double amperageSpikeThreshold = 40.0;
+  private final double AMPERAGE_SPIKE_THESHOLD = 40.0;
 
   public IntakeArm() {
     // configure motor controller, encoder, and pids (tentative)
@@ -35,56 +34,32 @@ public class IntakeArm extends SubsystemBase {
     intakeArm.setInverted(false);
 
     isOut = false;
-    hasMoved = false;
   }
 
   public boolean isOut() {
     return isOut;
   }
-  
-  public boolean hasMoved() {
-    return hasMoved;
-  }
 
-  public void armStop() {
+  private void armStop() {
     intakeArm.set(ControlMode.PercentOutput, 0.0);
   }
 
   // As of now, positive value means out, negative means in, may change later
   public void armOut() {
-    this.armStop();
-    intakeArm.set(ControlMode.PercentOutput, 0.5);
-    double initialAmperage = intakeArm.getSupplyCurrent();
-    while(initialAmperage - this.amperageSpikeThreshold < intakeArm.getSupplyCurrent()) {
+    while (intakeArm.getSupplyCurrent() < this.AMPERAGE_SPIKE_THESHOLD) {
       intakeArm.set(ControlMode.PercentOutput, 0.5);
     }
+
     this.armStop();
     isOut = true;
-    hasMoved = true;
   }
 
   public void armIn() {
-    this.armStop();
-    intakeArm.set(ControlMode.PercentOutput, -0.5);
-    double initialAmperage = intakeArm.getSupplyCurrent();
-    while(initialAmperage - this.amperageSpikeThreshold < intakeArm.getSupplyCurrent()) {
+    while (intakeArm.getSupplyCurrent() < this.AMPERAGE_SPIKE_THESHOLD) {
       intakeArm.set(ControlMode.PercentOutput, -0.5);
     }
+
     this.armStop();
     isOut = false;
-    hasMoved = true;
-  }
-
-  public void toggleArm() {
-    if (isOut) {
-      this.armIn(); 
-    } else {
-      this.armOut();
-    }
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }
