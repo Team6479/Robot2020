@@ -14,11 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlignmentBeltConstants;
 
 public class AlignmentBelt extends SubsystemBase {
-  private final VictorSPX alignmentBeltMotor;
+  private final VictorSPX alignmentBeltMotor = new VictorSPX(AlignmentBeltConstants.MOTOR);
 
   public AlignmentBelt() {
-    alignmentBeltMotor = new VictorSPX(AlignmentBeltConstants.MOTOR);
-
+    // Reset to factory defaults to ensure no config carryover
     alignmentBeltMotor.configFactoryDefault();
 
     alignmentBeltMotor.setNeutralMode(NeutralMode.Brake);
