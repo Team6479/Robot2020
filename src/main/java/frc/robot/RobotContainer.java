@@ -36,12 +36,13 @@ import frc.robot.subsystems.Turret;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  private final Drivetrain drivetrain = new Drivetrain();
+
+  private final Turret turret = new Turret(-180, 180);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
-  private final Turret turret = new Turret(-180, 180);
-  private final Drivetrain drivetrain = new Drivetrain();
+  
   private final Indexer indexer = new Indexer();
   private final AlignmentBelt alignmentBelt = new AlignmentBelt();
   private final Flywheel flywheel = new Flywheel();
@@ -72,6 +73,7 @@ public class RobotContainer {
         new InstantCommand(indexer::stop, indexer),
         new InstantCommand(flywheel::off, flywheel)
       ));
+      
     xbox.getButton(XboxController.Button.kBumperRight) // TODO: toggle shooter
       .whenPressed(new SequentialCommandGroup(
         new ShooterDump(flywheel, indexer, alignmentBelt),
@@ -79,6 +81,7 @@ public class RobotContainer {
         new InstantCommand(indexer::stop, indexer),
         new InstantCommand(flywheel::off, flywheel)
       ));
+
     xbox.getButton(Button.kA)
       .whenPressed(new InstantCommand(() -> {
         if(intakeArm.isOut()) {
