@@ -41,9 +41,9 @@ public class Flywheel extends SubsystemBase {
     leftMotor.follow(rightMotor);
 
     //PID
-    rightMotor.config_kP(0, FlywheelConstants.P);
-    rightMotor.config_kI(0, FlywheelConstants.I);
-    rightMotor.config_kP(0, FlywheelConstants.D);
+    // rightMotor.config_kP(0, 0);
+    // rightMotor.config_kI(0, 0);
+    // rightMotor.config_kP(0, 0);
 
     isOn = false;
   }
