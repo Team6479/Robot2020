@@ -17,27 +17,32 @@ public class AlignmentBelt extends SubsystemBase {
 
   private final VictorSPX alignmentBeltMotor;
 
+  private boolean isOn;
+
   public AlignmentBelt() {
     alignmentBeltMotor = new VictorSPX(AlignmentBeltConstants.MOTOR);
 
     alignmentBeltMotor.configFactoryDefault();
 
     alignmentBeltMotor.setNeutralMode(NeutralMode.Brake);
+
+    isOn = false;
   }
 
   public void run(){
     alignmentBeltMotor.set(ControlMode.PercentOutput, 1.0);
+    isOn = true;
   }
 
   public void stop(){
     alignmentBeltMotor.set(ControlMode.PercentOutput, 0.0);
+    isOn = false;
   }
 
   public void toggle(){
-    if(alignmentBeltMotor.getMotorOutputPercent() > 0){
+    if (isOn) {
       stop();
-    }
-    else{
+    } else {
       run();
     }
   }

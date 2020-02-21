@@ -76,7 +76,7 @@ public class IntakeArm extends SubsystemBase {
   }
 
   public void toggleArm() {
-    if(isOut) {
+    if (isOut) {
       this.armIn(); 
     } else {
       this.armOut();
