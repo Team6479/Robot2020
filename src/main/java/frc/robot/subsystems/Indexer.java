@@ -15,7 +15,7 @@ import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
 
-  private VictorSPX indexerMotor;
+  private final VictorSPX indexerMotor;
 
   /**
    * Creates a new Indexer.

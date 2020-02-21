@@ -32,7 +32,7 @@ public class Turret extends SubsystemBase {
   // private final Sigmoid percentOutSigmoid = new Sigmoid(1.0, 2.85, 1.5, true, 1.9755, -0.5);
   private final Sigmoid percentOutSigmoid = new Sigmoid(1.0, 4.5, 1.0, true, 10, -0.1);
 
-  private TalonSRX motor = new TalonSRX(TurretConstants.MOTOR);
+  private final TalonSRX motor = new TalonSRX(TurretConstants.MOTOR);
   private double lowerLimit;
   private double upperLimit;
   private boolean correction = false;

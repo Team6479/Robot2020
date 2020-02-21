@@ -17,8 +17,8 @@ public class Flywheel extends SubsystemBase {
   private final int CPR = 4096;
   private final double VELOCITY_INTERVAL_PER_MIN = 0.1 * 60;
 
-  private TalonSRX rightMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_RIGHT);
-  private TalonSRX leftMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_LEFT);
+  private final TalonSRX rightMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_RIGHT);
+  private final TalonSRX leftMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_LEFT);
 
   private boolean isOn;
 

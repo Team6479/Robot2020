@@ -19,7 +19,7 @@ public class IntakeRollers extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  private TalonSRX intakeRoller;
+  private final TalonSRX intakeRoller;
 
   public IntakeRollers() {
     intakeRoller = new TalonSRX(IntakeConstants.INTAKE_ROLLER);

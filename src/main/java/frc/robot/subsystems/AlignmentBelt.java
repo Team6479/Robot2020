@@ -15,7 +15,7 @@ import frc.robot.Constants.AlignmentBeltConstants;
 
 public class AlignmentBelt extends SubsystemBase {
 
-  private VictorSPX alignmentBeltMotor;
+  private final VictorSPX alignmentBeltMotor;
 
   /**
    * Creates a new AllignmentBelt.

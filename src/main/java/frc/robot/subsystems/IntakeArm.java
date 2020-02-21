@@ -17,7 +17,7 @@ public class IntakeArm extends SubsystemBase {
    * Creates a new IntakeArm.
    */
 
-  private TalonSRX intakeArm;
+  private final TalonSRX intakeArm;
 
   /**
    * This will be used in the future to reference

@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
 
 public class Drivetrain extends SubsystemBase implements TankDrive {
-  private TalonSRX motorLeftFront = new TalonSRX(DrivetrainConstants.MOTOR_LEFT_FRONT);
-  private TalonSRX motorLeftBack = new TalonSRX(DrivetrainConstants.MOTOR_LEFT_BACK);
-  private TalonSRX motorRightFront = new TalonSRX(DrivetrainConstants.MOTOR_RIGHT_FRONT);
-  private TalonSRX motorRightBack = new TalonSRX(DrivetrainConstants.MOTOR_RIGHT_BACK);
+  private final TalonSRX motorLeftFront = new TalonSRX(DrivetrainConstants.MOTOR_LEFT_FRONT);
+  private final TalonSRX motorLeftBack = new TalonSRX(DrivetrainConstants.MOTOR_LEFT_BACK);
+  private final TalonSRX motorRightFront = new TalonSRX(DrivetrainConstants.MOTOR_RIGHT_FRONT);
+  private final TalonSRX motorRightBack = new TalonSRX(DrivetrainConstants.MOTOR_RIGHT_BACK);
 
 
   /**
