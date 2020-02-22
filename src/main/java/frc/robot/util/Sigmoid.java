@@ -32,14 +32,14 @@ public class Sigmoid {
      * @param center The value at zero (0.5, >=0)
      * @param damping The damping constant; higher = more gradual and thus wider (1, >=0)
      * @param limit Stretches the limit of the function vertically; higher = more vertical stretching (1, >=0)
-     * @param invert Up or down (true = don't invert) // TODO: fix this, it's wrong
+     * @param invert Up or down (true = invert)
      * @param hshift Horizontal translation
      * @param vshift Vertical translation
      */
     public Sigmoid(double center, double damping, double limit, boolean invert, double hshift, double vshift) {
         c = center * 2; // (0, c/2)
         d = 1 / damping; // the inverse acts more intuitively
-        a = (invert ? 1 : -1) * limit / 2;
+        a = (invert ? -1 : 1) * limit / 2;
         h = hshift;
         k = vshift;
     }

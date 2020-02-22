@@ -30,7 +30,7 @@ public class Turret extends SubsystemBase {
   private final double ENCODER_UNITS = 4095; // Range should be 0 - 4095 (aka. 4096 units)
   private final double UNITS_PER_DEGREE = ENCODER_UNITS / 360;
   // private final Sigmoid percentOutSigmoid = new Sigmoid(1.0, 2.85, 1.5, true, 1.9755, -0.5);
-  private final Sigmoid percentOutSigmoid = new Sigmoid(1.0, 4.5, 1.0, true, 10, -0.1);
+  private final Sigmoid percentOutSigmoid = new Sigmoid(1.0, 4.5, 1.0, false, 10, -0.1);
 
   private final TalonSRX motor = new TalonSRX(TurretConstants.MOTOR);
   private double lowerLimit;
