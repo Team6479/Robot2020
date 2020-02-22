@@ -17,10 +17,8 @@ package frc.robot;
  */
 public final class Constants {
   public static final class IntakeConstants {
-    public static final int INTAKE_ROLLER = 9; // Change later
-    public static final int INTAKE_ARM = 8; // Change later
-    public static final int INTAKE_LIMIT_SWITCH_IN = 0; // Change later
-    public static final int INTAKE_LIMIT_SWITCH_OUT = 0; // Change later
+    public static final int INTAKE_ROLLER = 9;
+    public static final int INTAKE_ARM = 8;
   }
 
   public static final class DrivetrainConstants {
