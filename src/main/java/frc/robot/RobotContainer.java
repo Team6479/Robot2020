@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.ShooterDump;
+import frc.robot.commands.SpinUpFlywheel;
 import frc.robot.commands.ToggleFlywheel;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
@@ -74,9 +74,13 @@ public class RobotContainer {
         new InstantCommand(flywheel::off, flywheel)
       ));
 
-    xbox.getButton(XboxController.Button.kBumperRight) // TODO: toggle shooter
-      .whenPressed(new SequentialCommandGroup(
-        new ShooterDump(flywheel, indexer, alignmentBelt).withTimeout(5),
+    xbox.getButton(XboxController.Button.kBumperRight)
+      .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
+        new SpinUpFlywheel(flywheel),
+        new InstantCommand(indexer::run, indexer),
+        new InstantCommand(alignmentBelt::run, alignmentBelt))
+      ))
+      .whenReleased(new SequentialCommandGroup(
         new InstantCommand(alignmentBelt::stop, alignmentBelt),
         new InstantCommand(indexer::stop, indexer),
         new InstantCommand(flywheel::off, flywheel)
