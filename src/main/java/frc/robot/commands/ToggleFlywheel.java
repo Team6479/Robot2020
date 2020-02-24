@@ -14,7 +14,7 @@ import frc.robot.subsystems.Flywheel;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class ToggleFlywheel extends InstantCommand {
-  private final double GENERIC_RPM = 7;
+  private final double GENERIC_RPM = 47500;
 
   private final Flywheel flywheel;
 

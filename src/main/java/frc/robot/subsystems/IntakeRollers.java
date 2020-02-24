@@ -8,28 +8,30 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeRollers extends SubsystemBase {
-  private final TalonSRX intakeRoller;
+  private final VictorSPX intakeRoller = new VictorSPX(IntakeConstants.INTAKE_ROLLER);
 
   public IntakeRollers() {
-    intakeRoller = new TalonSRX(IntakeConstants.INTAKE_ROLLER);
-
     intakeRoller.configFactoryDefault();
-    
+
     intakeRoller.setInverted(false);
   }
 
   // Set the roller motors to on
   public void rollersOn() {
-    intakeRoller.set(ControlMode.PercentOutput, 1.0);
+    intakeRoller.set(ControlMode.PercentOutput, .9);
   }
 
   // Set the roller motor to off
   public void rollersOff() {
     intakeRoller.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public double getSpeed() {
+    return intakeRoller.getMotorOutputPercent();
   }
 }

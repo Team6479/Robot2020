@@ -8,13 +8,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeArm extends SubsystemBase {
-
-  private final TalonSRX intakeArm;
+  private final VictorSPX intakeArm = new VictorSPX(IntakeConstants.INTAKE_ARM);
 
   /**
    * This will be used in the future to reference
@@ -26,9 +25,6 @@ public class IntakeArm extends SubsystemBase {
   private final double AMPERAGE_SPIKE_THESHOLD = 40.0;
 
   public IntakeArm() {
-    // configure motor controller, encoder, and pids (tentative)
-    intakeArm = new TalonSRX(IntakeConstants.INTAKE_ARM);
-    
     intakeArm.configFactoryDefault();
 
     intakeArm.setInverted(false);
@@ -40,26 +36,15 @@ public class IntakeArm extends SubsystemBase {
     return isOut;
   }
 
-  private void armStop() {
+  public void setIsOut(boolean state) {
+    this.isOut = state;
+  }
+
+  public void armStop() {
     intakeArm.set(ControlMode.PercentOutput, 0.0);
   }
 
-  // As of now, positive value means out, negative means in, may change later
-  public void armOut() {
-    while (intakeArm.getSupplyCurrent() < this.AMPERAGE_SPIKE_THESHOLD) {
-      intakeArm.set(ControlMode.PercentOutput, 0.5);
-    }
-
-    this.armStop();
-    isOut = true;
-  }
-
-  public void armIn() {
-    while (intakeArm.getSupplyCurrent() < this.AMPERAGE_SPIKE_THESHOLD) {
-      intakeArm.set(ControlMode.PercentOutput, -0.5);
-    }
-
-    this.armStop();
-    isOut = false;
+  public void set(double speed) {
+    intakeArm.set(ControlMode.PercentOutput, speed);
   }
 }

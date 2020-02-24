@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlywheelConstants;
@@ -31,16 +32,23 @@ public class Flywheel extends SubsystemBase {
     topMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
     // Set motor directions
-    topMotor.setInverted(false);
+    topMotor.setInverted(true);
     bottomMotor.setInverted(true);
+
+    topMotor.setSensorPhase(true);
+    bottomMotor.setSensorPhase(true);
+
+    topMotor.setNeutralMode(NeutralMode.Brake);
+    bottomMotor.setNeutralMode(NeutralMode.Brake);
 
     // Set slave
     bottomMotor.follow(topMotor);
 
     //PID
-    // topMotor.config_kP(0, 0);
+    topMotor.config_kP(0, 1);
     // topMotor.config_kI(0, 0);
-    // topMotor.config_kP(0, 0);
+    // topMotor.config_kD(0, 0);
+    topMotor.config_kF(0, .0975);
 
     isOn = false;
   }
@@ -54,7 +62,7 @@ public class Flywheel extends SubsystemBase {
    */
   public void set(double speed) {
     isOn = (speed != 0);
-    topMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
+    topMotor.set(ControlMode.Velocity, speed);
   }
 
   public void off() {

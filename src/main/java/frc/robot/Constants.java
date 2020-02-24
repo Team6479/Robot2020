@@ -19,6 +19,7 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int INTAKE_ROLLER = 9;
     public static final int INTAKE_ARM = 8;
+    public static final int INTAKE_ARM_PDP = 5;
   }
 
   public static final class DrivetrainConstants {
@@ -42,6 +43,6 @@ public final class Constants {
   }
 
   public static final class AlignmentBeltConstants{
-    public static final int MOTOR = 5;
+    public static final int MOTOR = 10;
   }
 }

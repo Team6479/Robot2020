@@ -50,7 +50,22 @@ public class Turret extends SubsystemBase {
     motor.setNeutralMode(NeutralMode.Brake);
 
     // Add Mag Encoders
-    motor.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition, 0, 0);
+    motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+
+    // Get the absolute pulse width position
+    int pulseWidth = motor.getSensorCollection().getPulseWidthPosition();
+
+    /**
+		 * Mask out the bottom 12 bits to normalize to [0,4095],
+		 * or in other words, to stay within [0,360) degrees
+		 */
+    pulseWidth = pulseWidth & 0xFFF;
+
+    if (pulseWidth / UNITS_PER_DEGREE > upperLimit) {
+      pulseWidth += -360 * UNITS_PER_DEGREE;
+    }
+
+    motor.getSensorCollection().setQuadraturePosition(pulseWidth, 0);
 
     // Set Inverted and Sensor Phase
     motor.setInverted(true);
@@ -99,7 +114,7 @@ public class Turret extends SubsystemBase {
     if (speed > 0) {
       speed *= percentOutSigmoid.calculate(Util.getRange(upperLimit, getCurrentAngle()));
     } else if (speed < 0) {
-      speed *= percentOutSigmoid.calculate(Util.getRange(getCurrentAngle(), lowerLimit));
+      speed *= percentOutSigmoid.calculate(Math.abs(Util.getRange(getCurrentAngle(), lowerLimit)));
     }
 
     motor.set(ControlMode.PercentOutput, speed);
