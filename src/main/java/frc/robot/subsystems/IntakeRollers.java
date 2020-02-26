@@ -8,61 +8,30 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeRollers extends SubsystemBase {
-  /**
-   * Creates a new Intake.
-   */
-  private TalonSRX intakeRoller1;
-  private TalonSRX intakeRoller2;
+  private final VictorSPX intakeRoller = new VictorSPX(IntakeConstants.INTAKE_ROLLER);
 
-  private boolean on; // Used for the toggle method for the rollers
   public IntakeRollers() {
-    intakeRoller1 = new TalonSRX(Constants.INTAKE_ROLLER_1);
-    intakeRoller2 = new TalonSRX(Constants.INTAKE_ROLLER_2);
+    intakeRoller.configFactoryDefault();
 
-    intakeRoller1.configFactoryDefault();
-    intakeRoller2.configFactoryDefault();
-
-    intakeRoller1.setInverted(false);
-    intakeRoller2.setInverted(true);
-
-    intakeRoller2.follow(intakeRoller1);
-
-    on = false;
-
+    intakeRoller.setInverted(false);
   }
 
   // Set the roller motors to on
   public void rollersOn() {
-    intakeRoller1.set(ControlMode.PercentOutput, 1.0);
-    intakeRoller2.set(ControlMode.PercentOutput, 1.0);
-    on = true;
+    intakeRoller.set(ControlMode.PercentOutput, .9);
   }
-  public boolean isOn() {
-    return on;
-  }
+
   // Set the roller motor to off
   public void rollersOff() {
-    intakeRoller1.set(ControlMode.PercentOutput, 0.0);
-    intakeRoller2.set(ControlMode.PercentOutput, 0.0);
-    on = false;
-  }
-  // Toggles the rollers off or on when called
-  public void toggleRollers() {
-    if(on) {
-      rollersOff();
-    } else {
-      rollersOn();
-    }
+    intakeRoller.set(ControlMode.PercentOutput, 0.0);
   }
 
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public double getSpeed() {
+    return intakeRoller.getMotorOutputPercent();
   }
 }

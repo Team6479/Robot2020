@@ -9,23 +9,17 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlignmentBeltConstants;
 
 public class AlignmentBelt extends SubsystemBase {
+  private final VictorSPX alignmentBeltMotor = new VictorSPX(AlignmentBeltConstants.MOTOR);
 
-  private TalonSRX alignmentBeltMotor;
-
-  /**
-   * Creates a new AllignmentBelt.
-   */
   public AlignmentBelt() {
-    alignmentBeltMotor = new TalonSRX(AlignmentBeltConstants.MOTOR);
-
+    // Reset to factory defaults to ensure no config carryover
     alignmentBeltMotor.configFactoryDefault();
 
-    //set neutral mode
     alignmentBeltMotor.setNeutralMode(NeutralMode.Brake);
   }
 
@@ -35,19 +29,5 @@ public class AlignmentBelt extends SubsystemBase {
 
   public void stop(){
     alignmentBeltMotor.set(ControlMode.PercentOutput, 0.0);
-  }
-
-  public void toggle(){
-    if(alignmentBeltMotor.getMotorOutputPercent() > 0){
-      stop();
-    }
-    else{
-      run();
-    }
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

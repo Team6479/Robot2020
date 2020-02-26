@@ -9,45 +9,26 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
+  private final VictorSPX indexerMotor;
 
-  private TalonSRX indexerMotor;
-
-  /**
-   * Creates a new Indexer.
-   */
   public Indexer() {
-    indexerMotor = new TalonSRX(IndexerConstants.MOTOR);
+    indexerMotor = new VictorSPX(IndexerConstants.MOTOR);
 
     indexerMotor.configFactoryDefault();
 
-    //set neutral mode
     indexerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void run(){
-    indexerMotor.set(ControlMode.PercentOutput, 1.0);
-  }
-
-  public void toggle(){
-    if(indexerMotor.getMotorOutputPercent() > 0){
-      stop();
-    }
-    else{
-      run();
-    }
+    indexerMotor.set(ControlMode.PercentOutput, 0.5);
   }
 
   public void stop(){
     indexerMotor.set(ControlMode.PercentOutput, 0.0);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

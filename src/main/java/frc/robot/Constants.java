@@ -19,10 +19,11 @@ import frc.robot.commands.TurnDrivetrain.Direction;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-    public static final int INTAKE_ROLLER_1 = 0; // Change later
-    public static final int INTAKE_ROLLER_2 = 0; // Change later
-    public static final int INTAKE_ARM = 0; // Change later
+  public static final class IntakeConstants {
+    public static final int INTAKE_ROLLER = 9;
+    public static final int INTAKE_ARM = 8;
+    public static final int INTAKE_ARM_PDP = 5;
+  }
 
   public static final class DrivetrainConstants {
     public static final int MOTOR_LEFT_FRONT = 0;
@@ -31,23 +32,20 @@ public final class Constants {
     public static final int MOTOR_RIGHT_BACK = 3;
   }
 
-  public static final class IndexerConstants{
-    public static final int MOTOR = 4;
-  }
-
-  public static final class AlignmentBeltConstants {
-    public static final int MOTOR = 5;
+  public static final class FlywheelConstants {
+    public static final int FLYWHEEL_TOP = 5;
+    public static final int FLYWHEEL_BOTTOM = 6;
   }
 
   public static final class TurretConstants {
-    public static final int motor = 4;
+    public static final int MOTOR = 4;
   }
 
-  public static final class FlywheelConstants {
-    public static final int FLYWHEEL_RIGHT = 7;
-    public static final int FLYWHEEL_LEFT = 8;
-    public static final int P = 0;
-    public static final int I = 0;
-    public static final int D = 0;
+  public static final class IndexerConstants{
+    public static final int MOTOR = 7;
+  }
+
+  public static final class AlignmentBeltConstants{
+    public static final int MOTOR = 10;
   }
 }

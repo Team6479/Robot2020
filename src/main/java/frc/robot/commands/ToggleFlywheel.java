@@ -7,15 +7,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Flywheel;
 
-public class ManualSpeedFlywheel extends CommandBase {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class ToggleFlywheel extends InstantCommand {
+  private final double GENERIC_RPM = 47500;
+
   private final Flywheel flywheel;
 
-  public ManualSpeedFlywheel(Flywheel flywheel) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ToggleFlywheel(Flywheel flywheel) {
     this.flywheel = flywheel;
     addRequirements(this.flywheel);
   }
@@ -23,23 +26,12 @@ public class ManualSpeedFlywheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Flywheel RPM", 0);
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    flywheel.set(SmartDashboard.getNumber("Flywheel RPM", 0));
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+    // if the flywheel is on, turn if off; if it's off, turn it on
+    if (flywheel.getIsOn()) {
+      // TODO: investigate possible issue with toggling off while shooting
+      flywheel.off();
+    } else {
+      flywheel.set(GENERIC_RPM);
+    }
   }
 }

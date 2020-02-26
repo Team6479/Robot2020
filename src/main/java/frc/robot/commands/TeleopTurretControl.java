@@ -20,9 +20,6 @@ public class TeleopTurretControl extends CommandBase {
 
   private boolean visionDelayState = false;
 
-  /**
-   * Creates a new AimTurret.
-   */
   public TeleopTurretControl(Turret turret, DoubleSupplier manualAdjustValue, Trigger overrideTrigger) {
     this.turret = turret;
     addRequirements(this.turret);

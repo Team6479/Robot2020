@@ -14,9 +14,6 @@ import frc.robot.subsystems.Turret;
 public class AimTurret extends CommandBase {
   private final Turret turret;
 
-  /**
-   * Creates a new AimTurret.
-   */
   public AimTurret(Turret turret) {
     this.turret = turret;
     addRequirements(this.turret);

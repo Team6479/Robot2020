@@ -12,15 +12,24 @@ import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBJoystick;
 import com.team6479.lib.controllers.CBXboxController;
 import com.team6479.lib.util.Limelight;
+import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.TurnIntakeRollers;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.TeleopIntakeArm;
+import frc.robot.commands.TeleopTurretControl;
+import frc.robot.commands.ToggleFlywheel;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
@@ -35,13 +44,16 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final AHRS navX = new AHRS();
+  private final Drivetrain drivetrain = new Drivetrain();
+
+  private final Turret turret = new Turret(-270, 90);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
-  private final Turret turret = new Turret(-180, 180);
-  private final Drivetrain drivetrain = new Drivetrain();
+
   private final Indexer indexer = new Indexer();
   private final AlignmentBelt alignmentBelt = new AlignmentBelt();
+  private final Flywheel flywheel = new Flywheel();
 
   private final CBXboxController xbox = new CBXboxController(0);
   private final CBJoystick joystick = new CBJoystick(1);
@@ -52,6 +64,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    PowerDistributionPanel pdp = new PowerDistributionPanel();
+    Shuffleboard.getTab("Debug").addNumber("IntakeArmAmps", () -> pdp.getCurrent(IntakeConstants.INTAKE_ARM_PDP));
   }
 
   /**
@@ -61,19 +75,49 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // The button bindings for TurnIntakeRollers and MoveIntakeArm are just random button assignments and can be changed later
-    xbox.getButton(XboxController.Button.kY)
-      .whenPressed(new TurnIntakeRollers(intakeRollers, intakeArm));
-    xbox.getButton(XboxController.Button.kX)
-      .whenPressed(new InstantCommand(intakeArm::toggleArm, intakeArm));
+    xbox.getButton(XboxController.Button.kBumperLeft)
+      .whenPressed(new SequentialCommandGroup( // if shooting, stops shooting
+        // TODO: test for problems with stopping shooter
+        new ToggleFlywheel(flywheel),
+        new InstantCommand(alignmentBelt::stop, alignmentBelt),
+        new InstantCommand(indexer::stop, indexer)
+      ));
+
+    xbox.getButton(XboxController.Button.kBumperRight)
+      .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
+        // new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
+        new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
+        new InstantCommand(indexer::run, indexer),
+        new InstantCommand(alignmentBelt::run, alignmentBelt))
+      ))
+      .whenReleased(new SequentialCommandGroup(
+        new InstantCommand(alignmentBelt::stop, alignmentBelt),
+        new InstantCommand(indexer::stop, indexer),
+        new InstantCommand(flywheel::off, flywheel)
+      ));
+
+    xbox.getButton(Button.kA)
+      .whenPressed(new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          if(intakeRollers.getSpeed() > 0) {
+            intakeRollers.rollersOff();
+          } else {
+            intakeRollers.rollersOn();
+          }
+        }, intakeRollers)
+      ));
+
+    intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm, xbox.getPOVButton(0, true), xbox.getPOVButton(180, true)));
 
     // Toggle Limelight
     joystick.getButton(8).whenPressed(new InstantCommand(() -> {
       LEDState ledState = com.team6479.lib.util.Limelight.getLEDState();
       if (ledState != LEDState.Auto) {
         Limelight.setLEDState(LEDState.Auto);
+        Limelight.setCamMode(CamMode.VisionProcessor);
       } else if (ledState != LEDState.Off) {
         Limelight.setLEDState(LEDState.Off);
+        Limelight.setCamMode(CamMode.DriverCamera);
       }
     }));
 
@@ -92,6 +136,19 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     // TODO: Add autonomous command
     return null;
+  }
+
+  public void robotInit() {
+    intakeArm.setIsOut(false);
+    intakeRollers.rollersOff();
+
+    indexer.stop();
+    alignmentBelt.stop();
+    flywheel.off();
+  }
+
+  public void teleopInit() {
+    turret.setDefaultCommand(new TeleopTurretControl(turret, joystick::getZ, joystick.getButton(1)));
   }
 
   public void disabledInit() {

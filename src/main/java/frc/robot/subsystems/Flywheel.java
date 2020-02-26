@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlywheelConstants;
@@ -17,42 +18,58 @@ public class Flywheel extends SubsystemBase {
   private final int CPR = 4096;
   private final double VELOCITY_INTERVAL_PER_MIN = 0.1 * 60;
 
-  private TalonSRX rightMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_RIGHT);
-  private TalonSRX leftMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_LEFT);
+  private final TalonSRX topMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_TOP);
+  private final TalonSRX bottomMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_BOTTOM);
 
-  /**
-   * Creates a new Flywheel.
-   */
+  private boolean isOn;
+
   public Flywheel() {
     // Reset to defaults
-    rightMotor.configFactoryDefault();
-    leftMotor.configFactoryDefault();
+    topMotor.configFactoryDefault();
+    bottomMotor.configFactoryDefault();
 
     // Configure encoders
-    rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    topMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
     // Set motor directions
-    rightMotor.setInverted(false);
-    leftMotor.setInverted(true);
+    topMotor.setInverted(true);
+    bottomMotor.setInverted(true);
+
+    topMotor.setSensorPhase(true);
+    bottomMotor.setSensorPhase(true);
+
+    topMotor.setNeutralMode(NeutralMode.Brake);
+    bottomMotor.setNeutralMode(NeutralMode.Brake);
 
     // Set slave
-    leftMotor.follow(rightMotor);
+    bottomMotor.follow(topMotor);
 
     //PID
-    rightMotor.config_kP(0, FlywheelConstants.P);
-    rightMotor.config_kI(0, FlywheelConstants.I);
-    rightMotor.config_kP(0, FlywheelConstants.D);
+    topMotor.config_kP(0, 1);
+    // topMotor.config_kI(0, 0);
+    // topMotor.config_kD(0, 0);
+    topMotor.config_kF(0, .0975);
+
+    isOn = false;
+  }
+
+  public double getError() {
+    return topMotor.getClosedLoopError() / CPR;
   }
 
   /**
    * Sets the desired speed of the flywheel
    */
   public void set(double speed) {
-    rightMotor.set(ControlMode.Velocity, speed * CPR / VELOCITY_INTERVAL_PER_MIN);
+    isOn = (speed != 0);
+    topMotor.set(ControlMode.Velocity, speed);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void off() {
+    set(0);
+  }
+
+  public boolean getIsOn() {
+    return isOn;
   }
 }
