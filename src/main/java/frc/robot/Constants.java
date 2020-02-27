@@ -29,7 +29,10 @@ public final class Constants {
   }
 
   public static final class ClimberConstants{
-    public static final int motor = 0;
+    public static final int MOTOR = 0;
+
+    public static final int LOCK_PISTON_0 = 0; //change to corresponding port
+    public static final int LOCK_PISTON_1 = 1; //change to corresponding port
 
   }
 }

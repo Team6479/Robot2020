@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.util.Sigmoid;
@@ -21,11 +23,12 @@ public class Climber extends SubsystemBase {
     UP, DOWN
   }
 
-  private final TalonSRX motor = new TalonSRX(ClimberConstants.motor);
+  private final TalonSRX motor = new TalonSRX(ClimberConstants.MOTOR);
   private final int MAX_HEIGHT = 0; //assumed to be in encoder units
   private final double MAX_SPEED_UP;
   private final double MAX_SPEED_DOWN;
   private final Sigmoid sigmoid = new Sigmoid(0, 0, 0, true, 0, 0); //TODO: need to tune sigmoid
+  private final DoubleSolenoid piston = new DoubleSolenoid(ClimberConstants.LOCK_PISTON_0, ClimberConstants.LOCK_PISTON_1);
 
   /**
    * Creates a new Climber.
@@ -37,7 +40,7 @@ public class Climber extends SubsystemBase {
     // reset to factory default
     motor.configFactoryDefault();
 
-    //set Neutral Mode
+    //Set Neutral Mode
     motor.setNeutralMode(NeutralMode.Brake);
 
     //Configure the encoder(absolute)
@@ -46,6 +49,9 @@ public class Climber extends SubsystemBase {
     // Set Inversion and Sensor phase
     motor.setInverted(false);
     motor.setSensorPhase(false);
+
+    //Set piston to the unlocked position
+    piston.set(DoubleSolenoid.Value.kReverse);
 
   }
 
@@ -65,8 +71,27 @@ public class Climber extends SubsystemBase {
     }
   }
 
+  public void lock(){
+    piston.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void unlock(){
+    piston.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public void toggle(){
+    if(piston.get() == DoubleSolenoid.Value.kForward){
+      piston.set(DoubleSolenoid.Value.kReverse);
+    }
+    else{
+      piston.set(DoubleSolenoid.Value.kForward);
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+
 }
