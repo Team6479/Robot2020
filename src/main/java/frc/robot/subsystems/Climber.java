@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.util.Sigmoid;
@@ -28,7 +27,10 @@ public class Climber extends SubsystemBase {
   private final double MAX_SPEED_UP;
   private final double MAX_SPEED_DOWN;
   private final Sigmoid sigmoid = new Sigmoid(0, 0, 0, true, 0, 0); //TODO: need to tune sigmoid
+
+  //bye sigmoid
   private final DoubleSolenoid piston = new DoubleSolenoid(ClimberConstants.LOCK_PISTON_0, ClimberConstants.LOCK_PISTON_1);
+
 
   /**
    * Creates a new Climber.
@@ -79,7 +81,11 @@ public class Climber extends SubsystemBase {
     piston.set(DoubleSolenoid.Value.kReverse);
   }
 
-  public void toggle(){
+  public boolean isLocked(){
+    return piston.get() == DoubleSolenoid.Value.kForward;
+  }
+
+  public void toggleLock(){
     if(piston.get() == DoubleSolenoid.Value.kForward){
       piston.set(DoubleSolenoid.Value.kReverse);
     }
@@ -87,6 +93,7 @@ public class Climber extends SubsystemBase {
       piston.set(DoubleSolenoid.Value.kForward);
     }
   }
+
 
   @Override
   public void periodic() {

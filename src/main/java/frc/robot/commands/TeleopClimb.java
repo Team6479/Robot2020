@@ -44,8 +44,12 @@ public class TeleopClimb extends CommandBase {
     if(canClimb.get() && !climbState){
       climbState = true;
     }
+    else if(canClimb.get() && climbState){
+      climber.toggleLock();
+      return;
+    }
 
-    if(climbState){
+    if(climbState && !climber.isLocked()){
       if(upTrigger.get()){
         climber.setDirection(Direction.UP);
       }
@@ -53,11 +57,15 @@ public class TeleopClimb extends CommandBase {
         climber.setDirection(Direction.DOWN);
       }
     }
+    else if(climber.isLocked()){
+      //
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
   }
 
   // Returns true when the command should end.
