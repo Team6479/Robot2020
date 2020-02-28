@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlywheelConstants;
 
@@ -35,8 +36,7 @@ public class Flywheel extends SubsystemBase {
     topMotor.setInverted(true);
     bottomMotor.setInverted(true);
 
-    topMotor.setSensorPhase(true);
-    bottomMotor.setSensorPhase(true);
+    topMotor.setSensorPhase(false);
 
     topMotor.setNeutralMode(NeutralMode.Brake);
     bottomMotor.setNeutralMode(NeutralMode.Brake);
@@ -45,10 +45,18 @@ public class Flywheel extends SubsystemBase {
     bottomMotor.follow(topMotor);
 
     //PID
-    topMotor.config_kP(0, 1);
-    // topMotor.config_kI(0, 0);
-    // topMotor.config_kD(0, 0);
-    topMotor.config_kF(0, .0975);
+    topMotor.config_kP(0, .4);
+    topMotor.config_kI(0, .00000275);
+    topMotor.config_kD(0, 4);
+    topMotor.config_kF(0, .0097);
+
+    // topMotor.config_kP(0, .4);
+    // // topMotor.config_kI(0, .00000275);
+    // // topMotor.config_kD(0, 4);
+    // topMotor.config_kF(0, .01075);
+
+    Shuffleboard.getTab("Debug").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
+    Shuffleboard.getTab("Debug").addNumber("Flywheel Error", topMotor::getClosedLoopError);
 
     isOn = false;
   }
@@ -66,7 +74,8 @@ public class Flywheel extends SubsystemBase {
   }
 
   public void off() {
-    set(0);
+    topMotor.set(ControlMode.PercentOutput, 0);
+    isOn = false;
   }
 
   public boolean getIsOn() {
