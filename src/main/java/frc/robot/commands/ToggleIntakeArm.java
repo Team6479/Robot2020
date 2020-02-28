@@ -32,9 +32,9 @@ public class ToggleIntakeArm extends CommandBase {
   @Override
   public void initialize() {
     if (intakeArm.isOut()) {
-      speed = -0.25;
+      speed = -1;
     } else {
-      speed = 0.25;
+      speed = 1;
     }
   }
 

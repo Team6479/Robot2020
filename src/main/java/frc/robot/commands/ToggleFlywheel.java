@@ -14,7 +14,7 @@ import frc.robot.subsystems.Flywheel;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class ToggleFlywheel extends InstantCommand {
-  private final double GENERIC_RPM = 47500;
+  private final double GENERIC_RPM = 41750;
 
   private final Flywheel flywheel;
 
@@ -26,6 +26,7 @@ public class ToggleFlywheel extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
     // if the flywheel is on, turn if off; if it's off, turn it on
     if (flywheel.getIsOn()) {
       // TODO: investigate possible issue with toggling off while shooting
