@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.SpinUpFlywheel;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
 import frc.robot.commands.ToggleFlywheel;
@@ -82,8 +83,7 @@ public class RobotContainer {
 
     xbox.getButton(XboxController.Button.kBumperRight)
       .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
-        // new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
-        // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
+        new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
         new InstantCommand(indexer::run, indexer),
         new InstantCommand(alignmentBelt::run, alignmentBelt))
       ))
