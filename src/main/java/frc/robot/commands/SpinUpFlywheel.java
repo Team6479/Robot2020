@@ -20,7 +20,7 @@ public class SpinUpFlywheel extends CommandBase {
 
   public SpinUpFlywheel(Flywheel flywheel) {
     this.flywheel = flywheel;
-    distanceCalculator = new DistanceCalculator(0, 0, 0);
+    distanceCalculator = new DistanceCalculator(0, 0, 0); // TODO: use actual values here
     addRequirements(this.flywheel);
   }
 
