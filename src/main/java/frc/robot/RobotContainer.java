@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
@@ -43,7 +43,7 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(-30, 150);
+  private final Turret turret = new Turret(91, 181);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -63,6 +63,8 @@ public class RobotContainer {
     configureButtonBindings();
     PowerDistributionPanel pdp = new PowerDistributionPanel();
     Shuffleboard.getTab("Debug").addNumber("IntakeArmAmps", () -> pdp.getCurrent(IntakeConstants.INTAKE_ARM_PDP));
+
+    Shuffleboard.getTab("Main").addBoolean("Target Alligned", () -> Limelight.getXOffset() <= 0.5 && Limelight.hasTarget());
   }
 
   /**
@@ -89,11 +91,11 @@ public class RobotContainer {
       ))
       .whenReleased(new SequentialCommandGroup(
         new InstantCommand(alignmentBelt::stop, alignmentBelt),
-        new InstantCommand(indexer::stop, indexer),
-        new InstantCommand(flywheel::off, flywheel)
+        new InstantCommand(indexer::stop, indexer)
+        // new InstantCommand(flywheel::off, flywheel)
       ));
 
-    xbox.getButton(Button.kA)
+    xbox.getButton(XboxController.Button.kA)
       .whenPressed(new SequentialCommandGroup(
         new InstantCommand(() -> {
           if(intakeRollers.getSpeed() > 0) {
@@ -104,7 +106,10 @@ public class RobotContainer {
         }, intakeRollers)
       ));
 
-    intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm, xbox.getPOVButton(0, true), xbox.getPOVButton(180, true)));
+    intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm,
+      new Button(() -> xbox.getTriggerAxis(Hand.kRight) > 0),
+      new Button(() -> xbox.getTriggerAxis(Hand.kLeft) > 0)
+    ));
 
     // Toggle Limelight
     joystick.getButton(8).whenPressed(new InstantCommand(() -> {
