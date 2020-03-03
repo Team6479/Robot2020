@@ -12,17 +12,16 @@ import com.team6479.lib.controllers.CBXboxController;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.TeleopClimb;
 import frc.robot.commands.TurnIntakeRollers;
-import frc.robot.subsystems.IntakeArm;
-import frc.robot.subsystems.IntakeRollers;
-import com.team6479.lib.controllers.CBXboxController;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeRollers;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -35,7 +34,7 @@ public class RobotContainer {
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
-  private final Climber climber = new Climber(0.75, -1);
+  private final Climber climber = new Climber();
 
   private Drivetrain drivetrain = new Drivetrain();
 

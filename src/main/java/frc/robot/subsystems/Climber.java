@@ -11,22 +11,23 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.util.Sigmoid;
 
 public class Climber extends SubsystemBase {
 
-  public enum Direction {
-    UP, DOWN
+  public enum State {
+    UP(0.75), DOWN(-1), LOCK(0.1), STOP(0);
+
+    public double speed;
+    private State(double speed) {
+      this.speed = speed;
+    }
   }
 
   private final TalonSRX motor = new TalonSRX(ClimberConstants.MOTOR);
-  private final int MAX_HEIGHT = 0; //assumed to be in encoder units
-  private final double MAX_SPEED_UP;
-  private final double MAX_SPEED_DOWN;
-  private final Sigmoid sigmoid = new Sigmoid(0, 0, 0, true, 0, 0); //TODO: need to tune sigmoid
 
   //bye sigmoid
   private final DoubleSolenoid piston = new DoubleSolenoid(ClimberConstants.LOCK_PISTON_0, ClimberConstants.LOCK_PISTON_1);
@@ -36,9 +37,7 @@ public class Climber extends SubsystemBase {
    * Creates a new Climber.
    */
 
-  public Climber(double maxSpeedUp, double maxSpeedDown) {
-    MAX_SPEED_UP = maxSpeedUp;
-    MAX_SPEED_DOWN = maxSpeedDown;
+  public Climber() {
     // reset to factory default
     motor.configFactoryDefault();
 
@@ -54,24 +53,19 @@ public class Climber extends SubsystemBase {
 
     //Set piston to the unlocked position
     piston.set(DoubleSolenoid.Value.kReverse);
-
   }
 
   /**
    * @param direction (@link Direction) direction to go in
    */
-  public void setDirection(Direction direction){
-    switch(direction) {
-      case UP:
-        motor.set(ControlMode.PercentOutput,
-          MAX_SPEED_UP * sigmoid.calculate(MAX_HEIGHT - motor.getSelectedSensorPosition()));
-        break;
-      case DOWN:
-        motor.set(ControlMode.PercentOutput,
-          MAX_SPEED_DOWN * sigmoid.calculate(Math.abs(0 - motor.getSelectedSensorPosition())));
-        break;
-    }
+  public void setState(State state){
+    motor.set(ControlMode.PercentOutput, state.speed);
   }
+
+  public void stop() {
+    setState(State.STOP);
+  }
+
 
   public void lock(){
     piston.set(DoubleSolenoid.Value.kForward);
@@ -94,6 +88,9 @@ public class Climber extends SubsystemBase {
     }
   }
 
+  public double getCurrentDraw() {
+    return motor.getStatorCurrent();
+  }
 
   @Override
   public void periodic() {
