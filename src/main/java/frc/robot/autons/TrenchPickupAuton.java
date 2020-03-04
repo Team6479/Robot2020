@@ -25,33 +25,30 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+/**
+ * This routine will pick up the first two balls from trench and shoot 5 into the outer port
+ */
 public class TrenchPickupAuton extends SequentialCommandGroup {
   /**
    * Creates a new TrenchPickupAuton.
    */
-  public TrenchPickupAuton(Drivetrain drivetrain,
-                           IntakeRollers intakeRollers,
-                           Turret turret,
-                           Flywheel flywheel,
-                           Indexer indexer,
-                           AlignmentBelt alignmentBelt) {
+  public TrenchPickupAuton(Drivetrain drivetrain, NavX navX, IntakeRollers intakeRollers, Turret turret,
+    Flywheel flywheel, Indexer indexer, AlignmentBelt alignmentBelt) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
       new ParallelCommandGroup(
         new SequentialCommandGroup(
-          new StraightDrive(drivetrain, 0.5, 114),
+          new StraightDrive(drivetrain, navX, 0.5, 114),
           new WaitCommand(0.5) // Wait a little to ensure the last ball gets taken
         ),
         new InstantCommand(intakeRollers::rollersOn, intakeRollers)
       ),
       new ParallelCommandGroup(
-        new TurnDrivetrain(drivetrain, 180, Direction.Right),
+        new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
         new InstantCommand(() -> {
           Limelight.setLEDState(LEDState.Auto);
           Limelight.setCamMode(CamMode.VisionProcessor);

@@ -8,8 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.NavX;
 
 public class TurnDrivetrain extends CommandBase {
   public enum Direction {
@@ -17,6 +17,8 @@ public class TurnDrivetrain extends CommandBase {
   }
 
   private final Drivetrain drivetrain;
+  private final NavX navX;
+
   private final double GOAL;
   private final Direction DIRECTION;
 
@@ -26,23 +28,24 @@ public class TurnDrivetrain extends CommandBase {
   /**
    * Creates a new TurnDrivetrain.
    */
-  public TurnDrivetrain(Drivetrain drivetrain, double angle, Direction direction) {
+  public TurnDrivetrain(Drivetrain drivetrain, NavX navX, double angle, Direction direction) {
     this.drivetrain = drivetrain;
+    this.navX = navX;
     this.GOAL = angle;
     this.DIRECTION = direction;
-    addRequirements(drivetrain);
+    addRequirements(drivetrain, navX);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.navX.reset();
+    navX.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angle = Math.abs(RobotContainer.navX.getAngle());
+    angle = Math.abs(navX.getAngle());
     double angleDiff = Math.abs(angle - prevAngle);
 
     /**

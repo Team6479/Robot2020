@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBJoystick;
 import com.team6479.lib.controllers.CBXboxController;
@@ -33,6 +32,7 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -43,7 +43,7 @@ import frc.robot.subsystems.Turret;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static final AHRS navX = new AHRS();
+  public final NavX navX = new NavX();
 
   private final Drivetrain drivetrain = new Drivetrain();
 
@@ -65,7 +65,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    autonChooser.setDefaultOption("Trench Pickup", new TrenchPickupAuton(drivetrain, intakeRollers, turret, flywheel, indexer, alignmentBelt));
+    autonChooser.setDefaultOption("Trench Pickup", new TrenchPickupAuton(drivetrain, navX, intakeRollers, turret, flywheel, indexer, alignmentBelt));
 
     // Configure the button bindings
     configureButtonBindings();

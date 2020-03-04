@@ -8,35 +8,37 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.NavX;
 
 public class StraightDrive extends CommandBase {
   private final Drivetrain drivetrain;
+  private final NavX navX;
   private final double SPEED;
   private final double DISTANCE;
 
   /**
    * Creates a new StraightDrive.
    */
-  public StraightDrive(Drivetrain drivetrain, double speed, double distance) {
+  public StraightDrive(Drivetrain drivetrain, NavX navX, double speed, double distance) {
     this.drivetrain = drivetrain;
+    this.navX = navX;
     this.SPEED = speed;
     this.DISTANCE = ((double) distance / (Math.PI * 5.0)) * 4096.0;
-    addRequirements(drivetrain);
+    addRequirements(drivetrain, navX);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.navX.reset();
+    navX.reset();
     drivetrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.arcadeDrive(SPEED, -RobotContainer.navX.getYaw() * 0.05);
+    drivetrain.arcadeDrive(SPEED, -navX.getYaw() * 0.05);
   }
 
   // Called once the command ends or is interrupted.
