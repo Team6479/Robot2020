@@ -28,7 +28,7 @@ public class IntakeArm extends SubsystemBase {
     intakeArm.configFactoryDefault();
 
     intakeArm.setInverted(false);
-
+    
     isOut = false;
   }
 
