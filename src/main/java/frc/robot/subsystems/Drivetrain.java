@@ -48,6 +48,9 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorLeftBack.setInverted(false);
     motorRightFront.setInverted(true);
     motorRightBack.setInverted(true);
+
+    motorLeftFront.setSensorPhase(true);
+    motorRightFront.setSensorPhase(true);
   }
 
   @Override
@@ -78,5 +81,10 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     double rightSide = motorRightFront.getSelectedSensorPosition();
 
     return (leftSide + rightSide) / 2;
+  }
+
+  public void resetEncoders() {
+    motorLeftFront.setSelectedSensorPosition(0);
+    motorRightFront.setSelectedSensorPosition(0);
   }
 }

@@ -62,7 +62,7 @@ public class Flywheel extends SubsystemBase {
   }
 
   public double getError() {
-    return topMotor.getClosedLoopError() / CPR;
+    return topMotor.getClosedLoopError();
   }
 
   /**
@@ -80,5 +80,9 @@ public class Flywheel extends SubsystemBase {
 
   public boolean getIsOn() {
     return isOn;
+  }
+
+  public boolean isAtSpeed() {
+    return topMotor.getClosedLoopError() <= 200;
   }
 }

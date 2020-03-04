@@ -16,14 +16,13 @@ import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
 import frc.robot.commands.ToggleFlywheel;
@@ -44,6 +43,7 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final AHRS navX = new AHRS();
+
   private final Drivetrain drivetrain = new Drivetrain();
 
   private final Turret turret = new Turret(-30, 150);
@@ -58,14 +58,16 @@ public class RobotContainer {
   private final CBXboxController xbox = new CBXboxController(0);
   private final CBJoystick joystick = new CBJoystick(1);
 
+  private final SendableChooser<Command> autonChooser = new SendableChooser<>();
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    autonChooser.setDefaultOption("Trench Pickup", new TrenchPickupAuton(drivetrain, intakeRollers, turret, flywheel, indexer, alignmentBelt));
+
     // Configure the button bindings
     configureButtonBindings();
-    PowerDistributionPanel pdp = new PowerDistributionPanel();
-    Shuffleboard.getTab("Debug").addNumber("IntakeArmAmps", () -> pdp.getCurrent(IntakeConstants.INTAKE_ARM_PDP));
   }
 
   /**
@@ -134,8 +136,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // TODO: Add autonomous command
-    return null;
+    return autonChooser.getSelected();
   }
 
   public void robotInit() {

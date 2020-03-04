@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
@@ -19,8 +18,10 @@ public class TurnDrivetrain extends CommandBase {
 
   private final Drivetrain drivetrain;
   private final double GOAL;
-  private Direction DIRECTION;
-  private PIDController pid = new PIDController(0, 0, 0);
+  private final Direction DIRECTION;
+
+  private double prevAngle = 0;
+  private double angle = 0;
 
   /**
    * Creates a new TurnDrivetrain.
@@ -29,18 +30,29 @@ public class TurnDrivetrain extends CommandBase {
     this.drivetrain = drivetrain;
     this.GOAL = angle;
     this.DIRECTION = direction;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    RobotContainer.navX.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = pid.calculate(RobotContainer.navX.getYaw(), GOAL);
+    angle = Math.abs(RobotContainer.navX.getAngle());
+    double angleDiff = Math.abs(angle - prevAngle);
+
+    /**
+     * Equation that decreases speed as the the robot approached the angle goal with precision
+     *
+     * 0.1 = min speed
+     * 0.25 = speed. (Increase for speed increase/ decrease for speed decrease)
+	   * The parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
+     */
+		double speed = 0.1 + (0.5 * ((GOAL - angle) / GOAL));
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);
@@ -49,17 +61,19 @@ public class TurnDrivetrain extends CommandBase {
       drivetrain.tankDrive(speed, -speed);
     }
 
-    drivetrain.tankDrive(0, 0);
+    prevAngle = angle;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    drivetrain.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // return Math.abs(angle - GOAL) <= 2;
+    return angle >= GOAL;
   }
 }
