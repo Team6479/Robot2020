@@ -67,12 +67,13 @@ public class Flywheel extends SubsystemBase {
     Shuffleboard.getTab("Debug").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Percent", topMotor::getMotorOutputPercent);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Error", topMotor::getClosedLoopError);
+    Shuffleboard.getTab("Main").addBoolean("Turret State", () -> isOn);
 
     isOn = false;
   }
 
   public double getError() {
-    return topMotor.getClosedLoopError() / CPR;
+    return topMotor.getClosedLoopError();
   }
 
   /**
@@ -90,5 +91,9 @@ public class Flywheel extends SubsystemBase {
 
   public boolean getIsOn() {
     return isOn;
+  }
+
+  public boolean isAtSpeed() {
+    return topMotor.getClosedLoopError() <= 200;
   }
 }

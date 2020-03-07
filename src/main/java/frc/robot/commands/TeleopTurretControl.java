@@ -55,7 +55,8 @@ public class TeleopTurretControl extends CommandBase {
         visionDelayState = true;
       }
     } else if (isCorrected || isOverridden) {
-      turret.setPercentOutput(manualAdjustValue.getAsDouble());
+      double joystickValue = manualAdjustValue.getAsDouble();
+      turret.setPercentOutput(Math.abs(joystickValue) > 0.1 ? joystickValue : 0);
     }
   }
 

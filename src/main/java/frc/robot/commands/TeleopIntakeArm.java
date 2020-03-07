@@ -36,9 +36,9 @@ public class TeleopIntakeArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (outButton.get()) {
+    if (outButton.get() && !intakeArm.isAtFrontLimit()) {
       intakeArm.set(-0.25);
-    } else if (inButton.get()) {
+    } else if (inButton.get() && !intakeArm.isAtBackLimit()) {
       intakeArm.set(0.25);
     } else {
       intakeArm.set(0);
@@ -48,6 +48,7 @@ public class TeleopIntakeArm extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intakeArm.armStop();
   }
 
   // Returns true when the command should end.
