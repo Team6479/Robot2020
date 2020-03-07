@@ -48,6 +48,6 @@ public class AimTurret extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(Limelight.getXOffset()) <= 0.5;
+    return Math.abs(Limelight.getXOffset()) <= 0.5 && Limelight.hasTarget();
   }
 }

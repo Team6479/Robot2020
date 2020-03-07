@@ -13,6 +13,7 @@ import com.team6479.lib.controllers.CBXboxController;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,7 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.autons.AimShootAuton;
 import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
@@ -47,7 +50,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(91, 181);
+  private final Turret turret = new Turret(135, 225);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -65,12 +68,18 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    autonChooser.setDefaultOption("Trench Pickup", new TrenchPickupAuton(drivetrain, navX, intakeRollers, turret, flywheel, indexer, alignmentBelt));
+    autonChooser.setDefaultOption("Trench Pickup", new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheel, indexer, alignmentBelt));
+    autonChooser.setDefaultOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
+    Shuffleboard.getTab("Main").add("Auton", autonChooser);
 
     // Configure the button bindings
     configureButtonBindings();
 
     Shuffleboard.getTab("Main").addBoolean("Target Alligned", () -> Limelight.getXOffset() <= 0.5 && Limelight.hasTarget());
+
+    // DistanceCalculator limelightDist = new DistanceCalculator(20.25, 122.25, Math.toRadians(Limelight.getSkew()));
+
+    // Shuffleboard.getTab("Debug").addNumber("Distance From Target", () -> limelightDist.calculate(Math.toRadians(Limelight.getYOffset())));
   }
 
   /**
@@ -80,18 +89,11 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    xbox.getButton(XboxController.Button.kBumperLeft)
-      .whenPressed(new SequentialCommandGroup( // if shooting, stops shooting
-        // TODO: test for problems with stopping shooter
-        new ToggleFlywheel(flywheel),
-        new InstantCommand(alignmentBelt::stop, alignmentBelt),
-        new InstantCommand(indexer::stop, indexer)
-      ));
-
     xbox.getButton(XboxController.Button.kBumperRight)
       .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
         // new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
         // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
+        new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()),
         new InstantCommand(indexer::run, indexer),
         new InstantCommand(alignmentBelt::run, alignmentBelt))
       ))
@@ -116,6 +118,8 @@ public class RobotContainer {
       new Button(() -> xbox.getTriggerAxis(Hand.kRight) > 0),
       new Button(() -> xbox.getTriggerAxis(Hand.kLeft) > 0)
     ));
+
+    joystick.getButton(7).whenPressed(new ToggleFlywheel(flywheel));
 
     // Toggle Limelight
     joystick.getButton(8).whenPressed(new InstantCommand(() -> {
@@ -145,14 +149,15 @@ public class RobotContainer {
     return autonChooser.getSelected();
   }
 
-  public void robotInit() {
-    intakeArm.setIsOut(false);
+  public void setDefaultStates() {
+    intakeArm.armStop();
     intakeRollers.rollersOff();
 
     indexer.stop();
     alignmentBelt.stop();
     flywheel.off();
   }
+
 
   public void teleopInit() {
     turret.setDefaultCommand(new TeleopTurretControl(turret, joystick::getZ, joystick.getButton(1)));

@@ -67,6 +67,7 @@ public class Flywheel extends SubsystemBase {
     Shuffleboard.getTab("Debug").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Percent", topMotor::getMotorOutputPercent);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Error", topMotor::getClosedLoopError);
+    Shuffleboard.getTab("Main").addBoolean("Turret State", () -> isOn);
 
     isOn = false;
   }

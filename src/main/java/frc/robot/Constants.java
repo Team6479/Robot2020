@@ -20,6 +20,8 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int INTAKE_ROLLER = 9;
     public static final int INTAKE_ARM = 8;
+    public static final int INTAKE_ARM_LIMIT_SWITCH_FRONT = 0;
+    public static final int INTAKE_ARM_LIMIT_SWITCH_BACK = 1;
     public static final int INTAKE_ARM_PDP = 5;
   }
 

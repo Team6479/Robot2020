@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NavX;
@@ -55,7 +56,7 @@ public class TurnDrivetrain extends CommandBase {
      * 0.25 = speed. (Increase for speed increase/ decrease for speed decrease)
 	   * The parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
      */
-		double speed = 0.1 + (0.5 * ((GOAL - angle) / GOAL));
+		double speed = 0.1 + (0.75 * ((GOAL - angle) / GOAL));
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);
@@ -71,6 +72,7 @@ public class TurnDrivetrain extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     drivetrain.stop();
+    DriverStation.reportError("Done", false);
   }
 
   // Returns true when the command should end.
