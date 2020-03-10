@@ -84,7 +84,7 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
   }
 
   public void resetEncoders() {
-    motorLeftFront.setSelectedSensorPosition(0, 0, 10);
-    motorRightFront.setSelectedSensorPosition(0, 0, 10);
+    motorLeftFront.setSelectedSensorPosition(0, 0, 20);
+    motorRightFront.setSelectedSensorPosition(0, 0, 20);
   }
 }

@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
@@ -25,8 +24,13 @@ public class Indexer extends SubsystemBase {
     indexerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
+
   public void run(){
-    indexerMotor.set(ControlMode.PercentOutput, 0.75);
+    indexerMotor.set(ControlMode.PercentOutput, 0.8);
+  }
+
+  public void reverse() {
+    indexerMotor.set(ControlMode.PercentOutput, -0.5);
   }
 
   public void stop(){

@@ -39,6 +39,8 @@ public class StraightDrive extends CommandBase {
   @Override
   public void execute() {
     drivetrain.arcadeDrive(SPEED, -navX.getYaw() * 0.05);
+    System.out.println("drive position: " + drivetrain.getPosition() );
+    System.out.println("distance: " + DISTANCE);
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +52,6 @@ public class StraightDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drivetrain.getPosition() >= DISTANCE;
+    return Math.abs(drivetrain.getPosition()) >= DISTANCE;
   }
 }

@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +17,7 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeArm extends SubsystemBase {
   public enum Position {
-    In(2800), Out(1750);
+    In(2300), Out(1200);
 
     public double value;
     private Position(double value) {

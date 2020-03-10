@@ -13,7 +13,6 @@ import com.team6479.lib.controllers.CBXboxController;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,9 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.autons.AimShootAuton;
+import frc.robot.autons.DeadreckonShotAuton;
 import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
@@ -50,7 +49,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(135, 225);
+  private final Turret turret = new Turret(6, 96);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -69,7 +68,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     autonChooser.setDefaultOption("Trench Pickup", new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheel, indexer, alignmentBelt));
-    autonChooser.setDefaultOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
+    autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
+    autonChooser.addOption("Dead Rekon", new DeadreckonShotAuton(drivetrain, navX, turret, flywheel, indexer, alignmentBelt, intakeArm, intakeRollers));
     Shuffleboard.getTab("Main").add("Auton", autonChooser);
 
     // Configure the button bindings
@@ -93,7 +93,7 @@ public class RobotContainer {
       .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
         // new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
         // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
-        new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()),
+        // new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()),
         new InstantCommand(indexer::run, indexer),
         new InstantCommand(alignmentBelt::run, alignmentBelt))
       ))
@@ -113,6 +113,16 @@ public class RobotContainer {
           }
         }, intakeRollers)
       ));
+
+    xbox.getButton(XboxController.Button.kB)
+        .whenPressed(new SequentialCommandGroup(
+          new InstantCommand(indexer::reverse, indexer),
+          new InstantCommand(alignmentBelt::reverse, alignmentBelt))
+        )
+        .whenReleased(new SequentialCommandGroup(
+          new InstantCommand(alignmentBelt::stop, alignmentBelt),
+          new InstantCommand(indexer::stop, indexer)
+        ));
 
     intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm,
       new Button(() -> xbox.getTriggerAxis(Hand.kRight) > 0),

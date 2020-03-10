@@ -10,7 +10,6 @@ package frc.robot.autons;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -56,7 +55,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
         new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
         new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
         new SequentialCommandGroup(
-          new InstantCommand(() -> turret.setPosition(180), turret),
+          new InstantCommand(() -> turret.setPosition(51), turret),
           new InstantCommand(() -> {
             Limelight.setLEDState(LEDState.Auto);
           })

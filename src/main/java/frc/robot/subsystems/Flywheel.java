@@ -64,7 +64,7 @@ public class Flywheel extends SubsystemBase {
     // topMotor.config_kF(0, 0.011228);
 
 
-    Shuffleboard.getTab("Debug").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
+    Shuffleboard.getTab("Main").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Percent", topMotor::getMotorOutputPercent);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Error", topMotor::getClosedLoopError);
     Shuffleboard.getTab("Main").addBoolean("Turret State", () -> isOn);
