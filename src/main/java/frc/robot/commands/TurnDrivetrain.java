@@ -23,7 +23,7 @@ public class TurnDrivetrain extends CommandBase {
   private final double GOAL;
   private final Direction DIRECTION;
 
-  private double prevAngle = 0;
+  // private double prevAngle = 0;
   private double angle = 0;
 
   /**
@@ -34,6 +34,7 @@ public class TurnDrivetrain extends CommandBase {
     this.navX = navX;
     this.GOAL = angle;
     this.DIRECTION = direction;
+
     addRequirements(drivetrain, navX);
   }
 
@@ -47,25 +48,23 @@ public class TurnDrivetrain extends CommandBase {
   @Override
   public void execute() {
     angle = Math.abs(navX.getAngle());
-    double angleDiff = Math.abs(angle - prevAngle);
+    // double angleDiff = Math.abs(angle - prevAngle); // TODO: proper PIDs
 
     /**
      * Equation that decreases speed as the the robot approached the angle goal with precision
      *
-     * 0.1 = min speed
-     * 0.25 = speed. (Increase for speed increase/ decrease for speed decrease)
-	   * The parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
+     * 0.1 = min speed 0.75 = speed. (Increase for speed increase/ decrease for speed decrease) The
+     * parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
      */
-		double speed = 0.1 + (0.75 * ((GOAL - angle) / GOAL));
+    double speed = 0.1 + (0.75 * ((GOAL - angle) / GOAL));
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);
-    }
-    else {
+    } else {
       drivetrain.tankDrive(speed, -speed);
     }
 
-    prevAngle = angle;
+    // prevAngle = angle;
   }
 
   // Called once the command ends or is interrupted.

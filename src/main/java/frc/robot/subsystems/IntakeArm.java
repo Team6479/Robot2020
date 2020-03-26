@@ -20,14 +20,18 @@ public class IntakeArm extends SubsystemBase {
     In(2300), Out(1200);
 
     public double value;
+
     private Position(double value) {
       this.value = value;
     }
   }
 
   private final TalonSRX intakeArm = new TalonSRX(IntakeConstants.INTAKE_ARM);
-  private final DigitalInput limitSwitchFront = new DigitalInput(IntakeConstants.INTAKE_ARM_LIMIT_SWITCH_FRONT);
-  private final DigitalInput limitSwitchBack = new DigitalInput(IntakeConstants.INTAKE_ARM_LIMIT_SWITCH_BACK);
+
+  private final DigitalInput limitSwitchFront =
+      new DigitalInput(IntakeConstants.INTAKE_ARM_LIMIT_SWITCH_FRONT);
+  private final DigitalInput limitSwitchBack =
+      new DigitalInput(IntakeConstants.INTAKE_ARM_LIMIT_SWITCH_BACK);
 
   /**
    * This will be used in the future to reference

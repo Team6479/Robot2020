@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* Copyright (c) 2019 FIRST. All Rights Reserved. */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
+/* the project. */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
@@ -18,7 +18,7 @@ public class SetIntakeArmPosition extends CommandBase {
   private final IntakeArm intakeArm;
   private final Position position;
 
-  private double prevPosition = 0;
+  // private double prevPosition = 0;
   private double currentPosition = 0;
 
   /**
@@ -51,7 +51,7 @@ public class SetIntakeArmPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    prevPosition = currentPosition;
+    // prevPosition = currentPosition;
     currentPosition = intakeArm.getPosition();
 
     if (currentPosition > position.value) {
@@ -72,7 +72,7 @@ public class SetIntakeArmPosition extends CommandBase {
   @Override
   public boolean isFinished() {
     System.out.println(intakeArm.getCurrent());
-    //  || Math.abs(intakeArm.getCurrent()) >= 3 || Math.abs(prevPosition - currentPosition) <= 5
+    // || Math.abs(intakeArm.getCurrent()) >= 3 || Math.abs(prevPosition - currentPosition) <= 5
     boolean finished = Math.abs(intakeArm.getCurrent()) >= 30;
 
     switch (position) {

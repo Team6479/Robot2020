@@ -23,15 +23,15 @@ public class AlignmentBelt extends SubsystemBase {
     alignmentBeltMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void run(){
+  public void run() {
     alignmentBeltMotor.set(ControlMode.PercentOutput, 1.0);
   }
 
-  public void reverse(){
+  public void reverse() {
     alignmentBeltMotor.set(ControlMode.PercentOutput, -1.0);
   }
 
-  public void stop(){
+  public void stop() {
     alignmentBeltMotor.set(ControlMode.PercentOutput, 0.0);
   }
 }
