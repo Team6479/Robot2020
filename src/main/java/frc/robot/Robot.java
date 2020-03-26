@@ -10,7 +10,6 @@ package frc.robot;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.Pipeline;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private Command autonomousCommand;
 
   private RobotContainer robotContainer;
 
@@ -68,11 +67,16 @@ public class Robot extends TimedRobot {
   }
 
   public void anyInit() {
-    Alliance alliance = DriverStation.getInstance().getAlliance();
-    if (alliance == Alliance.Red) {
-      Limelight.setPipeline(Pipeline.P1);
-    } else if (alliance == Alliance.Blue) {
-      Limelight.setPipeline(Pipeline.P2);
+    switch (DriverStation.getInstance().getAlliance()) {
+      case Red:
+          Limelight.setPipeline(Pipeline.P1);
+          break;
+      case Blue:
+          Limelight.setPipeline(Pipeline.P2);
+          break;
+      case Invalid:
+          Limelight.setPipeline(Pipeline.P1);
+          break;
     }
   }
 
@@ -82,11 +86,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     anyInit();
-    m_autonomousCommand = robotContainer.getAutonomousCommand();
+    autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
   }
 
@@ -103,8 +107,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
 
     anyInit();

@@ -23,7 +23,7 @@ public class TurnDrivetrain extends CommandBase {
   private final double GOAL;
   private final Direction DIRECTION;
 
-  private double prevAngle = 0;
+  // private double prevAngle = 0;
   private double angle = 0;
 
   /**
@@ -47,7 +47,7 @@ public class TurnDrivetrain extends CommandBase {
   @Override
   public void execute() {
     angle = Math.abs(navX.getAngle());
-    double angleDiff = Math.abs(angle - prevAngle);
+    // double angleDiff = Math.abs(angle - prevAngle); // TODO: proper PIDs
 
     /**
      * Equation that decreases speed as the the robot approached the angle goal with precision
@@ -63,7 +63,7 @@ public class TurnDrivetrain extends CommandBase {
       drivetrain.tankDrive(speed, -speed);
     }
 
-    prevAngle = angle;
+    // prevAngle = angle;
   }
 
   // Called once the command ends or is interrupted.

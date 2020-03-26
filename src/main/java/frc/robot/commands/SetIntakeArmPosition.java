@@ -18,7 +18,7 @@ public class SetIntakeArmPosition extends CommandBase {
   private final IntakeArm intakeArm;
   private final Position position;
 
-  private double prevPosition = 0;
+  // private double prevPosition = 0;
   private double currentPosition = 0;
 
   /**
@@ -51,7 +51,7 @@ public class SetIntakeArmPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    prevPosition = currentPosition;
+    // prevPosition = currentPosition;
     currentPosition = intakeArm.getPosition();
 
     if (currentPosition > position.value) {

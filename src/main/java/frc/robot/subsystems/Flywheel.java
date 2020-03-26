@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlywheelConstants;
 
 public class Flywheel extends SubsystemBase {
-  private final int CPR = 4096;
-  private final double VELOCITY_INTERVAL_PER_MIN = 0.1 * 60;
 
   private final TalonSRX topMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_TOP);
   private final TalonSRX bottomMotor = new TalonSRX(FlywheelConstants.FLYWHEEL_BOTTOM);
