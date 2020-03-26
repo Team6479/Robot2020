@@ -44,25 +44,36 @@ public class Flywheel extends SubsystemBase {
     // Set slave
     bottomMotor.follow(topMotor);
 
+    // topMotor.configVoltageCompSaturation(12);
+    // bottomMotor.configVoltageCompSaturation(12);
+
+    // topMotor.enableVoltageCompensation(true);
+    // bottomMotor.enableVoltageCompensation(true);
+
     //PID
-    topMotor.config_kP(0, .4);
-    topMotor.config_kI(0, .00000275);
-    topMotor.config_kD(0, 4);
-    topMotor.config_kF(0, .0097);
-
     // topMotor.config_kP(0, .4);
-    // // topMotor.config_kI(0, .00000275);
-    // // topMotor.config_kD(0, 4);
-    // topMotor.config_kF(0, .01075);
+    // topMotor.config_kI(0, .00000275);
+    // topMotor.config_kD(0, 4);
+    // topMotor.config_kF(0, .0097);
 
-    Shuffleboard.getTab("Debug").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
+    // topMotor.config_kP(0, .00161);
+    topMotor.config_kP(0, .25);
+    // topMotor.config_kI(0, .015);
+    // topMotor.config_kD(0, 0);
+    topMotor.config_kF(0, 0.013);
+    // topMotor.config_kF(0, 0.011228);
+
+
+    Shuffleboard.getTab("Main").addNumber("Flywheel Velocity", topMotor::getSelectedSensorVelocity);
+    Shuffleboard.getTab("Debug").addNumber("Flywheel Percent", topMotor::getMotorOutputPercent);
     Shuffleboard.getTab("Debug").addNumber("Flywheel Error", topMotor::getClosedLoopError);
+    Shuffleboard.getTab("Main").addBoolean("Turret State", () -> isOn);
 
     isOn = false;
   }
 
   public double getError() {
-    return topMotor.getClosedLoopError() / CPR;
+    return topMotor.getClosedLoopError();
   }
 
   /**
@@ -74,11 +85,15 @@ public class Flywheel extends SubsystemBase {
   }
 
   public void off() {
-    topMotor.set(ControlMode.PercentOutput, 0);
+    topMotor.set(ControlMode.Velocity, 13333);
     isOn = false;
   }
 
   public boolean getIsOn() {
     return isOn;
+  }
+
+  public boolean isAtSpeed() {
+    return topMotor.getClosedLoopError() <= 200;
   }
 }

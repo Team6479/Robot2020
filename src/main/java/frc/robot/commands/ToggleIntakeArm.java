@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.IntakeArm.Position;
 
 public class ToggleIntakeArm extends CommandBase {
   private final double AMPERAGE_SPIKE_THESHOLD = 30;
@@ -47,7 +48,11 @@ public class ToggleIntakeArm extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeArm.setIsOut(!intakeArm.isOut());
+    if (intakeArm.isOut()) {
+      intakeArm.setPosition(Position.In);
+    } else {
+      intakeArm.setPosition(Position.Out);
+    }
     intakeArm.armStop();
   }
 
