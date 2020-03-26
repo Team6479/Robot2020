@@ -24,7 +24,7 @@ public class StraightDrive extends CommandBase {
     this.drivetrain = drivetrain;
     this.navX = navX;
     this.SPEED = speed;
-    this.DISTANCE = ((double) distance / (Math.PI * 5.0)) * 4096.0;
+    this.DISTANCE = (distance / (Math.PI * 5.0)) * 4096.0; // 5.0 is wheel diameter in inches
     addRequirements(drivetrain, navX);
   }
 
@@ -39,8 +39,6 @@ public class StraightDrive extends CommandBase {
   @Override
   public void execute() {
     drivetrain.arcadeDrive(SPEED, -navX.getYaw() * 0.05);
-    System.out.println("drive position: " + drivetrain.getPosition());
-    System.out.println("distance: " + DISTANCE);
   }
 
   // Called once the command ends or is interrupted.

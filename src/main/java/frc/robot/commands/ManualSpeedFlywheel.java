@@ -15,7 +15,6 @@ public class ManualSpeedFlywheel extends CommandBase {
   private final Flywheel flywheel;
 
   public ManualSpeedFlywheel(Flywheel flywheel) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.flywheel = flywheel;
     addRequirements(this.flywheel);
   }

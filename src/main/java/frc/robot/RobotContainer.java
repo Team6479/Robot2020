@@ -168,8 +168,7 @@ public class RobotContainer {
 
 
   public void teleopInit() {
-    turret
-        .setDefaultCommand(new TeleopTurretControl(turret, joystick::getZ, joystick.getButton(1)));
+    turret.setDefaultCommand(new TeleopTurretControl(turret, joystick::getZ, joystick.getButton(1)));
   }
 
   public void disabledInit() {

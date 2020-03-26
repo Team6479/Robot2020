@@ -34,6 +34,7 @@ public class TurnDrivetrain extends CommandBase {
     this.navX = navX;
     this.GOAL = angle;
     this.DIRECTION = direction;
+
     addRequirements(drivetrain, navX);
   }
 
@@ -52,7 +53,7 @@ public class TurnDrivetrain extends CommandBase {
     /**
      * Equation that decreases speed as the the robot approached the angle goal with precision
      *
-     * 0.1 = min speed 0.25 = speed. (Increase for speed increase/ decrease for speed decrease) The
+     * 0.1 = min speed 0.75 = speed. (Increase for speed increase/ decrease for speed decrease) The
      * parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
      */
     double speed = 0.1 + (0.75 * ((GOAL - angle) / GOAL));

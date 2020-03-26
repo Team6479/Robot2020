@@ -46,7 +46,6 @@ public class Turret extends SubsystemBase {
     // Restore each talonSRX to factory defaults prior to configuration
     motor.configFactoryDefault();
 
-    // Set neutral mode to Brake
     motor.setNeutralMode(NeutralMode.Brake);
 
     // Add Mag Encoders
@@ -67,14 +66,11 @@ public class Turret extends SubsystemBase {
 
     motor.getSensorCollection().setQuadraturePosition(pulseWidth, 0);
 
-    // Set Inverted and Sensor Phase
     motor.setInverted(true);
     motor.setSensorPhase(true);
 
-    // Set the allowable error
     motor.configAllowableClosedloopError(0, 3);
 
-    // Set PID Values
     motor.config_kP(0, 10.5);
     motor.config_kI(0, .0004);
     motor.config_kD(0, 50);
@@ -145,7 +141,7 @@ public class Turret extends SubsystemBase {
    */
   public double correctAngle(double angle) {
     // Values should remain between +/- 360
-    angle = angle % 360;
+    angle %= 360;
 
     if (angle > upperLimit || angle < lowerLimit) {
       // double inverse = angle >= 0 ? -360 + angle : 360 + angle;
