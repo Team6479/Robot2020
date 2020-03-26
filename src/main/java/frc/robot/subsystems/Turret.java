@@ -56,9 +56,9 @@ public class Turret extends SubsystemBase {
     int pulseWidth = motor.getSensorCollection().getPulseWidthPosition();
 
     /**
-		 * Mask out the bottom 12 bits to normalize to [0,4095],
-		 * or in other words, to stay within [0,360) degrees
-		 */
+     * Mask out the bottom 12 bits to normalize to [0,4095], or in other words, to stay within
+     * [0,360) degrees
+     */
     pulseWidth = pulseWidth & 0xFFF;
 
     if (pulseWidth / UNITS_PER_DEGREE > upperLimit) {
@@ -151,13 +151,13 @@ public class Turret extends SubsystemBase {
       double inverse = angle >= 0 ? -360 + angle : 360 + angle;
 
       return Angle.getShortestDistance(angle, upperLimit) < Angle.getShortestDistance(angle,
-            upperLimit) ? upperLimit : lowerLimit;
+          upperLimit) ? upperLimit : lowerLimit;
       // if (inverse >= lowerLimit && inverse <= upperLimit) {
-      //   return inverse;
+      // return inverse;
       // } else {
-      //   // If we cant use the inverse we return the closest limit
-      //   return Angle.getShortestDistance(inverse, upperLimit) < Angle.getShortestDistance(inverse,
-      //       upperLimit) ? upperLimit : lowerLimit;
+      // // If we cant use the inverse we return the closest limit
+      // return Angle.getShortestDistance(inverse, upperLimit) < Angle.getShortestDistance(inverse,
+      // upperLimit) ? upperLimit : lowerLimit;
       // }
     } else {
       return angle;

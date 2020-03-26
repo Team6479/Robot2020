@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved. */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
+/* the project. */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
@@ -41,11 +41,11 @@ public final class Constants {
     public static final int MOTOR = 4;
   }
 
-  public static final class IndexerConstants{
+  public static final class IndexerConstants {
     public static final int MOTOR = 7;
   }
 
-  public static final class AlignmentBeltConstants{
+  public static final class AlignmentBeltConstants {
     public static final int MOTOR = 10;
   }
 }

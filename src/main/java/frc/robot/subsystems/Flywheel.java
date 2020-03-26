@@ -50,7 +50,7 @@ public class Flywheel extends SubsystemBase {
     // topMotor.enableVoltageCompensation(true);
     // bottomMotor.enableVoltageCompensation(true);
 
-    //PID
+    // PID
     // topMotor.config_kP(0, .4);
     // topMotor.config_kI(0, .00000275);
     // topMotor.config_kD(0, 4);

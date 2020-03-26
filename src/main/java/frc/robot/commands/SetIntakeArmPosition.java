@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* Copyright (c) 2019 FIRST. All Rights Reserved. */
+/* Open Source Software - may be modified and shared by FRC teams. The code */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
+/* the project. */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
@@ -72,7 +72,7 @@ public class SetIntakeArmPosition extends CommandBase {
   @Override
   public boolean isFinished() {
     System.out.println(intakeArm.getCurrent());
-    //  || Math.abs(intakeArm.getCurrent()) >= 3 || Math.abs(prevPosition - currentPosition) <= 5
+    // || Math.abs(intakeArm.getCurrent()) >= 3 || Math.abs(prevPosition - currentPosition) <= 5
     boolean finished = Math.abs(intakeArm.getCurrent()) >= 30;
 
     switch (position) {
