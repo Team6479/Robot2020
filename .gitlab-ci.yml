@@ -1,0 +1,4 @@
+image: gradle:jdk11
+
+script:
+- ./gradlew build
