@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NavX;
+import frc.robot.util.Sigmoid;
 
 public class TurnDrivetrain extends CommandBase {
   public enum Direction {
@@ -22,6 +23,8 @@ public class TurnDrivetrain extends CommandBase {
 
   private final double GOAL;
   private final Direction DIRECTION;
+
+  private final Sigmoid sigmoid = new Sigmoid(1, 0.2, 1, false, 0.5, 0);
 
   // private double prevAngle = 0;
   private double angle = 0;
@@ -56,7 +59,9 @@ public class TurnDrivetrain extends CommandBase {
      * 0.1 = min speed 0.75 = speed. (Increase for speed increase/ decrease for speed decrease) The
      * parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
      */
-    double speed = 0.1 + (0.75 * ((GOAL - angle) / GOAL));
+    double x = (GOAL - angle) / GOAL;
+    double sigmoidValue = sigmoid.calculate(x);
+    double speed = 0.1 + (0.75 * (sigmoidValue));
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);
