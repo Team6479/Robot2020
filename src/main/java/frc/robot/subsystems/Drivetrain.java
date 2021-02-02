@@ -12,17 +12,32 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.team6479.lib.subsystems.RamseteDrive;
 import com.team6479.lib.subsystems.TankDrive;
-
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DrivetrainConstants;
 
-public class Drivetrain extends SubsystemBase implements TankDrive {
+public class Drivetrain extends SubsystemBase implements TankDrive, RamseteDrive {
   private TalonSRX motorLeftFront = new TalonSRX(DrivetrainConstants.motorLeftFront);
   private TalonSRX motorLeftBack = new TalonSRX(DrivetrainConstants.motorLeftBack);
   private TalonSRX motorRightFront = new TalonSRX(DrivetrainConstants.motorRightFront);
   private TalonSRX motorRightBack = new TalonSRX(DrivetrainConstants.motorRightBack);
 
+  private DifferentialDriveOdometry odometry;
+
+  private RamseteController ramseteController;
 
   /**
    * Creates a new Drivetrain.
@@ -53,11 +68,18 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorLeftBack.setInverted(false);
     motorRightFront.setInverted(true);
     motorRightBack.setInverted(true);
+
+    resetEncoders();
+
+    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+
+    ramseteController = new RamseteController(AutoConstants.ramseteB, AutoConstants.ramseteZeta);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderPos(), getRightEncoderPos());
   }
 
   @Override
@@ -77,4 +99,65 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorLeftFront.set(ControlMode.PercentOutput, leftSpeed);
     motorRightFront.set(ControlMode.PercentOutput, rightSpeed);
   }
+
+
+  // Returns the current wheel speeds of the robot
+  @Override
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getLeftEncoderVel(), getRightEncoderVel());
+  }
+
+  @Override
+  public double getLeftEncoderPos() {
+    return motorLeftFront.getSelectedSensorPosition(0) * DriveConstants.encoderDistancePerPulse;
+  }
+
+  @Override
+  public double getRightEncoderPos() {
+    return motorRightFront.getSelectedSensorPosition(0) * DriveConstants.encoderDistancePerPulse;
+  }
+
+  @Override
+  public double getLeftEncoderVel() {
+    return motorLeftFront.getSelectedSensorVelocity(0) * DriveConstants.encoderDistancePerPulse * 10;
+  }
+
+  @Override
+  public double getRightEncoderVel() {
+    return motorRightFront.getSelectedSensorVelocity(0) * DriveConstants.encoderDistancePerPulse * 10;
+  }
+
+  @Override
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
+  @Override
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    motorLeftFront.set(ControlMode.PercentOutput, leftVolts / RobotController.getBatteryVoltage());
+    motorRightFront.set(ControlMode.PercentOutput, rightVolts / RobotController.getBatteryVoltage());
+  }
+
+  @Override
+  public void resetEncoders() {
+    motorLeftFront.setSelectedSensorPosition(0);
+    motorRightFront.setSelectedSensorPosition(0);
+  }
+
+  @Override
+  public double getHeading() {
+    //return Math.IEEEremainder(navX.getAngle(), 360) * (DriveConstants.gyroReversed ? -1.0 : 1.0);
+    return 0;
+  }
+
+  @Override
+  public RamseteCommand getRamseteCommand(Trajectory trajectory) {
+    return new RamseteCommand(trajectory.transformBy(getPose().minus(trajectory.getInitialPose())), this::getPose, ramseteController,
+        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.driveKinematics, this::getWheelSpeeds, new PIDController(DriveConstants.pDriveVel, 0, 0),
+        new PIDController(DriveConstants.pDriveVel, 0, 0), this::tankDriveVolts, this);
+  }
+
+
 }

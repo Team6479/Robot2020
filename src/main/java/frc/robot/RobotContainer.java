@@ -9,11 +9,15 @@ package frc.robot;
 
 import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBXboxController;
+import com.team6479.lib.pathing.TrajectoryFileHandler;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.commands.TurnIntakeRollers;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeArm;
@@ -34,12 +38,18 @@ public class RobotContainer {
 
   private final CBXboxController xbox = new CBXboxController(0);
 
+  private SendableChooser<Trajectory> tChooser;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    // Get the trajectories in a sendable chooser
+    tChooser = TrajectoryFileHandler.getTrajectories();
+
+    SmartDashboard.putData("Paths", tChooser);
   }
 
   /**
@@ -68,7 +78,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // TODO: Add autonomous command
-    return null;
+    return drivetrain.getRamseteCommand(tChooser.getSelected())
+        .andThen(() -> drivetrain.tankDriveVolts(0, 0));
   }
 }
