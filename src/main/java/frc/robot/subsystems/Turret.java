@@ -178,7 +178,8 @@ public class Turret extends SubsystemBase {
   }
 
   public int getPIDError() {
-    return motor.getClosedLoopError();
+    // TODO: why (int)
+    return (int)motor.getClosedLoopError();
   }
 
 
