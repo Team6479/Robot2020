@@ -12,8 +12,9 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import com.team6479.lib.subsystems.TankDrive;
-
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -37,6 +38,7 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
 
   private DifferentialDriveOdometry odometry;
   private RamseteController ramseteController;
+  private AHRS navX = new AHRS(SPI.Port.kMXP);
 
 
   public Drivetrain() {
@@ -76,7 +78,7 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderPos(), getRightEncoderPos());
   }
 
   @Override
@@ -117,10 +119,12 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     return motorRightFront.getSelectedSensorVelocity(0) * DriveConstants.encoderDistancePerPulse * 10;
   }
 
+  //Returns the currently-estimated pose of the robot
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
+  //Controls the left and right sides of the drive directly with voltages
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     motorLeftFront.set(ControlMode.PercentOutput, leftVolts / RobotController.getBatteryVoltage());
     motorRightFront.set(ControlMode.PercentOutput, rightVolts / RobotController.getBatteryVoltage());
@@ -139,9 +143,9 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorRightFront.setSelectedSensorPosition(0, 0, 20);
   }
 
+  //Returns the heading of the robot from -180 to 180 degrees
   public double getHeading() {
-    //return Math.IEEEremainder(navX.getAngle(), 360) * (DriveConstants.gyroReversed ? -1.0 : 1.0);
-    return 0;
+    return Math.IEEEremainder(navX.getAngle(), 360) * (DriveConstants.gyroReversed ? -1.0 : 1.0);
   }
 
   public RamseteCommand getRamseteCommand(Trajectory trajectory) {

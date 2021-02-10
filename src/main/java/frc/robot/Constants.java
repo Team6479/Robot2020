@@ -63,6 +63,7 @@ public final class Constants {
     public static final boolean leftEncoderReversed = true;
     public static final boolean rightEncoderReversed = false;
 
+    //horizontal distance between the wheels
     public static final double trackwidthMeters = 0.65595;
     public static final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(trackwidthMeters);
 
