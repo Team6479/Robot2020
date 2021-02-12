@@ -9,14 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Flywheels;
 
 public class ManualSpeedFlywheel extends CommandBase {
-  private final Flywheel flywheel;
+  private final Flywheels flywheels;
 
-  public ManualSpeedFlywheel(Flywheel flywheel) {
-    this.flywheel = flywheel;
-    addRequirements(this.flywheel);
+  public ManualSpeedFlywheel(Flywheels flywheels) {
+    this.flywheels = flywheels;
+    addRequirements(this.flywheels);
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +28,7 @@ public class ManualSpeedFlywheel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flywheel.set(SmartDashboard.getNumber("Flywheel RPM", 0));
+    // flywheels.set(SmartDashboard.getNumber("Flywheel RPM", 0)); // TODO: RPM
   }
 
   // Called once the command ends or is interrupted.

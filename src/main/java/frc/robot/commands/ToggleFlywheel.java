@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Flywheels;
 
 // NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:
@@ -16,11 +16,11 @@ import frc.robot.subsystems.Flywheel;
 public class ToggleFlywheel extends InstantCommand {
   private final double GENERIC_RPM = 41000;
 
-  private final Flywheel flywheel;
+  private final Flywheels flywheels;
 
-  public ToggleFlywheel(Flywheel flywheel) {
-    this.flywheel = flywheel;
-    addRequirements(this.flywheel);
+  public ToggleFlywheel(Flywheels flywheels) {
+    this.flywheels = flywheels;
+    addRequirements(this.flywheels);
   }
 
   // Called when the command is initially scheduled.
@@ -28,11 +28,12 @@ public class ToggleFlywheel extends InstantCommand {
   public void initialize() {
 
     // if the flywheel is on, turn if off; if it's off, turn it on
-    if (flywheel.getIsOn()) {
+    if (flywheels.getIsOn()) {
       // TODO: investigate possible issue with toggling off while shooting
-      flywheel.off();
+      flywheels.off();
     } else {
-      flywheel.set(GENERIC_RPM);
+      // flywheels.set(GENERIC_RPM);
+      flywheels.setRawSpeed(0.25, 0.2); // TODO: use PIDF RPM control instead
     }
   }
 }

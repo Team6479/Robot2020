@@ -36,8 +36,10 @@ public final class Constants {
   }
 
   public static final class FlywheelConstants {
-    public static final int FLYWHEEL_TOP = 5;
-    public static final int FLYWHEEL_BOTTOM = 6;
+    public static final int BIG_LEFT = 15;
+    public static final int BIG_RIGHT = 16;
+    public static final int SMALL_LEFT = 12;
+    public static final int SMALL_RIGHT = 13;
   }
 
   public static final class TurretConstants {

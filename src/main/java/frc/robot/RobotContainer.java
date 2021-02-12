@@ -14,6 +14,7 @@ import com.team6479.lib.pathing.TrajectoryFileHandler;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,15 +26,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.autons.AimShootAuton;
-import frc.robot.autons.DeadreckonShotAuton;
-import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
-import frc.robot.commands.ToggleFlywheel;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Flywheels;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
@@ -60,7 +57,7 @@ public class RobotContainer {
 
   private final Indexer indexer = new Indexer();
   private final AlignmentBelt alignmentBelt = new AlignmentBelt();
-  private final Flywheel flywheel = new Flywheel();
+  private final Flywheels flywheels = new Flywheels();
 
   private final CBXboxController xbox = new CBXboxController(0);
   private final CBJoystick joystick = new CBJoystick(1);
@@ -73,11 +70,12 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    autonChooser.setDefaultOption("Trench Pickup",
-        new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheel, indexer, alignmentBelt));
-    autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
-    autonChooser.addOption("Dead Rekon",
-        new DeadreckonShotAuton(drivetrain, navX, turret, flywheel, indexer, alignmentBelt, intakeArm, intakeRollers));
+    // autonChooser.setDefaultOption("Trench Pickup",
+    //     new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheel, indexer, alignmentBelt));
+    // autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
+    // autonChooser.addOption("Dead Rekon",
+    //     new DeadreckonShotAuton(drivetrain, navX, turret, flywheel, indexer, alignmentBelt, intakeArm, intakeRollers));
+    autonChooser.addOption("Do nothing", new InstantCommand());
     Shuffleboard.getTab("Main").add("Auton", autonChooser);
 
     // Configure the button bindings
@@ -134,7 +132,7 @@ public class RobotContainer {
     intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm, new Button(() -> xbox.getTriggerAxis(Hand.kRight) > 0),
         new Button(() -> xbox.getTriggerAxis(Hand.kLeft) > 0)));
 
-    joystick.getButton(7).whenPressed(new ToggleFlywheel(flywheel));
+    // joystick.getButton(7).whenPressed(new ToggleFlywheel(flywheel));
 
     // Toggle Limelight
     joystick.getButton(8).whenPressed(new InstantCommand(() -> {
@@ -174,7 +172,7 @@ public class RobotContainer {
 
     indexer.stop();
     alignmentBelt.stop();
-    flywheel.off();
+    flywheels.off();
   }
 
   public void teleopInit() {

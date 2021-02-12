@@ -9,19 +9,19 @@ package frc.robot.commands;
 
 import com.team6479.lib.util.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Flywheels;
 import frc.robot.util.DistanceCalculator;
 
 public class SpinUpFlywheel extends CommandBase {
   private final double THRESHOLD_RPM = 3;
 
-  private final Flywheel flywheel;
+  private final Flywheels flywheels;
   private DistanceCalculator distanceCalculator;
 
-  public SpinUpFlywheel(Flywheel flywheel) {
-    this.flywheel = flywheel;
+  public SpinUpFlywheel(Flywheels flywheels) {
+    this.flywheels = flywheels;
     distanceCalculator = new DistanceCalculator(0, 0, 0);
-    addRequirements(this.flywheel);
+    addRequirements(this.flywheels);
   }
 
   /**
@@ -54,8 +54,8 @@ public class SpinUpFlywheel extends CommandBase {
   @Override
   public void initialize() {
     if (Limelight.hasTarget()) {
-      flywheel.set(calculate(distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())),
-          Limelight.getXOffset()));
+      // flywheels.set(calculate(distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), // TODO: RPM stuff
+      //     Limelight.getXOffset()));
     } else {
       // TODO: handle
     }
@@ -74,6 +74,7 @@ public class SpinUpFlywheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(flywheel.getError()) < THRESHOLD_RPM;
+    // return Math.abs(flywheels.getError()) < THRESHOLD_RPM;
+    return true; // TODO: check error
   }
 }
