@@ -7,15 +7,20 @@
 
 package frc.robot.commands;
 
+import com.team6479.lib.util.Limelight;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheels;
+import frc.robot.util.DistanceCalculator;
 
 public class ManualSpeedFlywheel extends CommandBase {
   private final Flywheels flywheels;
+  private DistanceCalculator distanceCalculator;
 
   public ManualSpeedFlywheel(Flywheels flywheels) {
     this.flywheels = flywheels;
+    distanceCalculator = new DistanceCalculator(0, 0, 0); // TODO: get values for this
     addRequirements(this.flywheels);
   }
 
@@ -32,6 +37,7 @@ public class ManualSpeedFlywheel extends CommandBase {
     flywheels.setSpeed(
         SmartDashboard.getNumber("Big Flywheel c/ds", 0),
         SmartDashboard.getNumber("Small Flywheel RPM", 0));
+    SmartDashboard.putNumber("distance", distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
   }
 
   // Called once the command ends or is interrupted.
