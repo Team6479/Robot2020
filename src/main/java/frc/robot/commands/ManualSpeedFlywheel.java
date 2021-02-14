@@ -22,13 +22,16 @@ public class ManualSpeedFlywheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Flywheel RPM", 0);
+    SmartDashboard.putNumber("Big Flywheel c/ds", 0);
+    SmartDashboard.putNumber("Small Flywheel RPM", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // flywheels.set(SmartDashboard.getNumber("Flywheel RPM", 0)); // TODO: RPM
+    flywheels.setSpeed(
+        SmartDashboard.getNumber("Big Flywheel c/ds", 0),
+        SmartDashboard.getNumber("Small Flywheel RPM", 0));
   }
 
   // Called once the command ends or is interrupted.
