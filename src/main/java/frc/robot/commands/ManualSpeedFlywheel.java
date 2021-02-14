@@ -27,7 +27,7 @@ public class ManualSpeedFlywheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Big Flywheel c/ds", 0);
+    SmartDashboard.putNumber("Big Flywheel RPM", 0);
     SmartDashboard.putNumber("Small Flywheel RPM", 0);
   }
 
@@ -35,7 +35,7 @@ public class ManualSpeedFlywheel extends CommandBase {
   @Override
   public void execute() {
     flywheels.setSpeed(
-        SmartDashboard.getNumber("Big Flywheel c/ds", 0),
+        SmartDashboard.getNumber("Big Flywheel RPM", 0),
         SmartDashboard.getNumber("Small Flywheel RPM", 0));
     SmartDashboard.putNumber("distance", distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
   }

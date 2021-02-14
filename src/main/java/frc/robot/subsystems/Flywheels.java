@@ -19,6 +19,12 @@ public class Flywheels extends SubsystemBase {
   private TalonFX bigFlywheelMotor2;
   private boolean isBigOn, isSmallOn;
 
+  // all this is unnecessary for small flywheel since Sparks use RPM natively
+  private static final double BIG_CPR = 2048; // encoder cycles per rotation
+  private static final double BIG_PERIOD_PER_MIN = 60 * 10; // 60s/min * 10ds/s; TalonFX uses encoder units / 100ms
+  private static final double BIG_RPM_PER_NATIVE = BIG_PERIOD_PER_MIN / BIG_CPR; // conversion rate from RPM to TalonFX native units
+  private static final double BIG_NATIVE_PER_RPM = BIG_CPR / BIG_PERIOD_PER_MIN; // inverse of BIG_RPM_PER_NATIVE, multiplication is faster than division
+
   public Flywheels() {
     smallFlywheel1 = new CANSparkMax(FlywheelConstants.SMALL_LEFT, MotorType.kBrushless);
     smallFlywheel2 = new CANSparkMax(FlywheelConstants.SMALL_RIGHT, MotorType.kBrushless);
@@ -62,6 +68,13 @@ public class Flywheels extends SubsystemBase {
     isSmallOn = false;
   }
 
+  public static double bigNativeToRPM(double nativeUnits) {
+    return nativeUnits * BIG_RPM_PER_NATIVE;
+  }
+  public static double bigRPMToNative(double rpm) {
+    return rpm * BIG_NATIVE_PER_RPM;
+  }
+
   public void setSmallFlywheelRawSpeed(double speed) {
     smallFlywheel1.set(speed);
     isSmallOn = (speed != 0);
@@ -77,19 +90,18 @@ public class Flywheels extends SubsystemBase {
    * @param speed The rotational velocity in RPM
    */
   public void setSmallFlywheelSpeed(double speed) {
-    // yes, REV uses RPM
-    // yes, I really wish CTRE did this too
+    // REV uses RPM natively
     smallPIDController.setReference(speed, ControlType.kVelocity);
     isSmallOn = (speed != 0);
   }
 
   /**
    * Sets the PIDF setpoint of the large flywheel
-   * @param speed The rotational velocity in encoder cycles / 100ms
+   * @param speed The rotational velocity in RPM
    */
   public void setBigFlywheelSpeed(double speed) {
-    // TODO: convert this to RPM
-    bigFlywheelMotor1.set(ControlMode.Velocity, speed);
+    // CTRE uses cycles/decisecond natively, hence the conversion
+    bigFlywheelMotor1.set(ControlMode.Velocity, bigRPMToNative(speed));
     isBigOn = (speed != 0);
   }
 
@@ -107,7 +119,7 @@ public class Flywheels extends SubsystemBase {
 
   /**
    * Sets the PIDF setpoint of both flywheels
-   * @param big The rotational velocity of the large flywheel in encoder cycles / 100ms
+   * @param big The rotational velocity of the large flywheel in RPM
    * @param small The rotational velocity of the small flywheel in RPM
    */
   public void setSpeed(double big, double small) {
