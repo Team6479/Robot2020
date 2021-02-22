@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class DistanceCalculator {
   private double h1;
   private double h2;
@@ -21,6 +23,7 @@ public class DistanceCalculator {
    * @return The estimated distance to the target
    */
   public double calculate(double angle) {
-    return (h1 - h2) / Math.tan(Math.toRadians(a1 + angle));
+    SmartDashboard.putNumber("test value", Math.tan(a1 + angle));
+    return (h2 - h1) / Math.tan(a1 + angle);
   }
 }

@@ -12,6 +12,7 @@ import com.team6479.lib.util.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Turret;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TeleopTurretControl extends CommandBase {
   private final Turret turret;
@@ -38,6 +39,7 @@ public class TeleopTurretControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putNumber("Turret Angle", turret.getCurrentAngle());
     boolean isCorrected = turret.isCorrected();
     boolean hasTarget = Limelight.hasTarget();
     boolean isOverridden = overrideTrigger.get();

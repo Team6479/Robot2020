@@ -32,7 +32,7 @@ public class Flywheels extends SubsystemBase {
     smallFlywheel1.restoreFactoryDefaults();
     smallFlywheel2.restoreFactoryDefaults();
   
-    smallFlywheel1.setInverted(false);
+    smallFlywheel2.setInverted(false);
     smallFlywheel1.setInverted(true);
   
     bigFlywheelMotor1 = new TalonFX(FlywheelConstants.BIG_LEFT);
@@ -50,19 +50,19 @@ public class Flywheels extends SubsystemBase {
     bigFlywheelMotor1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30); // source: ctre examples
 
     // PIDF tuning constants
-    bigFlywheelMotor1.config_kF(0, 0);
-		bigFlywheelMotor1.config_kP(0, 1);
+    bigFlywheelMotor1.config_kF(0, .055);
+		bigFlywheelMotor1.config_kP(0, 0.15);
 		bigFlywheelMotor1.config_kI(0, 0);
 		bigFlywheelMotor1.config_kD(0, 0);
 
     // REV uses a seperate PID controller object
     smallPIDController = smallFlywheel1.getPIDController();
 
-    smallPIDController.setP(1);
+    smallPIDController.setP(0.0001);
     smallPIDController.setI(0);
     smallPIDController.setD(0);
-    smallPIDController.setIZone(1);
-    smallPIDController.setFF(0);
+    smallPIDController.setIZone(100);
+    smallPIDController.setFF(.000095);
 
     isBigOn = false;
     isSmallOn = false;
@@ -72,11 +72,12 @@ public class Flywheels extends SubsystemBase {
     return nativeUnits * BIG_RPM_PER_NATIVE;
   }
   public static double bigRPMToNative(double rpm) {
-    return rpm * BIG_NATIVE_PER_RPM;
+    return rpm;
   }
 
   public void setSmallFlywheelRawSpeed(double speed) {
     smallFlywheel1.set(speed);
+    smallFlywheel2.set(speed);
     isSmallOn = (speed != 0);
   }
 
@@ -129,6 +130,10 @@ public class Flywheels extends SubsystemBase {
 
   public boolean getIsOn() {
     return isBigOn || isSmallOn;
+  }
+
+  public double getSmallSpeed() {
+    return smallFlywheel1.getEncoder().getVelocity();
   }
 
 }
