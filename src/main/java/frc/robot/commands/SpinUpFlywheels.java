@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheels;
 import frc.robot.util.DistanceCalculator;
 
-public class SpinUpFlywheel extends CommandBase {
+public class SpinUpFlywheels extends CommandBase {
   private final double THRESHOLD_RPM = 3;
 
   private final Flywheels flywheels;
   private DistanceCalculator distanceCalculator;
 
-  public SpinUpFlywheel(Flywheels flywheels) {
+  public SpinUpFlywheels(Flywheels flywheels) {
     this.flywheels = flywheels;
     distanceCalculator = new DistanceCalculator(0, 0, 0);
     addRequirements(this.flywheels);

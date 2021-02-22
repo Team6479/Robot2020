@@ -18,13 +18,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
+import frc.robot.commands.SpinUpFlywheels;
 import frc.robot.commands.StraightDrive;
-import frc.robot.commands.ToggleFlywheel;
 import frc.robot.commands.TurnDrivetrain;
 import frc.robot.commands.TurnDrivetrain.Direction;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Flywheels;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeArm.Position;
@@ -40,7 +40,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
    * Creates a new TrenchPickupAuton.
    */
   public TrenchPickupAuton(Drivetrain drivetrain, NavX navX, IntakeArm intakeArm, IntakeRollers intakeRollers, Turret turret,
-    Flywheel flywheel, Indexer indexer, AlignmentBelt alignmentBelt) {
+    Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(
       new ParallelCommandGroup(
         new SetIntakeArmPosition(intakeArm, Position.Out),
@@ -51,7 +51,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
         new InstantCommand(intakeRollers::rollersOn, intakeRollers)
       ),
       new ParallelCommandGroup(
-        // new InstantCommand(intakeRollers::rollersOff, intakeRollers),
+        new InstantCommand(intakeRollers::rollersOff, intakeRollers), // for reference: this was commented out 
         new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
         new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
         new SequentialCommandGroup(
@@ -71,17 +71,19 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SequentialCommandGroup(
           new AimTurret(turret),
-          new ToggleFlywheel(flywheel),
-          new WaitCommand(0.5), // TODO: Look into why this wait is needed
-          new WaitUntilCommand(flywheel::isAtSpeed),
+          new SpinUpFlywheels(flywheels),
+          // might need a WaitCommand here --> if there isn't enough time for the RPM to reach
+          // what it should be, then put a WaitCommand and investigate the isFinished() method
+          // of SpinUpFlywheel (which currently returns true!!)
           new ParallelCommandGroup(
             new InstantCommand(indexer::run, indexer),
             new InstantCommand(alignmentBelt::run, alignmentBelt)
           )
         ),
-        new SequentialCommandGroup(
+        new SequentialCommandGroup( 
           new WaitCommand(5),
-          new SetIntakeArmPosition(intakeArm, Position.In)
+          new SetIntakeArmPosition(intakeArm, Position.In) // if needed, this can be taken 
+          // out (no reason to bring the intake back in)
         )
       )
     );

@@ -13,12 +13,12 @@ import frc.robot.subsystems.Flywheels;
 // NOTE: Consider using this command inline, rather than writing a subclass. For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class ToggleFlywheel extends InstantCommand {
+public class ToggleFlywheels extends InstantCommand {
   private final double GENERIC_RPM = 41000;
 
   private final Flywheels flywheels;
 
-  public ToggleFlywheel(Flywheels flywheels) {
+  public ToggleFlywheels(Flywheels flywheels) {
     this.flywheels = flywheels;
     addRequirements(this.flywheels);
   }
