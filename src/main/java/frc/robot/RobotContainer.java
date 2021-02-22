@@ -51,7 +51,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(6, 96);
+  private final Turret turret = new Turret(-45, 155);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();

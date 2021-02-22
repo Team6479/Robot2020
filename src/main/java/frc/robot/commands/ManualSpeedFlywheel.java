@@ -20,7 +20,7 @@ public class ManualSpeedFlywheel extends CommandBase {
 
   public ManualSpeedFlywheel(Flywheels flywheels) {
     this.flywheels = flywheels;
-    distanceCalculator = new DistanceCalculator(0, 0, 0); // TODO: get values for this
+    distanceCalculator = new DistanceCalculator(20, 92, 0.698); // TODO: get values for this
     addRequirements(this.flywheels);
   }
 
@@ -35,9 +35,11 @@ public class ManualSpeedFlywheel extends CommandBase {
   @Override
   public void execute() {
     flywheels.setSpeed(
-        SmartDashboard.getNumber("Big Flywheel RPM", 0),
-        SmartDashboard.getNumber("Small Flywheel RPM", 0));
+	SmartDashboard.getNumber("Big Flywheel RPM", 0),
+	SmartDashboard.getNumber("Small Flywheel RPM", 0));
+    //flywheels.setRawSpeed(0.25,0.25);
     SmartDashboard.putNumber("distance", distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
+    SmartDashboard.putNumber("Small Velocity", flywheels.getSmallSpeed());
   }
 
   // Called once the command ends or is interrupted.
