@@ -82,7 +82,6 @@ public class TurnDrivetrain extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return Math.abs(angle - GOAL) <= 2;
-    return angle >= GOAL;
+    return Math.abs(angle - GOAL) <= 10;
   }
 }
