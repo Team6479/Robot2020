@@ -52,7 +52,9 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       ),
       new ParallelCommandGroup(
         new InstantCommand(intakeRollers::rollersOff, intakeRollers), // for reference: this was commented out 
-        new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
+        new SequentialCommandGroup(
+          new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
+          new StraightDrive(drivetrain, navX, 0.5, 40)),
         new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
         new SequentialCommandGroup(
           new InstantCommand(() -> turret.setPosition(-95), turret),
