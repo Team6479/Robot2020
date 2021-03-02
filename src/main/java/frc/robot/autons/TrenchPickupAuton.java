@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
-import frc.robot.commands.SpinUpFlywheels;
+import frc.robot.commands.TrenchSpinUpFlywheels;
 import frc.robot.commands.StraightDrive;
 import frc.robot.commands.TurnDrivetrain;
 import frc.robot.commands.TurnDrivetrain.Direction;
@@ -73,10 +73,11 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SequentialCommandGroup(
           new AimTurret(turret),
-          new SpinUpFlywheels(flywheels),
+          new TrenchSpinUpFlywheels(flywheels),
           // might need a WaitCommand here --> if there isn't enough time for the RPM to reach
           // what it should be, then put a WaitCommand and investigate the isFinished() method
           // of SpinUpFlywheel (which currently returns true!!)
+          new WaitCommand(0.5),
           new ParallelCommandGroup(
             new InstantCommand(indexer::run, indexer),
             new InstantCommand(alignmentBelt::run, alignmentBelt)
