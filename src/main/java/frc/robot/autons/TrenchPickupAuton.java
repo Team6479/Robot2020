@@ -55,7 +55,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
         new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
         new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
         new SequentialCommandGroup(
-          new InstantCommand(() -> turret.setPosition(51), turret),
+          new InstantCommand(() -> turret.setPosition(-95), turret),
           new InstantCommand(() -> {
             Limelight.setLEDState(LEDState.Auto);
           })

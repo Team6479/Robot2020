@@ -61,7 +61,7 @@ public class TurnDrivetrain extends CommandBase {
      */
     double x = (GOAL - angle) / GOAL;
     double sigmoidValue = sigmoid.calculate(x);
-    double speed = 0.1 + (0.75 * (sigmoidValue));
+    double speed = 0.25 + (0.75 * (sigmoidValue));
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);

@@ -17,7 +17,7 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeArm extends SubsystemBase {
   public enum Position {
-    In(2300), Out(1200);
+    In(600), Out(-200);
 
     public double value;
 

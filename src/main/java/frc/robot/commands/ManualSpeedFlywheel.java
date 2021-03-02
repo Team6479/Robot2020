@@ -20,7 +20,7 @@ public class ManualSpeedFlywheel extends CommandBase {
 
   public ManualSpeedFlywheel(Flywheels flywheels) {
     this.flywheels = flywheels;
-    distanceCalculator = new DistanceCalculator(20, 92, 0.698); // TODO: get values for this
+    distanceCalculator = new DistanceCalculator(20, 92, 0.72); // TODO: get values for this
     addRequirements(this.flywheels);
   }
 

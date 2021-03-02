@@ -37,6 +37,7 @@ import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
+import frc.robot.autons.TrenchPickupAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,7 +52,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(-45, 155);
+  private final Turret turret = new Turret(-175, -35);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -73,11 +74,11 @@ public class RobotContainer {
   public RobotContainer() {
     flywheels.setDefaultCommand(new ManualSpeedFlywheel(flywheels));
 
-    // autonChooser.setDefaultOption("Trench Pickup",
-    //     new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheel, indexer, alignmentBelt));
-    // autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
+    autonChooser.setDefaultOption("Trench Pickup",
+        new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheels, indexer, alignmentBelt));
+    // autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheels, indexer, alignmentBelt));
     // autonChooser.addOption("Dead Rekon",
-    //     new DeadreckonShotAuton(drivetrain, navX, turret, flywheel, indexer, alignmentBelt, intakeArm, intakeRollers));
+    //     new DeadreckonShotAuton(drivetrain, navX, turret, flywheels, indexer, alignmentBelt, intakeArm, intakeRollers));
     autonChooser.addOption("Do nothing", new InstantCommand());
     Shuffleboard.getTab("Main").add("Auton", autonChooser);
 

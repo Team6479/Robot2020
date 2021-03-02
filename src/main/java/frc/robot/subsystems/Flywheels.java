@@ -32,19 +32,18 @@ public class Flywheels extends SubsystemBase {
     smallFlywheel1.restoreFactoryDefaults();
     smallFlywheel2.restoreFactoryDefaults();
   
-    smallFlywheel2.setInverted(false);
-    smallFlywheel1.setInverted(true);
-  
     bigFlywheelMotor1 = new TalonFX(FlywheelConstants.BIG_LEFT);
     bigFlywheelMotor2 = new TalonFX(FlywheelConstants.BIG_RIGHT);
   
     bigFlywheelMotor1.configFactoryDefault();
     bigFlywheelMotor2.configFactoryDefault();
   
+    smallFlywheel2.setInverted(true);
+
     bigFlywheelMotor1.setInverted(false);
     bigFlywheelMotor2.setInverted(true);
   
-    smallFlywheel2.follow(smallFlywheel1);
+    smallFlywheel1.follow(smallFlywheel2, true);
     bigFlywheelMotor2.follow(bigFlywheelMotor1);
 
     bigFlywheelMotor1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30); // source: ctre examples
@@ -56,7 +55,7 @@ public class Flywheels extends SubsystemBase {
 		bigFlywheelMotor1.config_kD(0, 0);
 
     // REV uses a seperate PID controller object
-    smallPIDController = smallFlywheel1.getPIDController();
+    smallPIDController = smallFlywheel2.getPIDController();
 
     smallPIDController.setP(0.0001);
     smallPIDController.setI(0);
