@@ -37,7 +37,6 @@ import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
-import frc.robot.autons.TrenchPickupAuton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
