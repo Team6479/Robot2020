@@ -7,10 +7,10 @@ import com.team6479.lib.util.Limelight.LEDState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
 import frc.robot.commands.StraightDrive;
+import frc.robot.commands.Turn180Encoders;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheels;
@@ -43,13 +43,13 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       }),
       new WaitCommand(0.1), // make sure the limelight is actually off
       new SetIntakeArmPosition(intakeArm, Position.In), // make sure it doesn't have issues turning with intake out
-      // TODO: spinny code
+      new Turn180Encoders(drivetrain),
       new SetIntakeArmPosition(intakeArm, Position.Out), // move intake back out
       new InstantCommand(intakeRollers::rollersOn, intakeRollers),
       new StraightDrive(drivetrain, 50749), // distance in encoder units
       new InstantCommand(intakeRollers::rollersOff, intakeRollers),
       new SetIntakeArmPosition(intakeArm, Position.In), // intake might hit the trench otherwise, can remove if too many balls
-      // TODO: spinny code but the other way
+      new Turn180Encoders(drivetrain),
       new SetIntakeArmPosition(intakeArm, Position.Out),
       new InstantCommand(() -> turret.setPosition(0)), // change to the centrepoint such that the limelight can see
       new InstantCommand(() -> { // limelight on
