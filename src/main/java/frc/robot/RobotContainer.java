@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.commands.ManualSpeedFlywheel;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
@@ -74,7 +75,7 @@ public class RobotContainer {
     flywheels.setDefaultCommand(new ManualSpeedFlywheel(flywheels));
 
     autonChooser.setDefaultOption("Trench Pickup",
-        new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheels, indexer, alignmentBelt));
+        new TrenchPickupAuton(turret, intakeArm, intakeRollers, flywheels, indexer, alignmentBelt, drivetrain));
     // autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheels, indexer, alignmentBelt));
     // autonChooser.addOption("Dead Rekon",
     //     new DeadreckonShotAuton(drivetrain, navX, turret, flywheels, indexer, alignmentBelt, intakeArm, intakeRollers));
