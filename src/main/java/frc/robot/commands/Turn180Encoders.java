@@ -22,9 +22,6 @@ public class Turn180Encoders extends CommandBase {
 
   private boolean tooSlowTriggerEnd;
 
-  /**
-   * @param goal raw encoder units
-   */
   public Turn180Encoders(Drivetrain drivetrain) {
     this.drivetrain = drivetrain;
 
@@ -41,7 +38,7 @@ public class Turn180Encoders extends CommandBase {
   @Override
   public void execute() {
     double errorLeft = GOAL_LEFT - drivetrain.getLeftEncoderPos();
-    double errorRight = GOAL_RIGHT - drivetrain.getRightEncoderPos();
+    double errorRight = GOAL_RIGHT - drivetrain.getRightEncoderPos(); // possible that these would have to be flipped because negative
     double speedLeft = Math.min(1, errorLeft / SLOWDOWN_ERROR);
     double speedRight = Math.min(1, errorRight / SLOWDOWN_ERROR);
     drivetrain.tankDrive(speedLeft, speedRight);
