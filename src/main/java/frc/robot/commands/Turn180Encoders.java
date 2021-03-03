@@ -7,9 +7,16 @@ public class Turn180Encoders extends CommandBase {
   private static final double DISTANCE_TOLERANCE = 1000;
   private static final double SLOW_THRESHOLD = 0.1;
   private static final double SLOWDOWN_ERROR = 4096; // once it hits error this low it slows down
+
+  private static final double CPR = 4096;
+  private static final double WHEEL_DIAM = 5; // inches
+  private static final double IN_TO_ENCU = CPR / (WHEEL_DIAM * Math.PI); // encoder units per rotation / inches per rotation
+  private static final double DRIVETRAIN_WIDTH = 18; // inches // TODO: determine actual width
+  private static final double WHEEL_DISTANCE = DRIVETRAIN_WIDTH * Math.PI / 2; // inches; half circumference of drivetrain circle for 180deg
+  private static final double WHEEL_ENCODER_DISTANCE = WHEEL_DISTANCE * IN_TO_ENCU;
   
-  private static final double GOAL_LEFT = 0; // TODO: determine goals for left and right
-  private static final double GOAL_RIGHT = -0;
+  private static final double GOAL_LEFT = WHEEL_ENCODER_DISTANCE; // left forward = turn right
+  private static final double GOAL_RIGHT = -1 * WHEEL_ENCODER_DISTANCE; // opposite direction from left
 
   private final Drivetrain drivetrain;
 
