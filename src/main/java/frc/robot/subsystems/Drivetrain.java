@@ -148,6 +148,11 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     return Math.IEEEremainder(navX.getAngle(), 360) * (DriveConstants.gyroReversed ? -1.0 : 1.0);
   }
 
+  public void resetNavX() {
+    navX.reset();
+    navX.zeroYaw();
+  }
+
   public RamseteCommand getRamseteCommand(Trajectory trajectory) {
     return new RamseteCommand(trajectory.transformBy(getPose().minus(trajectory.getInitialPose())), this::getPose, ramseteController,
         new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,

@@ -43,13 +43,13 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       }),
       new WaitCommand(0.1), // make sure the limelight is actually off
       new SetIntakeArmPosition(intakeArm, Position.In), // make sure it doesn't have issues turning with intake out
-      new Turn180Encoders(drivetrain),
+      new Turn180Encoders(drivetrain), // backup: Turn180NavX
       new SetIntakeArmPosition(intakeArm, Position.Out), // move intake back out
       new InstantCommand(intakeRollers::rollersOn, intakeRollers),
       new StraightDrive(drivetrain, 50749), // distance in encoder units
       new InstantCommand(intakeRollers::rollersOff, intakeRollers),
       new SetIntakeArmPosition(intakeArm, Position.In), // intake might hit the trench otherwise, can remove if too many balls
-      new Turn180Encoders(drivetrain),
+      new Turn180Encoders(drivetrain), // backup: Turn180NavX
       new SetIntakeArmPosition(intakeArm, Position.Out),
       new InstantCommand(() -> turret.setPosition(0)), // change to the centrepoint such that the limelight can see
       new InstantCommand(() -> { // limelight on
