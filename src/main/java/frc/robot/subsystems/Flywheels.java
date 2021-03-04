@@ -136,4 +136,14 @@ public class Flywheels extends SubsystemBase {
     return smallFlywheel1.getEncoder().getVelocity();
   }
 
+  public double getBigError() {
+    return bigFlywheelMotor1.getClosedLoopError();
+  }
+
+  public double getSmallError(double setpoint) {
+    // according to the frc discord there is no getError method for the CANPIDController class
+    // i don't like this code but it should be functional
+    return getSmallSpeed() - setpoint;
+  }
+
 }
