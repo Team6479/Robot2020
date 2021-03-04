@@ -1,13 +1,14 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class StraightDrive extends CommandBase {
-  private static final double DISTANCE_TOLERANCE = 1000;
-  private static final double STRAIGHTNESS_TOLERANCE = 300;
+  private static final double DISTANCE_TOLERANCE = 0.1;
+  private static final double STRAIGHTNESS_TOLERANCE = 0.05;
   private static final double SLOW_THRESHOLD = 0.1;
-  private static final double SLOWDOWN_ERROR = 4096; // once it hits error this low it slows down
+  private static final double SLOWDOWN_ERROR = 2.75; // once it hits error this low it slows down
 
   private final Drivetrain drivetrain;
   private final double goal;
@@ -33,6 +34,7 @@ public class StraightDrive extends CommandBase {
 
   @Override
   public void execute() {
+    SmartDashboard.putNumber("yeeter dist", drivetrain.getLeftEncoderPos());
     double errorLeft = goal - drivetrain.getLeftEncoderPos();
     double errorRight = goal - drivetrain.getRightEncoderPos();
     double speedLeft = Math.min(1, errorLeft / SLOWDOWN_ERROR);

@@ -59,8 +59,8 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorRightBack.setNeutralMode(NeutralMode.Brake);
 
     // Setup encoders
-    motorRightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-    motorLeftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    motorRightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+    motorLeftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
     // Invert Right Motors
     motorLeftFront.setInverted(false);
@@ -146,6 +146,10 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
   //Returns the heading of the robot from -180 to 180 degrees
   public double getHeading() {
     return Math.IEEEremainder(navX.getAngle(), 360) * (DriveConstants.gyroReversed ? -1.0 : 1.0);
+  }
+
+  public double getRawAngle() {
+    return navX.getAngle();
   }
 
   public void resetNavX() {

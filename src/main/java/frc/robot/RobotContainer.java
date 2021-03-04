@@ -52,7 +52,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(-175, -35);
+  private final Turret turret = new Turret(0, 130);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -186,5 +186,9 @@ public class RobotContainer {
   public void disabledInit() {
     // We don't want any lingering corrections after disabling
     turret.clearCorrection();
+  }
+
+  public void logTheThing() {
+    SmartDashboard.putNumber("best angle", drivetrain.getHeading());
   }
 }

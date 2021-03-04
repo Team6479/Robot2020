@@ -1,10 +1,11 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class Turn180NavX extends CommandBase {
-  private static final double TOLERANCE = 5; // degrees
+  private static final double TOLERANCE = 3; // degrees
 
   private final Drivetrain drivetrain;
 
@@ -28,8 +29,12 @@ public class Turn180NavX extends CommandBase {
     } else if (error > 60) {
       speed = 0.5;
     } else {
-      speed = 0.25;
+      speed = 0.4;
     }
+    SmartDashboard.putNumber("yeet speed", speed);
+    SmartDashboard.putNumber("yeet error", error);
+    SmartDashboard.putNumber("yeet angle", drivetrain.getHeading());
+    SmartDashboard.putNumber("yeet angle other", drivetrain.getRawAngle());
     drivetrain.tankDrive(speed, -1 * speed); // turn right
   }
 

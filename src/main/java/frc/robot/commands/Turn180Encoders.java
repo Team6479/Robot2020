@@ -11,7 +11,7 @@ public class Turn180Encoders extends CommandBase {
   private static final double CPR = 4096;
   private static final double WHEEL_DIAM = 5; // inches
   private static final double IN_TO_ENCU = CPR / (WHEEL_DIAM * Math.PI); // encoder units per rotation / inches per rotation
-  private static final double DRIVETRAIN_WIDTH = 18; // inches // TODO: determine actual width
+  private static final double DRIVETRAIN_WIDTH = 26.13; // inches // TODO: determine actual width
   private static final double WHEEL_DISTANCE = DRIVETRAIN_WIDTH * Math.PI / 2; // inches; half circumference of drivetrain circle for 180deg
   private static final double WHEEL_ENCODER_DISTANCE = WHEEL_DISTANCE * IN_TO_ENCU;
   

@@ -55,9 +55,9 @@ public class SetIntakeArmPosition extends CommandBase {
     currentPosition = intakeArm.getPosition();
 
     if (currentPosition > position.value) {
-      intakeArm.set(-1);
+      intakeArm.set(-0.3);
     } else {
-      intakeArm.set(1);
+      intakeArm.set(0.3);
     }
   }
 
