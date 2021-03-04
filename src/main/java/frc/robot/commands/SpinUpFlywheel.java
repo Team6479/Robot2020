@@ -13,15 +13,20 @@ import frc.robot.subsystems.Flywheels;
 import frc.robot.util.DistanceCalculator;
 
 public class SpinUpFlywheel extends CommandBase {
-  private final double THRESHOLD_RPM = 3;
+  private final double BIG_TOLERANCE = 300;
+  private final double SMALL_TOLERANCE = 100;
 
   private final Flywheels flywheels;
   private DistanceCalculator distanceCalculator;
 
+  private double smallSetpoint;
+
   public SpinUpFlywheel(Flywheels flywheels) {
     this.flywheels = flywheels;
-    distanceCalculator = new DistanceCalculator(0, 0, 0);
+    distanceCalculator = new DistanceCalculator(20, 92, 0.698); // TODO: remeasure angle
     addRequirements(this.flywheels);
+
+    smallSetpoint = Double.MAX_VALUE; // can't be zero or it might think it's over before it starts
   }
 
   /**
@@ -40,22 +45,21 @@ public class SpinUpFlywheel extends CommandBase {
    * contain magic numbers which are derived from regression models of data from real-world testing
    *
    * @param distance The distance to the target (in)
-   * @param angle    The angle from the target (deg)
    */
-  private double calculate(double distance, double angle) {
-    if (checkInnerPort(distance, angle)) { // target inner port
-      return 0; // TODO: eq for inner port
-    } else { // target outer port
-      return 0; // TODO: eq for outer port
-    }
+  private double calculateSmall(double distance) {
+    return 0; // TODO: calculate
+  }
+
+  private double calculateBig(double distance) {
+    return 0; // TODO: calculate
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (Limelight.hasTarget()) {
-      // flywheels.set(calculate(distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), // TODO: RPM stuff
-      //     Limelight.getXOffset()));
+      double distance = distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset()));
+      flywheels.setSpeed(calculateBig(distance), calculateSmall(distance));
     } else {
       // TODO: handle
     }
@@ -74,7 +78,7 @@ public class SpinUpFlywheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return Math.abs(flywheels.getError()) < THRESHOLD_RPM;
-    return true; // TODO: check error
+    return (Math.abs(flywheels.getBigError()) < BIG_TOLERANCE) &&
+        (Math.abs(flywheels.getSmallError(smallSetpoint)) < SMALL_TOLERANCE);
   }
 }
