@@ -14,7 +14,8 @@ import frc.robot.subsystems.Flywheels;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class ToggleFlywheel extends InstantCommand {
-  private final double GENERIC_RPM = 41000;
+  private final double BIG_RPM = 5000;
+  private final double SMALL_RPM = 500;
 
   private final Flywheels flywheels;
 
@@ -33,7 +34,7 @@ public class ToggleFlywheel extends InstantCommand {
       flywheels.off();
     } else {
       // flywheels.set(GENERIC_RPM);
-      flywheels.setRawSpeed(0.25, 0.2); // TODO: use PIDF RPM control instead
+      flywheels.setSpeed(BIG_RPM, SMALL_RPM);
     }
   }
 }

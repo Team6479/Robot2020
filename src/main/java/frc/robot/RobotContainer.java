@@ -30,6 +30,7 @@ import frc.robot.commands.ManualSpeedFlywheel;
 import frc.robot.commands.SpinUpFlywheel;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
+import frc.robot.commands.ToggleFlywheel;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheels;
@@ -138,7 +139,7 @@ public class RobotContainer {
     intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm, new Button(() -> xbox.getTriggerAxis(Hand.kRight) > 0),
         new Button(() -> xbox.getTriggerAxis(Hand.kLeft) > 0)));
 
-    // joystick.getButton(7).whenPressed(new ToggleFlywheel(flywheel));
+    xbox.getButton(XboxController.Button.kBumperRight).whenPressed(new ToggleFlywheel(flywheels));
 
     // Toggle Limelight
     joystick.getButton(8).whenPressed(new InstantCommand(() -> {
