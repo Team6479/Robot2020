@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.ManualSpeedFlywheel;
+import frc.robot.commands.SpinUpFlywheel;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
 import frc.robot.subsystems.AlignmentBelt;
@@ -109,13 +110,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     xbox.getButton(XboxController.Button.kBumperRight)
         .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
-            // new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
-            // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
-            // new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()),
-            new InstantCommand(indexer::run, indexer), new InstantCommand(alignmentBelt::run, alignmentBelt))))
-        .whenReleased(new SequentialCommandGroup(new InstantCommand(alignmentBelt::stop, alignmentBelt),
-            new InstantCommand(indexer::stop, indexer)
-        // new InstantCommand(flywheel::off, flywheel)
+            new SpinUpFlywheel(flywheels),
+            // new ToggleFlywheel(flywheel), // don't use this, it has a constant rpm
+            // new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()), // why is this necessary
+            new InstantCommand(indexer::run, indexer),
+            new InstantCommand(alignmentBelt::run, alignmentBelt)
+        ))).whenReleased(new SequentialCommandGroup(
+            new InstantCommand(alignmentBelt::stop, alignmentBelt),
+            new InstantCommand(indexer::stop, indexer),
+            new InstantCommand(flywheels::off, flywheels)
         ));
 
     xbox.getButton(XboxController.Button.kA).whenPressed(new SequentialCommandGroup(new InstantCommand(() -> {
