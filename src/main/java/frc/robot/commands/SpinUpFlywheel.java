@@ -53,6 +53,7 @@ public class SpinUpFlywheel extends CommandBase {
   }
 
   // https://www.desmos.com/calculator/z3u4ucqboa
+  // TODO: get data points for farther distances
   private double calculateBig(double distance) {
     // quadratic: .0227007x^2 - 52.8617x + 23904
     return 23401 - (46.0409 * distance);
