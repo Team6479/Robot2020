@@ -47,11 +47,15 @@ public class SpinUpFlywheel extends CommandBase {
    * @param distance The distance to the target (in)
    */
   private double calculateSmall(double distance) {
-    return 0; // TODO: calculate
+    // quadratic: -0.178276x^2 + 79.6397x - 6984.8
+    return Math.max(0, // TODO: investigate negative rpm
+        (26.074 * distance) - 3030.42);
   }
 
+  // https://www.desmos.com/calculator/z3u4ucqboa
   private double calculateBig(double distance) {
-    return 0; // TODO: calculate
+    // quadratic: .0227007x^2 - 52.8617x + 23904
+    return 23401 - (46.0409 * distance);
   }
 
   // Called when the command is initially scheduled.
