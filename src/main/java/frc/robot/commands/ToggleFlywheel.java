@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Flywheels;
 
@@ -27,7 +28,6 @@ public class ToggleFlywheel extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
     // if the flywheel is on, turn if off; if it's off, turn it on
     if (flywheels.getIsOn()) {
       // TODO: investigate possible issue with toggling off while shooting

@@ -15,6 +15,7 @@ import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,9 +25,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.ManualSpeedFlywheel;
 import frc.robot.commands.SpinUpFlywheel;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
@@ -73,8 +74,6 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    flywheels.setDefaultCommand(new ManualSpeedFlywheel(flywheels));
-
     // autonChooser.setDefaultOption("Trench Pickup",
     //     new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheel, indexer, alignmentBelt));
     // autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheel, indexer, alignmentBelt));
@@ -110,13 +109,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     xbox.getButton(XboxController.Button.kBumperRight)
-        .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
+        .whenPressed(new SequentialCommandGroup(
             new SpinUpFlywheel(flywheels),
             // new ToggleFlywheel(flywheel), // don't use this, it has a constant rpm
             // new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()), // why is this necessary
             new InstantCommand(indexer::run, indexer),
             new InstantCommand(alignmentBelt::run, alignmentBelt)
-        ))).whenReleased(new SequentialCommandGroup(
+        )).whenReleased(new SequentialCommandGroup(
             new InstantCommand(alignmentBelt::stop, alignmentBelt),
             new InstantCommand(indexer::stop, indexer),
             new InstantCommand(flywheels::off, flywheels)
@@ -139,7 +138,7 @@ public class RobotContainer {
     intakeArm.setDefaultCommand(new TeleopIntakeArm(intakeArm, new Button(() -> xbox.getTriggerAxis(Hand.kRight) > 0),
         new Button(() -> xbox.getTriggerAxis(Hand.kLeft) > 0)));
 
-    xbox.getButton(XboxController.Button.kBumperRight).whenPressed(new ToggleFlywheel(flywheels));
+    xbox.getButton(XboxController.Button.kBumperLeft).whenPressed(new ToggleFlywheel(flywheels));
 
     // Toggle Limelight
     joystick.getButton(8).whenPressed(new InstantCommand(() -> {

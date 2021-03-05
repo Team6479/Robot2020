@@ -44,7 +44,7 @@ public class Flywheels extends SubsystemBase {
     bigFlywheelMotor1.setInverted(false);
     bigFlywheelMotor2.setInverted(true);
   
-    smallFlywheel2.follow(smallFlywheel1);
+    smallFlywheel2.follow(smallFlywheel1, true);
     bigFlywheelMotor2.follow(bigFlywheelMotor1);
 
     bigFlywheelMotor1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 30); // source: ctre examples
@@ -137,7 +137,7 @@ public class Flywheels extends SubsystemBase {
   }
 
   public double getBigError() {
-    return bigFlywheelMotor1.getClosedLoopError();
+    return bigFlywheelMotor1.getClosedLoopError() + 400; // offset
   }
 
   public double getSmallError(double setpoint) {
