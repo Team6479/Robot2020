@@ -70,7 +70,7 @@ public final class Constants {
     public static final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(trackwidthMeters);
 
     public static final int encoderCPR = 4096;
-    public static final double wheelDiameterMeters = 0.1524;
+    public static final double wheelDiameterMeters = 0.127; // 5in
     public static final double encoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (wheelDiameterMeters * Math.PI) / (double) encoderCPR;
