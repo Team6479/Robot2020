@@ -189,4 +189,9 @@ public class RobotContainer {
     // We don't want any lingering corrections after disabling
     turret.clearCorrection();
   }
+
+  public void logDrivetrainEncoders() {
+    SmartDashboard.putNumber("left drivetrain position", drivetrain.getLeftEncoderPos());
+    SmartDashboard.putNumber("right drivetrain position", drivetrain.getRightEncoderPos());
+  }
 }
