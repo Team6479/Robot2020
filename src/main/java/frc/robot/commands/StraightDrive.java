@@ -19,6 +19,9 @@ public class StraightDrive extends CommandBase {
 
   /**
    * Creates a new StraightDrive.
+   * 
+   * @param speed Motor speed, from -1 to 1
+   * @param distance Distance in inches
    */
   public StraightDrive(Drivetrain drivetrain, NavX navX, double speed, double distance) {
     this.drivetrain = drivetrain;

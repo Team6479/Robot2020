@@ -10,6 +10,7 @@ package frc.robot.autons;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -18,8 +19,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
-import frc.robot.commands.TrenchSpinUpFlywheels;
 import frc.robot.commands.StraightDrive;
+import frc.robot.commands.TrenchSpinUpFlywheels;
 import frc.robot.commands.TurnDrivetrain;
 import frc.robot.commands.TurnDrivetrain.Direction;
 import frc.robot.subsystems.AlignmentBelt;
@@ -45,7 +46,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new SetIntakeArmPosition(intakeArm, Position.Out),
         new SequentialCommandGroup(
-          new StraightDrive(drivetrain, navX, 0.5, 114),
+          new StraightDrive(drivetrain, navX, 0.5, 114), // drive towards the trench
           new WaitCommand(0.5) // Wait a little to ensure the last ball gets taken
         ),
         new InstantCommand(intakeRollers::rollersOn, intakeRollers)
@@ -54,10 +55,10 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
         new InstantCommand(intakeRollers::rollersOff, intakeRollers), // for reference: this was commented out 
         new SequentialCommandGroup(
           new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
-          new StraightDrive(drivetrain, navX, 0.5, 40)),
+          new StraightDrive(drivetrain, navX, 0.5, 40)), // turn and drive back to the target
         new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
         new SequentialCommandGroup(
-          new InstantCommand(() -> turret.setPosition(-95), turret),
+          new InstantCommand(() -> turret.setPosition(-95), turret), // reset turret position
           new InstantCommand(() -> {
             Limelight.setLEDState(LEDState.Auto);
           })
