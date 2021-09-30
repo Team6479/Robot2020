@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -89,6 +90,9 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
 
   @Override
   public void arcadeDrive(double forward, double turn) {
+    SmartDashboard.putNumber("Actual turn value", turn);
+    SmartDashboard.putNumber("Left encoder vel", getLeftEncoderVel());
+    SmartDashboard.putNumber("Right encoder vel", getRightEncoderVel());
     motorLeftFront.set(ControlMode.PercentOutput, forward, DemandType.ArbitraryFeedForward, +turn);
     motorRightFront.set(ControlMode.PercentOutput, forward, DemandType.ArbitraryFeedForward, -turn);
   }
