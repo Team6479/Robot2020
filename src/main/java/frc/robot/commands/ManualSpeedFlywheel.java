@@ -37,7 +37,7 @@ public class ManualSpeedFlywheel extends CommandBase {
     flywheels.setSpeed(
 	SmartDashboard.getNumber("Big Flywheel RPM", 0),
 	SmartDashboard.getNumber("Small Flywheel RPM", 0));
-    //flywheels.setRawSpeed(0.25,0.25);
+    flywheels.setRawSpeed(0.25,0.25); 
     SmartDashboard.putNumber("distance", distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
     SmartDashboard.putNumber("Small Velocity", flywheels.getSmallSpeed());
   }
