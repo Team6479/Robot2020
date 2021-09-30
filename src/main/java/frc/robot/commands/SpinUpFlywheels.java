@@ -53,17 +53,19 @@ public class SpinUpFlywheels extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (Limelight.hasTarget()) {
-      // flywheels.set(calculate(distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), // TODO: RPM stuff
-      //     Limelight.getXOffset()));
-    } else {
-      // TODO: handle
-    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Limelight.hasTarget()) {
+      // flywheels.setSpeed(
+      //   distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), 
+      //   distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
+      flywheels.setSpeed(15000, 1200);
+    } else {
+      // TODO: handle
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -75,6 +77,6 @@ public class SpinUpFlywheels extends CommandBase {
   @Override
   public boolean isFinished() {
     // return Math.abs(flywheels.getError()) < THRESHOLD_RPM;
-    return true; // TODO: check error
+    return Limelight.hasTarget(); // TODO: check error
   }
 }
