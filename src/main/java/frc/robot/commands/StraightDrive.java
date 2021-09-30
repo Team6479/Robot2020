@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NavX;
@@ -16,6 +17,7 @@ public class StraightDrive extends CommandBase {
   private final NavX navX;
   private final double SPEED;
   private final double DISTANCE;
+  private double navXStartPosition;
 
   /**
    * Creates a new StraightDrive.
@@ -35,13 +37,16 @@ public class StraightDrive extends CommandBase {
   @Override
   public void initialize() {
     navX.reset();
+    this.navXStartPosition = navX.getYaw();
     drivetrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.arcadeDrive(SPEED, -navX.getYaw() * 0.05);
+    // drivetrain.arcadeDrive(SPEED, -navX.getYaw() * 0.05);
+    SmartDashboard.putNumber("SD NavX offset", Math.abs(navXStartPosition - navX.getYaw()));
+    drivetrain.arcadeDrive(SPEED, 0.05 * (navXStartPosition - navX.getYaw()));
   }
 
   // Called once the command ends or is interrupted.
