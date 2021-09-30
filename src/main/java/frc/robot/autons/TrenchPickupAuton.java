@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
 import frc.robot.commands.StraightDrive;
+import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TrenchSpinUpFlywheels;
 import frc.robot.commands.TurnDrivetrain;
 import frc.robot.commands.TurnDrivetrain.Direction;
@@ -44,26 +45,21 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
     Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(
       new ParallelCommandGroup(
-        new SetIntakeArmPosition(intakeArm, Position.Out),
         new SequentialCommandGroup(
-          new StraightDrive(drivetrain, navX, 0.5, 114), // drive towards the trench
+          new SetIntakeArmPosition(intakeArm, Position.Out),
+          new StraightDrive(drivetrain, navX, 0.5, 124), // drive towards the trench
           new WaitCommand(0.5) // Wait a little to ensure the last ball gets taken
         ),
         new InstantCommand(intakeRollers::rollersOn, intakeRollers)
       ),
-      new ParallelCommandGroup(
-        new InstantCommand(intakeRollers::rollersOff, intakeRollers), // for reference: this was commented out 
-        new SequentialCommandGroup(
-          new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
-          new StraightDrive(drivetrain, navX, 0.5, 40)), // turn and drive back to the target
-        new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
-        new SequentialCommandGroup(
-          new InstantCommand(() -> turret.setPosition(-95), turret), // reset turret position
-          new InstantCommand(() -> {
-            Limelight.setLEDState(LEDState.Auto);
-          })
-        )
-      ),
+      new InstantCommand(intakeRollers::rollersOff, intakeRollers), // for reference: this was commented out 
+      new TurnDrivetrain(drivetrain, navX, 180, Direction.Right),
+      new StraightDrive(drivetrain, navX, 0.5, 40), // turn and drive back to the target
+      new InstantCommand(() -> turret.setPosition(20), turret), // reset turret position
+      new InstantCommand(() -> {
+        Limelight.setLEDState(LEDState.Auto);
+      }),
+      new InstantCommand(() -> Limelight.setCamMode(CamMode.VisionProcessor)),
       new InstantCommand(() -> {
         DriverStation.reportWarning("Waiting For Target...", false);
       }),
@@ -73,21 +69,54 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       }),
       new ParallelCommandGroup(
         new SequentialCommandGroup(
+          new WaitCommand(0.75),
           new AimTurret(turret),
           new TrenchSpinUpFlywheels(flywheels),
           // might need a WaitCommand here --> if there isn't enough time for the RPM to reach
           // what it should be, then put a WaitCommand and investigate the isFinished() method
           // of SpinUpFlywheel (which currently returns true!!)
-          new WaitCommand(0.5),
+          new WaitCommand(1.0),
           new ParallelCommandGroup(
-            new InstantCommand(indexer::run, indexer),
-            new InstantCommand(alignmentBelt::run, alignmentBelt)
+            new SequentialCommandGroup(
+              // ignore this, it's fine
+              new InstantCommand(alignmentBelt::run, alignmentBelt),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::run, indexer),
+              new WaitCommand(0.75),
+              new InstantCommand(indexer::stop, indexer)
+            ),
+            new SequentialCommandGroup(
+              new WaitCommand(1.5), // wait for some balls to fire before enabling rollers
+              new InstantCommand(intakeRollers::rollersOn, intakeRollers),
+              new WaitCommand(0.75),
+              new SetIntakeArmPosition(intakeArm, Position.In),
+              new WaitCommand(1.0),
+              new InstantCommand(intakeRollers::rollersOff, intakeRollers)
+            )
           )
-        ),
-        new SequentialCommandGroup( 
-          new WaitCommand(5),
-          new SetIntakeArmPosition(intakeArm, Position.In) // if needed, this can be taken 
-          // out (no reason to bring the intake back in)
         )
       )
     );
