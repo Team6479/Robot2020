@@ -11,6 +11,7 @@ import com.team6479.lib.commands.TeleopTankDrive;
 import com.team6479.lib.controllers.CBJoystick;
 import com.team6479.lib.controllers.CBXboxController;
 import com.team6479.lib.pathing.TrajectoryFileHandler;
+import frc.robot.commands.SpinUpFlywheels;
 import com.team6479.lib.util.Limelight;
 import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
@@ -24,11 +25,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.ManualSpeedFlywheel;
 import frc.robot.commands.TeleopIntakeArm;
 import frc.robot.commands.TeleopTurretControl;
+import frc.robot.commands.NavXLogging;
+import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.AlignmentBelt;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheels;
@@ -52,7 +57,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(-175, -35);
+  private final Turret turret = new Turret(-10, 50);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -68,11 +73,16 @@ public class RobotContainer {
 
   private SendableChooser<Trajectory> tChooser;
 
+  private double navXStartPosition;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    flywheels.setDefaultCommand(new ManualSpeedFlywheel(flywheels));
+    navX.reset(); // reset position on enable, remove later if necessary
+    navXStartPosition = navX.getYaw();
+
+    //flywheels.setDefaultCommand(new ManualSpeedFlywheel(flywheels));
 
     autonChooser.setDefaultOption("Trench Pickup",
         new TrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheels, indexer, alignmentBelt));
@@ -110,13 +120,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     xbox.getButton(XboxController.Button.kBumperRight)
         .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
-            // new SpinUpFlywheel(flywheel), // TODO: Add this back when tuning is done
+             new SpinUpFlywheels(flywheels), 
             // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
-            // new WaitUntilCommand(() -> flywheel.isAtSpeed() && flywheel.getIsOn()),
-            new InstantCommand(indexer::run, indexer), new InstantCommand(alignmentBelt::run, alignmentBelt))))
+            //  new WaitUntilCommand(() -> flywheels.isAtSpeed() && flywheels.getIsOn()),
+            new WaitCommand(3.5), // this should eventually be replaced with the line above, or equivalent code
+            new InstantCommand(indexer::run, indexer), new InstantCommand(alignmentBelt::run, alignmentBelt)
+            )))
         .whenReleased(new SequentialCommandGroup(new InstantCommand(alignmentBelt::stop, alignmentBelt),
-            new InstantCommand(indexer::stop, indexer)
-        // new InstantCommand(flywheel::off, flywheel)
+            new InstantCommand(indexer::stop, indexer),
+            new InstantCommand(flywheels::off, flywheels)
         ));
 
     xbox.getButton(XboxController.Button.kA).whenPressed(new SequentialCommandGroup(new InstantCommand(() -> {
@@ -150,8 +162,12 @@ public class RobotContainer {
       }
     }));
 
-    drivetrain
-        .setDefaultCommand(new TeleopTankDrive(drivetrain, () -> -xbox.getY(Hand.kLeft), () -> xbox.getX(Hand.kRight)));
+    drivetrain.setDefaultCommand(
+          new TeleopDrive(drivetrain, navX, navXStartPosition, () -> -xbox.getY(Hand.kLeft), () -> xbox.getX(Hand.kRight)));
+
+    navX.setDefaultCommand(
+      new NavXLogging(navX)
+    );
   }
 
   /**
