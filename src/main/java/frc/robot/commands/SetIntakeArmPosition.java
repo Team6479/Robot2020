@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.IntakeArm.Position;
@@ -44,6 +45,7 @@ public class SetIntakeArmPosition extends CommandBase {
         interrupt = intakeArm.isAtFrontLimit();
     }
     if (interrupt) {
+      DriverStation.reportWarning("Interrupted", false);
       this.cancel();
     }
   }
@@ -52,12 +54,13 @@ public class SetIntakeArmPosition extends CommandBase {
   @Override
   public void execute() {
     // prevPosition = currentPosition;
-    currentPosition = intakeArm.getPosition();
 
-    if (currentPosition > position.value) {
-      intakeArm.set(-1);
+    if (position == Position.Out && !intakeArm.isAtFrontLimit()) {
+      intakeArm.set(-0.50);
+    } else if(position == Position.In && !intakeArm.isAtBackLimit()) {
+      intakeArm.set(0.50);
     } else {
-      intakeArm.set(1);
+      intakeArm.set(0);
     }
   }
 
@@ -73,17 +76,16 @@ public class SetIntakeArmPosition extends CommandBase {
   public boolean isFinished() {
     System.out.println(intakeArm.getCurrent());
     // || Math.abs(intakeArm.getCurrent()) >= 3 || Math.abs(prevPosition - currentPosition) <= 5
-    boolean finished = Math.abs(intakeArm.getCurrent()) >= 30;
+    // boolean finished = Math.abs(intakeArm.getCurrent()) >= 30;
+    boolean finished = false;
 
     switch (position) {
       case In:
-        finished = finished || currentPosition >= position.value || intakeArm.isAtBackLimit();
+        // DriverStation.reportWarning("Current Position: " + intakeArm.getPosition() + ", Target: " + position.value, false);
+        finished = finished || intakeArm.isAtBackLimit();
         break;
       case Out:
-        finished = finished || currentPosition <= position.value || intakeArm.isAtFrontLimit();
-        break;
-      default:
-        finished = finished || Math.abs(currentPosition - position.value) <= TOLLERANCE;
+        finished = finished || intakeArm.isAtFrontLimit();
         break;
     }
 
