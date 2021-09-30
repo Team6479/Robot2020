@@ -23,7 +23,7 @@ public class IntakeRollers extends SubsystemBase {
 
   // Set the roller motors to on
   public void rollersOn() {
-    intakeRoller.set(ControlMode.PercentOutput, .9);
+    intakeRoller.set(ControlMode.PercentOutput, .7);
   }
 
   // Set the roller motor to off
