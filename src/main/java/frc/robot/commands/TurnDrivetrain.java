@@ -56,12 +56,12 @@ public class TurnDrivetrain extends CommandBase {
     /**
      * Equation that decreases speed as the the robot approached the angle goal with precision
      *
-     * 0.1 = min speed 0.75 = speed. (Increase for speed increase/ decrease for speed decrease) The
+     * 0.1 = min speed 0.5 = speed. (Increase for speed increase/ decrease for speed decrease) The
      * parentheses stuff is an equation that goes from 1 to 0 as the angle approaches the goal
      */
     double x = (GOAL - angle) / GOAL;
     double sigmoidValue = sigmoid.calculate(x);
-    double speed = 0.25 + (0.75 * (sigmoidValue));
+    double speed = 0.25 + (0.5 * (sigmoidValue));
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);
