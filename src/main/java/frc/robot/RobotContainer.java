@@ -43,7 +43,9 @@ import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
 import frc.robot.autons.TrenchPickupAuton;
-
+import frc.robot.autons.OppositeTrenchPickupAuton;
+import frc.robot.autons.DriveAimShootAuton;
+import frc.robot.commands.StraightDrive;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -89,7 +91,12 @@ public class RobotContainer {
     // autonChooser.addOption("Base Shoot Auto", new AimShootAuton(turret, flywheels, indexer, alignmentBelt));
     // autonChooser.addOption("Dead Rekon",
     //     new DeadreckonShotAuton(drivetrain, navX, turret, flywheels, indexer, alignmentBelt, intakeArm, intakeRollers));
+    autonChooser.addOption("Opposite Trench Pickup", 
+      new OppositeTrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheels, indexer, alignmentBelt)
+    );
     autonChooser.addOption("Do nothing", new InstantCommand());
+    autonChooser.addOption("Drive forward", new StraightDrive(drivetrain, navX, 0.5, 30));
+    autonChooser.addOption("Drive backwards, Aim, Shoot", new DriveAimShootAuton(drivetrain, navX, turret, flywheels, indexer, alignmentBelt, intakeArm));
     Shuffleboard.getTab("Main").add("Auton", autonChooser);
 
     // Configure the button bindings
@@ -123,7 +130,7 @@ public class RobotContainer {
              new SpinUpFlywheels(flywheels), 
             // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
             //  new WaitUntilCommand(() -> flywheels.isAtSpeed() && flywheels.getIsOn()),
-            new WaitCommand(3.5), // this should eventually be replaced with the line above, or equivalent code
+            new WaitCommand(1.5), // this should eventually be replaced with the line above, or equivalent code
             new InstantCommand(indexer::run, indexer), new InstantCommand(alignmentBelt::run, alignmentBelt)
             )))
         .whenReleased(new SequentialCommandGroup(new InstantCommand(alignmentBelt::stop, alignmentBelt),
@@ -151,16 +158,14 @@ public class RobotContainer {
     // joystick.getButton(7).whenPressed(new ToggleFlywheel(flywheel));
 
     // Toggle Limelight
-    joystick.getButton(8).whenPressed(new InstantCommand(() -> {
-      LEDState ledState = com.team6479.lib.util.Limelight.getLEDState();
-      if (ledState != LEDState.Auto) {
-        Limelight.setLEDState(LEDState.Auto);
-        Limelight.setCamMode(CamMode.VisionProcessor);
-      } else if (ledState != LEDState.Off) {
-        Limelight.setLEDState(LEDState.Off);
-        Limelight.setCamMode(CamMode.DriverCamera);
-      }
-    }));
+    joystick.getButton(7).whenPressed(new InstantCommand(this::toggleLimelight));
+    joystick.getButton(8).whenPressed(new InstantCommand(this::toggleLimelight));
+    joystick.getButton(9).whenPressed(new InstantCommand(this::toggleLimelight));
+    joystick.getButton(10).whenPressed(new InstantCommand(this::toggleLimelight));
+    joystick.getButton(11).whenPressed(new InstantCommand(this::toggleLimelight));
+    joystick.getButton(12).whenPressed(new InstantCommand(this::toggleLimelight));
+
+
 
     drivetrain.setDefaultCommand(
           new TeleopDrive(drivetrain, navX, navXStartPosition, () -> -xbox.getY(Hand.kLeft), () -> xbox.getX(Hand.kRight)));
@@ -186,6 +191,17 @@ public class RobotContainer {
 
   }
 
+  public void toggleLimelight() {
+    LEDState ledState = com.team6479.lib.util.Limelight.getLEDState();
+    if (ledState != LEDState.Auto) {
+      Limelight.setLEDState(LEDState.Auto);
+      Limelight.setCamMode(CamMode.VisionProcessor);
+    } else if (ledState != LEDState.Off) {
+      Limelight.setLEDState(LEDState.Off);
+      Limelight.setCamMode(CamMode.DriverCamera);
+    }
+  }
+
   public void setDefaultStates() {
     intakeArm.armStop();
     intakeRollers.rollersOff();
@@ -202,5 +218,6 @@ public class RobotContainer {
   public void disabledInit() {
     // We don't want any lingering corrections after disabling
     turret.clearCorrection();
+    drivetrain.resetEncoders();
   }
 }
