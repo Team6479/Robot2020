@@ -62,7 +62,7 @@ public class SpinUpFlywheels extends CommandBase {
       // flywheels.setSpeed(
       //   distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), 
       //   distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
-      flywheels.setSpeed(15000, 1200);
+      flywheels.setSpeed(19000, 1100);
     } else {
       // TODO: handle
     }
