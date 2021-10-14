@@ -18,6 +18,7 @@ public class SetIntakeArmPosition extends CommandBase {
 
   private final IntakeArm intakeArm;
   private final Position position;
+  private final double SPEED;
 
   // private double prevPosition = 0;
   private double currentPosition = 0;
@@ -29,6 +30,14 @@ public class SetIntakeArmPosition extends CommandBase {
     this.intakeArm = intakeArm;
     this.position = position;
     addRequirements(intakeArm);
+    this.SPEED = 0.35;
+  }
+
+  public SetIntakeArmPosition(IntakeArm intakeArm, Position position, double speed) {
+    this.intakeArm = intakeArm;
+    this.position = position;
+    addRequirements(intakeArm);
+    this.SPEED = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -56,9 +65,9 @@ public class SetIntakeArmPosition extends CommandBase {
     // prevPosition = currentPosition;
 
     if (position == Position.Out && !intakeArm.isAtFrontLimit()) {
-      intakeArm.set(-0.50);
+      intakeArm.set(-SPEED);
     } else if(position == Position.In && !intakeArm.isAtBackLimit()) {
-      intakeArm.set(0.50);
+      intakeArm.set(SPEED);
     } else {
       intakeArm.set(0);
     }
