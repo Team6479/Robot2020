@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -36,7 +37,8 @@ public class StraightDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    navX.reset();
+    DriverStation.reportError("SD Started", false);
+    this.navX.reset();
     this.navXStartPosition = navX.getYaw();
     drivetrain.resetEncoders();
   }
@@ -52,12 +54,16 @@ public class StraightDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    DriverStation.reportError("SD Done", false);
+    drivetrain.resetEncoders();
     drivetrain.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(drivetrain.getPosition()) >= DISTANCE;
+    SmartDashboard.putNumber("StraightDrive distance", drivetrain.getPosition());
+    
+    return Math.abs(drivetrain.getPosition()) > DISTANCE;
   }
 }
