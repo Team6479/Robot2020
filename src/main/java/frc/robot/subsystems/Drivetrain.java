@@ -63,6 +63,8 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     motorRightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     motorLeftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
+    this.resetEncoders();
+
     // Invert Right Motors
     motorLeftFront.setInverted(false);
     motorLeftBack.setInverted(false);
@@ -139,12 +141,12 @@ public class Drivetrain extends SubsystemBase implements TankDrive {
     double leftSide = motorLeftFront.getSelectedSensorPosition();
     double rightSide = motorRightFront.getSelectedSensorPosition();
 
-    return (leftSide + rightSide) / 2;
+    return rightSide; // more reliable side
   }
 
   public void resetEncoders() {
-    motorLeftFront.setSelectedSensorPosition(0, 0, 20);
-    motorRightFront.setSelectedSensorPosition(0, 0, 20);
+    motorLeftFront.setSelectedSensorPosition(0, 0, 50);
+    motorRightFront.setSelectedSensorPosition(0, 0, 50);
   }
 
   //Returns the heading of the robot from -180 to 180 degrees
