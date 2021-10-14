@@ -16,27 +16,37 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AimTurret;
-import frc.robot.commands.ToggleFlywheel;
+import frc.robot.commands.StraightDrive;
+import frc.robot.commands.TrenchSpinUpFlywheels;
+import frc.robot.commands.TurnDrivetrain;
+import frc.robot.commands.TurnDrivetrain.Direction;
 import frc.robot.subsystems.AlignmentBelt;
-import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Flywheels;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.IntakeArm.Position;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.NavX;
+import frc.robot.commands.SetIntakeArmPosition;
 
-public class AimShootAuton extends SequentialCommandGroup {
+public class DriveAimShootAuton extends SequentialCommandGroup {
   /**
    * Creates a new AimShootAuton.
    */
-  public AimShootAuton(Turret turret, Flywheel flywheel, Indexer indexer, AlignmentBelt alignmentBelt) {
+  public DriveAimShootAuton(Drivetrain drivetrain, NavX navX, Turret turret, Flywheels flywheel, Indexer indexer, AlignmentBelt alignmentBelt, IntakeArm intakeArm) {
     super(
+      new StraightDrive(drivetrain, navX, -0.5, 40),
+      new WaitCommand(0.5),
       new InstantCommand(() -> {
         Limelight.setLEDState(LEDState.Auto);
         Limelight.setCamMode(CamMode.VisionProcessor);
       }),
       new WaitUntilCommand(Limelight::hasTarget), // Only Aim and continue with shooting if we have a valid target
+      new SetIntakeArmPosition(intakeArm, Position.Out),
       new AimTurret(turret),
-      new ToggleFlywheel(flywheel),
-      new WaitCommand(0.5), // TODO: Look into why this wait is needed
-      new WaitUntilCommand(flywheel::isAtSpeed),
+      new TrenchSpinUpFlywheels(flywheel),
+      new WaitCommand(2), // TODO: Look into why this wait is needed
       new ParallelCommandGroup(
         new InstantCommand(indexer::run, indexer),
         new InstantCommand(alignmentBelt::run, alignmentBelt)

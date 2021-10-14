@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved. */
-/* Open Source Software - may be modified and shared by FRC teams. The code */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project. */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.autons;
 
 import com.team6479.lib.util.Limelight;
@@ -17,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+
 import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
 import frc.robot.commands.StraightDrive;
@@ -34,25 +28,20 @@ import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
 
-/**
- * This routine will pick up the first two balls from trench and shoot 5 into the outer port
- */
-public class TrenchPickupAuton extends SequentialCommandGroup {
-  /**
-   * Creates a new TrenchPickupAuton.
-   */
-  public TrenchPickupAuton(Drivetrain drivetrain, NavX navX, IntakeArm intakeArm, IntakeRollers intakeRollers, Turret turret,
-    Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
+public class OppositeTrenchPickupAuton extends SequentialCommandGroup {
+
+  public OppositeTrenchPickupAuton(Drivetrain drivetrain, NavX navX, IntakeArm intakeArm, IntakeRollers intakeRollers, Turret turret,
+  Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(
       new SetIntakeArmPosition(intakeArm, Position.Out),
       new InstantCommand(intakeRollers::rollersOn, intakeRollers),
-      new StraightDrive(drivetrain, navX, 0.5, 124), // drive towards the trench
-      new WaitCommand(0.75), // Wait a little to ensure the last ball gets taken
+      new StraightDrive(drivetrain, navX, 0.5, 70), // drive towards the trench
+      new WaitCommand(1.5), // Wait a little to ensure the last ball gets taken
       new InstantCommand(intakeRollers::rollersOff, intakeRollers),
-      new TurnDrivetrain(drivetrain, navX, 145, Direction.Right),
+      new TurnDrivetrain(drivetrain, navX, 105, Direction.Left),
       new InstantCommand(drivetrain::resetEncoders, drivetrain),
       new WaitCommand(0.5),
-      new StraightDrive(drivetrain, navX, 0.5, 40),
+      new StraightDrive(drivetrain, navX, 0.5, 80),
       new WaitCommand(0.5),
       new InstantCommand(() -> turret.setPosition(20), turret), // reset turret position
       new InstantCommand(() -> {
@@ -122,4 +111,5 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       )
     );
   }
+
 }
