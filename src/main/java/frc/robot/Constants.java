@@ -107,4 +107,8 @@ public final class Constants {
     public static final double ramseteB = 2;
     public static final double ramseteZeta = 0.7;
   }
+
+  public static final class ClimberConstants {
+    public static final int CLIMBER = -1;
+  }
 }
