@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import com.team6479.lib.util.Limelight;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheels;
 import frc.robot.util.DistanceCalculator;
@@ -20,7 +22,7 @@ public class SpinUpFlywheels extends CommandBase {
 
   public SpinUpFlywheels(Flywheels flywheels) {
     this.flywheels = flywheels;
-    distanceCalculator = new DistanceCalculator(0, 0, 0);
+    distanceCalculator = new DistanceCalculator(21, 93, 0.4014); // inches inches radians
     addRequirements(this.flywheels);
   }
 
@@ -36,18 +38,10 @@ public class SpinUpFlywheels extends CommandBase {
   }
 
   /**
-   * Calculates the ideal flywheel RPM to hit the highest-scoring target possible This method may
-   * contain magic numbers which are derived from regression models of data from real-world testing
-   *
-   * @param distance The distance to the target (in)
-   * @param angle    The angle from the target (deg)
+   * Uses regression equation from real world testing to determine the top wheel rpm, along with distance to the target calculated with the limelight
    */
-  private double calculate(double distance, double angle) {
-    if (checkInnerPort(distance, angle)) { // target inner port
-      return 0; // TODO: eq for inner port
-    } else { // target outer port
-      return 0; // TODO: eq for outer port
-    }
+  private double getTopRPM() {
+    return 4.2555438225977*distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset()))+549.31362196409;
   }
 
   // Called when the command is initially scheduled.
@@ -58,11 +52,11 @@ public class SpinUpFlywheels extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putNumber("Top FW Speed", getTopRPM());
+    SmartDashboard.putNumber("Top FW Error", getTopRPM() - flywheels.getSmallSpeed());
+    SmartDashboard.putNumber("Distance from target", distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset()))); // base of the triangle
     if (Limelight.hasTarget()) {
-      // flywheels.setSpeed(
-      //   distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())), 
-      //   distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset())));
-      flywheels.setSpeed(19000, 1100);
+      flywheels.setSpeed(16700, getTopRPM());
     } else {
       // TODO: handle
     }
