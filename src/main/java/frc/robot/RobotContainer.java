@@ -44,8 +44,10 @@ import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Turret;
 import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.autons.OppositeTrenchPickupAuton;
+import frc.robot.autons.EightBallTrenchAuton;
 import frc.robot.autons.DriveAimShootAuton;
 import frc.robot.commands.StraightDrive;
+import frc.robot.commands.FlywheelLogging;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -59,7 +61,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(-10, 50);
+  private final Turret turret = new Turret(-220, -160);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -97,6 +99,7 @@ public class RobotContainer {
     autonChooser.addOption("Do nothing", new InstantCommand());
     autonChooser.addOption("Drive forward", new StraightDrive(drivetrain, navX, 0.5, 30));
     autonChooser.addOption("Drive backwards, Aim, Shoot", new DriveAimShootAuton(drivetrain, navX, turret, flywheels, indexer, alignmentBelt, intakeArm));
+    autonChooser.addOption("8 ball trench pickup", new EightBallTrenchAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheels, indexer, alignmentBelt));
     Shuffleboard.getTab("Main").add("Auton", autonChooser);
 
     // Configure the button bindings
@@ -130,7 +133,7 @@ public class RobotContainer {
              new SpinUpFlywheels(flywheels), 
             // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
             //  new WaitUntilCommand(() -> flywheels.isAtSpeed() && flywheels.getIsOn()),
-            new WaitCommand(1.5), // this should eventually be replaced with the line above, or equivalent code
+            new WaitCommand(2.0), // this should eventually be replaced with the line above, or equivalent code
             new InstantCommand(indexer::run, indexer), new InstantCommand(alignmentBelt::run, alignmentBelt)
             )))
         .whenReleased(new SequentialCommandGroup(new InstantCommand(alignmentBelt::stop, alignmentBelt),
@@ -173,6 +176,8 @@ public class RobotContainer {
     navX.setDefaultCommand(
       new NavXLogging(navX)
     );
+
+    flywheels.setDefaultCommand(new FlywheelLogging(flywheels));
   }
 
   /**
