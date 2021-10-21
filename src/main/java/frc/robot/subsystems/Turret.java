@@ -133,6 +133,13 @@ public class Turret extends SubsystemBase {
   }
 
   /**
+   * Gets the centered position of the turret by calculating the difference between the two limits
+   */
+  public int getCenter() {
+    return Math.round((float)((upperLimit + lowerLimit)/2));
+  }
+
+  /**
    * Method which attempts to correct the angle of the turret. This is done by attempting to use the
    * positive/negative inverse angle if possible.
    *
