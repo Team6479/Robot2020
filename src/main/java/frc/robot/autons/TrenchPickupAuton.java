@@ -54,7 +54,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new StraightDrive(drivetrain, navX, 0.5, 40),
       new WaitCommand(0.5),
-      new InstantCommand(() -> turret.setPosition(-190), turret), // reset turret position
+      new InstantCommand(() -> turret.setPosition(turret.getCenter()), turret), // reset turret position
       new InstantCommand(() -> {
         Limelight.setLEDState(LEDState.Auto);
       }),
