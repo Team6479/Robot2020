@@ -44,6 +44,7 @@ public class TurnDrivetrain extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    angle = 0;
     navX.reset();
   }
 
