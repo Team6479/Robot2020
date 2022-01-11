@@ -154,7 +154,7 @@ public class Turret extends SubsystemBase {
       // double inverse = angle >= 0 ? -360 + angle : 360 + angle;
 
       return Angle.getShortestDistance(angle, upperLimit) < Angle.getShortestDistance(angle,
-          upperLimit) ? upperLimit : lowerLimit;
+          lowerLimit) ? upperLimit : lowerLimit;
 
       // if (inverse >= lowerLimit && inverse <= upperLimit) {
       // return inverse;
