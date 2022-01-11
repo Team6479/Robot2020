@@ -44,6 +44,10 @@ public class EightBallTrenchAuton extends SequentialCommandGroup {
   public EightBallTrenchAuton(Drivetrain drivetrain, NavX navX, IntakeArm intakeArm, IntakeRollers intakeRollers, Turret turret,
     Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(
+      new InstantCommand(() -> {
+        Limelight.setLEDState(LEDState.Off);
+      }),
+      new InstantCommand(() -> Limelight.setCamMode(CamMode.DriverCamera)),
       new InstantCommand(drivetrain::resetEncoders, drivetrain),
       new WaitCommand(0.25),
       new StraightDrive(drivetrain, navX, -0.7, 40), // drive towards the trench (backwards)
@@ -86,7 +90,9 @@ public class EightBallTrenchAuton extends SequentialCommandGroup {
       ),
       new InstantCommand(() -> Limelight.setLEDState(LEDState.Off)),
       new InstantCommand(() -> Limelight.setCamMode(CamMode.DriverCamera)),
-      new TurnDrivetrain(drivetrain, navX, 169, Direction.Left),
+      new InstantCommand(drivetrain::resetEncoders, drivetrain),
+      new StraightDrive(drivetrain, navX, 0.5, 3),
+      new TurnDrivetrain(drivetrain, navX, 168.5, Direction.Left),
       new WaitCommand(0.25),
       new SetIntakeArmPosition(intakeArm, Position.Out, 0.7),
       new InstantCommand(intakeRollers::rollersOn, intakeRollers),
@@ -96,8 +102,6 @@ public class EightBallTrenchAuton extends SequentialCommandGroup {
       new InstantCommand(intakeRollers::rollersOff, intakeRollers),
       new InstantCommand(drivetrain::resetEncoders, drivetrain),
       new StraightDrive(drivetrain, navX, -0.65, 125),
-      new InstantCommand(drivetrain::resetEncoders, drivetrain),
-      new WaitCommand(0.5),
       new TurnDrivetrain(drivetrain, navX, 169, Direction.Right),
       new InstantCommand(() -> turret.setPosition(turret.getCenter()), turret), // reset turret position
       new InstantCommand(() -> {

@@ -21,7 +21,7 @@ import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
 import frc.robot.commands.StraightDrive;
 import frc.robot.commands.TeleopIntakeArm;
-import frc.robot.commands.TrenchSpinUpFlywheels;
+import frc.robot.commands.SpinUpFlywheels;
 import frc.robot.commands.TurnDrivetrain;
 import frc.robot.commands.TurnDrivetrain.Direction;
 import frc.robot.subsystems.AlignmentBelt;
@@ -44,15 +44,19 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
   public TrenchPickupAuton(Drivetrain drivetrain, NavX navX, IntakeArm intakeArm, IntakeRollers intakeRollers, Turret turret,
     Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(
+      new InstantCommand(() -> {
+        Limelight.setLEDState(LEDState.Off);
+      }),
+      new InstantCommand(() -> Limelight.setCamMode(CamMode.DriverCamera)),
       new SetIntakeArmPosition(intakeArm, Position.Out),
       new InstantCommand(intakeRollers::rollersOn, intakeRollers),
-      new StraightDrive(drivetrain, navX, 0.5, 124), // drive towards the trench
+      new StraightDrive(drivetrain, navX, 0.5, 116), // drive towards the trench
       new WaitCommand(0.75), // Wait a little to ensure the last ball gets taken
       new InstantCommand(intakeRollers::rollersOff, intakeRollers),
-      new TurnDrivetrain(drivetrain, navX, 145, Direction.Right),
+      new TurnDrivetrain(drivetrain, navX, 152, Direction.Right),
       new InstantCommand(drivetrain::resetEncoders, drivetrain),
       new WaitCommand(0.5),
-      new StraightDrive(drivetrain, navX, 0.5, 40),
+      new StraightDrive(drivetrain, navX, 0.5, 30),
       new WaitCommand(0.5),
       new InstantCommand(() -> turret.setPosition(turret.getCenter()), turret), // reset turret position
       new InstantCommand(() -> {
@@ -70,7 +74,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new WaitCommand(0.25),
           new AimTurret(turret),
-          new TrenchSpinUpFlywheels(flywheels),
+          new SpinUpFlywheels(flywheels),
           // might need a WaitCommand here --> if there isn't enough time for the RPM to reach
           // what it should be, then put a WaitCommand and investigate the isFinished() method
           // of SpinUpFlywheel (which currently returns true!!)
@@ -114,7 +118,7 @@ public class TrenchPickupAuton extends SequentialCommandGroup {
               new InstantCommand(intakeRollers::rollersOff, intakeRollers),
               new WaitCommand(0.25),
               new InstantCommand(intakeRollers::rollersOn, intakeRollers),
-              new WaitCommand(1.5),
+              new WaitCommand(3.5),
               new InstantCommand(intakeRollers::rollersOff, intakeRollers)
             )
           )

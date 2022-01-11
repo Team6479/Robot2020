@@ -41,7 +41,7 @@ public class SpinUpFlywheels extends CommandBase {
    * Uses regression equation from real world testing to determine the top wheel rpm, along with distance to the target calculated with the limelight
    */
   private double getTopRPM() {
-    return 4.2555438225977*distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset()))+549.31362196409;
+    return 4.2555438225977*distanceCalculator.calculate(Math.toRadians(Limelight.getYOffset()))+559.31362196409; // this was +549.3136...
   }
 
   // Called when the command is initially scheduled.

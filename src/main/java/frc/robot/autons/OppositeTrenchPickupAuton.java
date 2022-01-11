@@ -15,7 +15,7 @@ import frc.robot.commands.AimTurret;
 import frc.robot.commands.SetIntakeArmPosition;
 import frc.robot.commands.StraightDrive;
 import frc.robot.commands.TeleopIntakeArm;
-import frc.robot.commands.TrenchSpinUpFlywheels;
+import frc.robot.commands.SpinUpFlywheels;
 import frc.robot.commands.TurnDrivetrain;
 import frc.robot.commands.TurnDrivetrain.Direction;
 import frc.robot.subsystems.AlignmentBelt;
@@ -33,17 +33,22 @@ public class OppositeTrenchPickupAuton extends SequentialCommandGroup {
   public OppositeTrenchPickupAuton(Drivetrain drivetrain, NavX navX, IntakeArm intakeArm, IntakeRollers intakeRollers, Turret turret,
   Flywheels flywheels, Indexer indexer, AlignmentBelt alignmentBelt) {
     super(
+      new InstantCommand(() -> {
+        Limelight.setLEDState(LEDState.Off);
+      }),
+      new InstantCommand(() -> Limelight.setCamMode(CamMode.DriverCamera)),
       new SetIntakeArmPosition(intakeArm, Position.Out),
       new InstantCommand(intakeRollers::rollersOn, intakeRollers),
-      new StraightDrive(drivetrain, navX, 0.5, 70), // drive towards the trench
+      new StraightDrive(drivetrain, navX, 0.5, 85), // drive towards the trench
       new WaitCommand(1.5), // Wait a little to ensure the last ball gets taken
+      new InstantCommand(drivetrain::resetEncoders, drivetrain),
+      new StraightDrive(drivetrain, navX, -0.5, 10),
+      new TurnDrivetrain(drivetrain, navX, 125, Direction.Left),
       new InstantCommand(intakeRollers::rollersOff, intakeRollers),
-      new TurnDrivetrain(drivetrain, navX, 105, Direction.Left),
       new InstantCommand(drivetrain::resetEncoders, drivetrain),
       new WaitCommand(0.5),
-      new StraightDrive(drivetrain, navX, 0.5, 80),
-      new WaitCommand(0.5),
-      new InstantCommand(() -> turret.setPosition(turret.getCenter()), turret), // reset turret position
+      new StraightDrive(drivetrain, navX, 0.5, 60),
+      new InstantCommand(() -> turret.setPosition(turret.getCenter()-20), turret), // reset turret position
       new InstantCommand(() -> {
         Limelight.setLEDState(LEDState.Auto);
       }),
@@ -59,11 +64,11 @@ public class OppositeTrenchPickupAuton extends SequentialCommandGroup {
         new SequentialCommandGroup(
           new WaitCommand(0.25),
           new AimTurret(turret),
-          new TrenchSpinUpFlywheels(flywheels),
+          new SpinUpFlywheels(flywheels),
           // might need a WaitCommand here --> if there isn't enough time for the RPM to reach
           // what it should be, then put a WaitCommand and investigate the isFinished() method
           // of SpinUpFlywheel (which currently returns true!!)
-          new WaitCommand(2.0),
+          new WaitCommand(3.0),
           new ParallelCommandGroup(
             new SequentialCommandGroup(
               // ignore this, it's fine

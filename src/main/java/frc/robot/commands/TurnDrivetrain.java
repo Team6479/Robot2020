@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NavX;
@@ -63,6 +64,7 @@ public class TurnDrivetrain extends CommandBase {
     double x = (GOAL - angle) / GOAL;
     double sigmoidValue = sigmoid.calculate(x);
     double speed = 0.25 + (0.5 * (sigmoidValue));
+    SmartDashboard.putNumber("Turn Speed Sigmoid", speed);
 
     if (DIRECTION == Direction.Left) {
       drivetrain.tankDrive(-speed, speed);
@@ -83,6 +85,7 @@ public class TurnDrivetrain extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putNumber("Turn Error", Math.abs(angle - GOAL));
     return Math.abs(angle - GOAL) <= 10;
   }
 }

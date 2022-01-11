@@ -17,6 +17,7 @@ import com.team6479.lib.util.Limelight.CamMode;
 import com.team6479.lib.util.Limelight.LEDState;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -46,6 +47,7 @@ import frc.robot.autons.TrenchPickupAuton;
 import frc.robot.autons.OppositeTrenchPickupAuton;
 import frc.robot.autons.EightBallTrenchAuton;
 import frc.robot.autons.DriveAimShootAuton;
+import frc.robot.autons.DriveSquare;
 import frc.robot.commands.StraightDrive;
 import frc.robot.commands.FlywheelLogging;
 /**
@@ -61,7 +63,7 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final Turret turret = new Turret(-220, -160);
+  private final Turret turret = new Turret(-270, -170);
 
   private final IntakeRollers intakeRollers = new IntakeRollers();
   private final IntakeArm intakeArm = new IntakeArm();
@@ -96,6 +98,7 @@ public class RobotContainer {
     autonChooser.addOption("Opposite Trench Pickup", 
       new OppositeTrenchPickupAuton(drivetrain, navX, intakeArm, intakeRollers, turret, flywheels, indexer, alignmentBelt)
     );
+    autonChooser.addOption("Drive Square", new DriveSquare(drivetrain, navX));
     autonChooser.addOption("Do nothing", new InstantCommand());
     autonChooser.addOption("Drive forward", new StraightDrive(drivetrain, navX, 0.5, 30));
     autonChooser.addOption("Drive backwards, Aim, Shoot", new DriveAimShootAuton(drivetrain, navX, turret, flywheels, indexer, alignmentBelt, intakeArm));
@@ -128,7 +131,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    xbox.getButton(XboxController.Button.kBumperRight)
+    joystick.getButton(1)
         .whenPressed(new SequentialCommandGroup(new SequentialCommandGroup(
              new SpinUpFlywheels(flywheels), 
             // new ToggleFlywheel(flywheel), // TODO: Remove this when tuning is done
@@ -161,13 +164,12 @@ public class RobotContainer {
     // joystick.getButton(7).whenPressed(new ToggleFlywheel(flywheel));
 
     // Toggle Limelight
-    joystick.getButton(7).whenPressed(new InstantCommand(this::toggleLimelight));
-    joystick.getButton(8).whenPressed(new InstantCommand(this::toggleLimelight));
-    joystick.getButton(9).whenPressed(new InstantCommand(this::toggleLimelight));
-    joystick.getButton(10).whenPressed(new InstantCommand(this::toggleLimelight));
-    joystick.getButton(11).whenPressed(new InstantCommand(this::toggleLimelight));
-    joystick.getButton(12).whenPressed(new InstantCommand(this::toggleLimelight));
-
+    joystick.getButton(2).whenPressed(new InstantCommand(() -> {
+      setLimelight(true);
+    }));
+    joystick.getButton(12).whenPressed(new InstantCommand(() -> {
+      setLimelight(false);
+    }));
 
 
     drivetrain.setDefaultCommand(
@@ -196,12 +198,11 @@ public class RobotContainer {
 
   }
 
-  public void toggleLimelight() {
-    LEDState ledState = com.team6479.lib.util.Limelight.getLEDState();
-    if (ledState != LEDState.Auto) {
+  public void setLimelight(boolean on) {
+    if (on) {
       Limelight.setLEDState(LEDState.Auto);
       Limelight.setCamMode(CamMode.VisionProcessor);
-    } else if (ledState != LEDState.Off) {
+    } else {
       Limelight.setLEDState(LEDState.Off);
       Limelight.setCamMode(CamMode.DriverCamera);
     }
